@@ -1,5 +1,5 @@
 {
-  "name": "Tarot Reading App",
+  "name": "PRAGMAGICK.APP",
   "description": "Interactive prototype for Tarot reading flow based on original mockup design.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
