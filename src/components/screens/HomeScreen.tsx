@@ -41,7 +41,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ language, onStart }) => 
           className="mb-2 sm:mb-2.5"
         >
           <img
-            src="https://sandboxlandia.online/wp-content/uploads/2026/09/PRAGMAGICKA_LOGO-1.png"
+            src="/logo.png"
             alt="Pragmagicka Logo"
             className="w-9 h-9 sm:w-11 sm:h-11 object-contain mx-auto"
             referrerPolicy="no-referrer"

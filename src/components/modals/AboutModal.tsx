@@ -34,7 +34,7 @@ export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, languag
             <div className="w-full bg-white border-b-[2px] border-black py-3 px-4 flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2">
                 <img
-                  src="https://sandboxlandia.online/wp-content/uploads/2026/09/PRAGMAGICKA_LOGO-1.png"
+                  src="/logo.png"
                   alt="Pragmagicka"
                   className="w-5 h-5 object-contain"
                   referrerPolicy="no-referrer"
