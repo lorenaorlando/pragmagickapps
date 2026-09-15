@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronUp, ChevronDown } from 'lucide-react';
-import { toBlob, toPng } from 'html-to-image';
 import { TarotCardFront } from '../TarotCardFront';
 import { TarotCard, Language, QuestionOption } from '../../types';
 import {
@@ -52,9 +51,9 @@ export const ReadingScreen: React.FC<ReadingScreenProps> = ({
   const [showTagBanner, setShowTagBanner] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isKofiModalOpen, setIsKofiModalOpen] = useState(false);
-  const [isSharing, setIsSharing] = useState(false);
   const bannerTimerRef = useRef<number | null>(null);
 
+  // Trigger floating toast notification for 4 seconds (4000ms)
   const triggerTagBanner = () => {
     setShowTagBanner(true);
     if (bannerTimerRef.current) {
@@ -62,10 +61,10 @@ export const ReadingScreen: React.FC<ReadingScreenProps> = ({
     }
     bannerTimerRef.current = window.setTimeout(() => {
       setShowTagBanner(false);
-    }, 6000);
+    }, 4000);
   };
 
-  // Detect user screenshot shortcuts
+  // Detect user screenshot shortcuts to show toast
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (
@@ -92,164 +91,26 @@ export const ReadingScreen: React.FC<ReadingScreenProps> = ({
     };
   }, []);
 
-  // Instagram navigation handler for Pragmagicka logo/text
-  const handleInstagramClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  // Menu action: Opción 1 destacada (Amarilla) - Compartir en Instagram
+  const handleInstagramShareOption = () => {
     tarotAudio.playClick();
-    window.open('https://www.instagram.com/pragmagicka/', '_blank', 'noopener,noreferrer');
+    setIsMenuOpen(false);
+    triggerTagBanner();
+    window.open('https://instagram.com/pragmagicka/', '_blank', 'noopener,noreferrer');
   };
 
-  // Menu action: Opción 1 - Profundizar lectura (Agendar lectura personalizada en Ko-fi Shop)
+  // Menu action: Opción 2 - Profundizar lectura (Agendar lectura personalizada en Ko-fi Shop)
   const handleScheduleReading = () => {
     tarotAudio.playClick();
     setIsMenuOpen(false);
     window.open('https://ko-fi.com/pragmagicka/shop', '_blank', 'noopener,noreferrer');
   };
 
-  // Menu action: Opción 2 - Apoyar el proyecto (Modal Ko-fi)
+  // Menu action: Opción 3 - Apoyar el proyecto (Modal Ko-fi)
   const handleOpenSupport = () => {
     tarotAudio.playClick();
     setIsMenuOpen(false);
     setIsKofiModalOpen(true);
-  };
-
-  // Menu action: Compartir lectura (HTML-to-image + Canvas Watermark + Web Share API / Download Fallback)
-  const handleShareReading = async () => {
-    if (isSharing || !readingCardRef.current) return;
-    setIsSharing(true);
-    tarotAudio.playClick();
-    setIsMenuOpen(false);
-    triggerTagBanner();
-
-    try {
-      // 1. Wait briefly for menu animation and font rendering to settle
-      if (document.fonts) {
-        await document.fonts.ready;
-      }
-      await new Promise((resolve) => setTimeout(resolve, 120));
-
-      const node = readingCardRef.current;
-      if (!node) throw new Error('Reading card element not found');
-
-      const width = node.offsetWidth || 360;
-      const height = node.offsetHeight || 580;
-      const scale = 2; // High-resolution export for Stories
-
-      // 2. Capture the exact reading card container with html-to-image
-      const rawDataUrl = await toPng(node, {
-        quality: 1,
-        pixelRatio: scale,
-        cacheBust: true,
-        backgroundColor: '#ffffff',
-        width,
-        height,
-        canvasWidth: width * scale,
-        canvasHeight: height * scale,
-        style: {
-          width: `${width}px`,
-          height: `${height}px`,
-          maxWidth: `${width}px`,
-          maxHeight: `${height}px`,
-          transform: 'none',
-          margin: '0',
-        },
-      });
-
-      // 3. Composite aesthetic post-generation watermark onto a 2D Canvas
-      const cardImg = new Image();
-      cardImg.crossOrigin = 'anonymous';
-      await new Promise<void>((resolve, reject) => {
-        cardImg.onload = () => resolve();
-        cardImg.onerror = (e) => reject(e);
-        cardImg.src = rawDataUrl;
-      });
-
-      const watermarkHeight = 38 * scale;
-      const finalCanvas = document.createElement('canvas');
-      finalCanvas.width = cardImg.width;
-      finalCanvas.height = cardImg.height + watermarkHeight;
-
-      const ctx = finalCanvas.getContext('2d');
-      if (!ctx) throw new Error('Could not get canvas 2d context');
-
-      // White background
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
-
-      // Draw captured reading card
-      ctx.drawImage(cardImg, 0, 0);
-
-      // Draw solid black divider line above the watermark banner
-      ctx.fillStyle = '#000000';
-      ctx.fillRect(0, cardImg.height, finalCanvas.width, 2 * scale);
-
-      // Draw watermark text in Serif typography
-      const textCenterY = cardImg.height + (watermarkHeight / 2) + (1 * scale);
-      ctx.fillStyle = '#000000';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.font = `400 ${12 * scale}px 'Viaoda Libre', Georgia, serif`;
-      ctx.fillText('@pragmagicka | pragmagick.app', finalCanvas.width / 2, textCenterY);
-
-      // 4. Convert final canvas to Blob and File
-      const blob = await new Promise<Blob | null>((resolve) => {
-        finalCanvas.toBlob((b) => resolve(b), 'image/png', 1.0);
-      });
-
-      if (!blob) throw new Error('Failed to generate final image blob');
-
-      const fileName = `pragmagick-lectura-${card.id ?? 'card'}.png`;
-      const file = new File([blob], fileName, { type: 'image/png' });
-
-      // 5. Try native Web Share API with files if supported (iOS / Android)
-      if (
-        typeof navigator !== 'undefined' &&
-        navigator.share &&
-        navigator.canShare &&
-        navigator.canShare({ files: [file] })
-      ) {
-        await navigator.share({
-          files: [file],
-          title: isEs ? 'Mi lectura en Pragmagicka' : 'My Pragmagicka Reading',
-          text: '@pragmagicka | pragmagick.app',
-        });
-      } else {
-        // 6. Fallback: Automatic PNG download
-        const finalDataUrl = finalCanvas.toDataURL('image/png');
-        const downloadLink = document.createElement('a');
-        downloadLink.href = finalDataUrl;
-        downloadLink.download = fileName;
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-      }
-    } catch (err: unknown) {
-      const errorObj = err as { name?: string; message?: string };
-      // User dismissed native share sheet: normal mobile flow
-      if (errorObj?.name === 'AbortError') {
-        return;
-      }
-      console.warn('Share operation fell back to direct download:', err);
-      try {
-        if (readingCardRef.current) {
-          const fallbackDataUrl = await toPng(readingCardRef.current, {
-            pixelRatio: 2,
-            cacheBust: true,
-            backgroundColor: '#ffffff',
-          });
-          const downloadLink = document.createElement('a');
-          downloadLink.href = fallbackDataUrl;
-          downloadLink.download = `pragmagick-lectura-${card.id ?? 'card'}.png`;
-          document.body.appendChild(downloadLink);
-          downloadLink.click();
-          document.body.removeChild(downloadLink);
-        }
-      } catch (fallbackErr) {
-        console.error('Direct fallback export failed:', fallbackErr);
-      }
-    } finally {
-      setIsSharing(false);
-    }
   };
 
   // Menu action: Opción 4 - Nueva lectura
@@ -263,7 +124,7 @@ export const ReadingScreen: React.FC<ReadingScreenProps> = ({
 
   return (
     <div className="relative w-full h-full flex flex-col bg-white text-black select-none overflow-hidden justify-between">
-      {/* Floating Instagram Tag Banner / Toast */}
+      {/* Floating Instagram Tag Toast Banner (4 seconds duration) */}
       <AnimatePresence>
         {showTagBanner && (
           <motion.div
@@ -271,22 +132,12 @@ export const ReadingScreen: React.FC<ReadingScreenProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -40 }}
             transition={{ duration: 0.25 }}
-            className="absolute top-0 left-0 right-0 z-50 bg-white border-b-[2px] border-black px-4 py-2.5 flex items-center justify-between shadow-lg"
+            className="absolute top-0 left-0 right-0 z-50 bg-[#FFE600] border-b-[2px] border-black px-4 py-2.5 flex items-center justify-between shadow-lg"
           >
-            <div className="font-playfair text-xs sm:text-[13px] tracking-normal text-black text-center flex-1 leading-snug">
-              <span>{isEs ? '¿Vas a compartir instagram? ' : 'Sharing on Instagram? '}</span>
-              <span className="font-medium">
-                {isEs ? 'Etiquéta a ' : 'Tag '}
-                <a
-                  href="https://www.instagram.com/pragmagicka/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="underline font-bold text-black hover:opacity-75 transition-opacity px-0.5"
-                >
-                  @pragmagicka
-                </a>
-              </span>
+            <div className="font-viaoda text-[13px] sm:text-[14px] font-normal tracking-tight text-black text-center flex-1 leading-snug">
+              {isEs
+                ? 'Toma captura de pantalla a tu lectura y etiqueta a @pragmagicka 📸'
+                : 'Take a screenshot of your reading and tag @pragmagicka 📸'}
             </div>
             <button
               type="button"
@@ -300,7 +151,7 @@ export const ReadingScreen: React.FC<ReadingScreenProps> = ({
         )}
       </AnimatePresence>
 
-      {/* Main Printable / Capture Reading Area */}
+      {/* Main Printable / Reading Area */}
       <div ref={readingCardRef} className="flex-1 w-full flex flex-col min-h-0 bg-white">
         {/* Top Header Banner: YOUR READING / TU LECTURA + pragmagick.app */}
         <div className="w-full bg-[#b8e2ec] border-b-[2px] border-black py-2 px-4 flex items-center justify-between shrink-0">
@@ -308,7 +159,7 @@ export const ReadingScreen: React.FC<ReadingScreenProps> = ({
             {t.reading.banner}
           </h2>
           <a
-            href="https://www.instagram.com/pragmagicka/"
+            href="https://instagram.com/pragmagicka/"
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
@@ -393,7 +244,25 @@ export const ReadingScreen: React.FC<ReadingScreenProps> = ({
                 transition={{ duration: 0.18 }}
                 className="absolute bottom-full left-0 right-0 z-40 bg-white border-t-[2px] border-b-[2px] border-black shadow-xl flex flex-col divide-y divide-black"
               >
-                {/* Option 1: Profundizar lectura */}
+                {/* 1. Casilla destacada en amarillo: ¿COMPARTIENDO TU LECTURA? ETIQUETA A @PRAGMAGICKA */}
+                <button
+                  type="button"
+                  onClick={handleInstagramShareOption}
+                  className="w-full bg-[#FFE600] hover:bg-[#f2db00] active:bg-[#e2cb00] p-3.5 text-left transition-colors flex flex-col justify-center cursor-pointer"
+                >
+                  <span className="font-viaoda text-base sm:text-[17px] font-bold tracking-tight text-black uppercase leading-tight">
+                    {isEs
+                      ? '¿COMPARTIENDO TU LECTURA? ETIQUETA A @PRAGMAGICKA'
+                      : 'SHARING YOUR READING? TAG @PRAGMAGICKA'}
+                  </span>
+                  <span className="font-playfair text-[11px] sm:text-[12px] text-black/80 font-normal mt-0.5">
+                    {isEs
+                      ? 'Toca aquí para abrir Instagram'
+                      : 'Tap here to open Instagram'}
+                  </span>
+                </button>
+
+                {/* 2. Opción: Profundizar lectura */}
                 <button
                   type="button"
                   onClick={handleScheduleReading}
@@ -409,26 +278,7 @@ export const ReadingScreen: React.FC<ReadingScreenProps> = ({
                   </span>
                 </button>
 
-                {/* Option 2: Compartir lectura */}
-                <button
-                  type="button"
-                  onClick={handleShareReading}
-                  disabled={isSharing}
-                  className="w-full bg-white hover:bg-neutral-50 p-3.5 text-left transition-colors flex flex-col justify-center cursor-pointer disabled:opacity-60"
-                >
-                  <span className="font-viaoda text-base sm:text-[17px] font-normal tracking-tight text-black uppercase">
-                    {isSharing
-                      ? (isEs ? 'Generando imagen...' : 'Generating image...')
-                      : (isEs ? 'Compartir lectura' : 'Share reading')}
-                  </span>
-                  <span className="font-playfair text-[11px] sm:text-[12px] text-black/75 font-normal mt-0.5">
-                    {isEs
-                      ? 'Genera la imagen para tus Stories'
-                      : 'Generate image for your Stories'}
-                  </span>
-                </button>
-
-                {/* Option 3: Apoyar el proyecto */}
+                {/* 3. Opción: Apoyar el proyecto */}
                 <button
                   type="button"
                   onClick={handleOpenSupport}
@@ -444,7 +294,7 @@ export const ReadingScreen: React.FC<ReadingScreenProps> = ({
                   </span>
                 </button>
 
-                {/* Option 4: Nueva lectura */}
+                {/* 4. Opción: Nueva lectura */}
                 <button
                   type="button"
                   onClick={handleNewReading}

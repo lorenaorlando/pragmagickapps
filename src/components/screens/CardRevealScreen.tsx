@@ -22,16 +22,16 @@ export const CardRevealScreen: React.FC<CardRevealScreenProps> = ({
 
   return (
     <div className="w-full h-full flex flex-col justify-between bg-white text-black select-none overflow-hidden">
-      {/* Top Banner: TU CARTA: [NOMBRE] / YOUR CARD: [NAME] */}
+      {/* Top Banner: [NOMBRE DEL ARCANO] */}
       <div className="w-full bg-[#b8e2ec] border-b-[2px] border-black py-2 px-4 flex items-center justify-between shrink-0">
-        <h2 className="font-viaoda text-lg sm:text-2xl font-normal tracking-tight text-black uppercase leading-tight text-left truncate mr-2">
-          {t.cardReveal.banner}: {cardTitle}
+        <h2 className="font-viaoda text-[12px] font-normal tracking-tight text-black uppercase leading-tight text-left truncate mr-2">
+          {cardTitle}
         </h2>
         <a
           href="https://www.instagram.com/pragmagicka/"
           target="_blank"
           rel="noopener noreferrer"
-          className="font-viaoda text-[13px] sm:text-[14.5px] tracking-wider text-black lowercase font-normal hover:opacity-75 transition-opacity shrink-0"
+          className="font-viaoda text-[12px] tracking-wider text-black lowercase font-normal hover:opacity-75 transition-opacity shrink-0"
         >
           pragmagick.app
         </a>

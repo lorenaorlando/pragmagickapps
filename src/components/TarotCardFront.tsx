@@ -24,7 +24,7 @@ export const TarotCardFront: React.FC<TarotCardFrontProps> = ({
     lg: 'w-24 h-[167px]',
   };
 
-  const imageUrl = card?.imageUrl || 'https://sandboxlandia.online/wp-content/uploads/2026/09/El_Carro.png';
+  const imageUrl = card?.imageUrl || '/cards/El_Carro.png';
 
   return (
     <div
