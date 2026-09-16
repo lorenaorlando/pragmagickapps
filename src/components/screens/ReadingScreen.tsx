@@ -99,11 +99,11 @@ export const ReadingScreen: React.FC<ReadingScreenProps> = ({
     window.open('https://instagram.com/pragmagicka/', '_blank', 'noopener,noreferrer');
   };
 
-  // Menu action: Opción 2 - Profundizar lectura (Agendar lectura personalizada en Ko-fi Shop)
+  // Menu action: Opción 2 - Profundizar lectura (Agendar lectura personalizada en Ko-fi Commissions)
   const handleScheduleReading = () => {
     tarotAudio.playClick();
     setIsMenuOpen(false);
-    window.open('https://ko-fi.com/pragmagicka/shop', '_blank', 'noopener,noreferrer');
+    window.open('https://ko-fi.com/pragmagicka/commissions', '_blank', 'noopener,noreferrer');
   };
 
   // Menu action: Opción 3 - Apoyar el proyecto (Modal Ko-fi)
