@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { PhoneFrame } from './components/PhoneFrame';
 import { LanguageScreen } from './components/screens/LanguageScreen';
-import { HomeScreen } from './components/screens/HomeScreen';
 import { ChooseQuestionScreen } from './components/screens/ChooseQuestionScreen';
 import { ShuffleAndDrawScreen } from './components/screens/ShuffleAndDrawScreen';
 import { LoadingScreen } from './components/screens/LoadingScreen';
@@ -19,11 +18,6 @@ export default function App() {
   const [drawnCard, setDrawnCard] = useState<TarotCard>(MAJOR_ARCANA[0]);
 
   const handleLanguageChosen = () => {
-    tarotAudio.playClick();
-    setCurrentStep('home');
-  };
-
-  const handleStart = () => {
     tarotAudio.playClick();
     setCurrentStep('choose-question');
   };
@@ -76,12 +70,6 @@ export default function App() {
                     language={language}
                     onSelectLanguage={setLanguage}
                     onContinue={handleLanguageChosen}
-                  />
-                )}
-                {currentStep === 'home' && (
-                  <HomeScreen
-                    language={activeLanguage}
-                    onStart={handleStart}
                   />
                 )}
                 {currentStep === 'choose-question' && (
