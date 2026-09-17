@@ -91,19 +91,23 @@ export const ReadingScreen: React.FC<ReadingScreenProps> = ({
     };
   }, []);
 
-  // Menu action: Opción 1 destacada (Amarilla) - Compartir en Instagram
+  // Menu action: Opción 1 destacada - WhatsApp (Y AHORA... ¿QUÉ HAGO CON ESTO?)
+  const handleWhatsAppAction = () => {
+    tarotAudio.playClick();
+    setIsMenuOpen(false);
+    window.open(
+      'https://wa.me/573138642943?text=Hola!%20vengo%20de%20Pragmagick.app%20y%20quiero%20profundizar%20mi%20lectura',
+      '_blank',
+      'noopener,noreferrer'
+    );
+  };
+
+  // Menu action: Opción 2 destacada (Fondo celeste) - Compartir en Instagram
   const handleInstagramShareOption = () => {
     tarotAudio.playClick();
     setIsMenuOpen(false);
     triggerTagBanner();
     window.open('https://instagram.com/pragmagicka/', '_blank', 'noopener,noreferrer');
-  };
-
-  // Menu action: Opción 2 - Profundizar lectura (Agendar lectura personalizada en Ko-fi Commissions)
-  const handleScheduleReading = () => {
-    tarotAudio.playClick();
-    setIsMenuOpen(false);
-    window.open('https://ko-fi.com/pragmagicka/commissions', '_blank', 'noopener,noreferrer');
   };
 
   // Menu action: Opción 3 - Apoyar el proyecto (Modal Ko-fi)
@@ -132,7 +136,7 @@ export const ReadingScreen: React.FC<ReadingScreenProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -40 }}
             transition={{ duration: 0.25 }}
-            className="absolute top-0 left-0 right-0 z-50 bg-[#FFE600] border-b-[2px] border-black px-4 py-2.5 flex items-center justify-between shadow-lg"
+            className="absolute top-0 left-0 right-0 z-50 bg-[#b8e2ec] border-b-[2px] border-black px-4 py-2.5 flex items-center justify-between shadow-lg"
           >
             <div className="font-viaoda text-[13px] sm:text-[14px] font-normal tracking-tight text-black text-center flex-1 leading-snug">
               {isEs
@@ -244,11 +248,29 @@ export const ReadingScreen: React.FC<ReadingScreenProps> = ({
                 transition={{ duration: 0.18 }}
                 className="absolute bottom-full left-0 right-0 z-40 bg-white border-t-[2px] border-b-[2px] border-black shadow-xl flex flex-col divide-y divide-black"
               >
-                {/* 1. Casilla destacada en amarillo: ¿COMPARTIENDO TU LECTURA? ETIQUETA A @PRAGMAGICKA */}
+                {/* 1. Botón principal en menú (fondo amarillo): REVISÉMOSLA DE CERCA -> WhatsApp */}
+                <button
+                  type="button"
+                  onClick={handleWhatsAppAction}
+                  className="w-full bg-[#FFE600] hover:bg-[#f2db00] active:bg-[#e2cb00] p-3.5 text-left transition-colors flex flex-col justify-center cursor-pointer"
+                >
+                  <span className="font-viaoda text-base sm:text-[17px] font-bold tracking-tight text-black uppercase leading-tight">
+                    {isEs
+                      ? 'REVISÉMOSLA DE CERCA'
+                      : "LET'S LOOK AT IT CLOSER"}
+                  </span>
+                  <span className="font-playfair text-[11px] sm:text-[12px] text-black/85 font-normal mt-0.5">
+                    {isEs
+                      ? '¡Estoy para ayudarte! :)'
+                      : "I'm here to help! :)"}
+                  </span>
+                </button>
+
+                {/* 2. Segundo botón (fondo celeste): ¿COMPARTIENDO TU LECTURA? ETIQUETA A @PRAGMAGICKA */}
                 <button
                   type="button"
                   onClick={handleInstagramShareOption}
-                  className="w-full bg-[#FFE600] hover:bg-[#f2db00] active:bg-[#e2cb00] p-3.5 text-left transition-colors flex flex-col justify-center cursor-pointer"
+                  className="w-full bg-[#b8e2ec] hover:bg-[#a6d8e4] active:bg-[#94cee0] p-3.5 text-left transition-colors flex flex-col justify-center cursor-pointer"
                 >
                   <span className="font-viaoda text-base sm:text-[17px] font-bold tracking-tight text-black uppercase leading-tight">
                     {isEs
@@ -259,22 +281,6 @@ export const ReadingScreen: React.FC<ReadingScreenProps> = ({
                     {isEs
                       ? 'Toca aquí para abrir Instagram'
                       : 'Tap here to open Instagram'}
-                  </span>
-                </button>
-
-                {/* 2. Opción: Profundizar lectura */}
-                <button
-                  type="button"
-                  onClick={handleScheduleReading}
-                  className="w-full bg-white hover:bg-neutral-50 p-3.5 text-left transition-colors flex flex-col justify-center cursor-pointer"
-                >
-                  <span className="font-viaoda text-base sm:text-[17px] font-normal tracking-tight text-black uppercase">
-                    {isEs ? 'Profundizar lectura' : 'Deepen reading'}
-                  </span>
-                  <span className="font-playfair text-[11px] sm:text-[12px] text-black/75 font-normal mt-0.5">
-                    {isEs
-                      ? 'Agenda una lectura personalizada'
-                      : 'Schedule a personalized reading'}
                   </span>
                 </button>
 
@@ -312,7 +318,7 @@ export const ReadingScreen: React.FC<ReadingScreenProps> = ({
           )}
         </AnimatePresence>
 
-        {/* Yellow (#ffff00) "MÁS" Button */}
+        {/* Yellow (#ffff00) Action Trigger Button */}
         <div className="w-full border-t-[2px] border-black bg-[#ffff00]">
           <motion.button
             id="btn-reading-more"
@@ -323,13 +329,15 @@ export const ReadingScreen: React.FC<ReadingScreenProps> = ({
             }}
             whileHover={{ filter: 'brightness(0.96)' }}
             whileTap={{ scale: 0.99 }}
-            className="w-full bg-[#ffff00] py-3 px-4 text-center font-viaoda text-lg sm:text-xl font-normal tracking-wide text-black flex items-center justify-center gap-2 cursor-pointer uppercase transition-all"
+            className="w-full bg-[#ffff00] py-3 px-4 text-center font-viaoda text-base sm:text-lg font-bold tracking-tight text-black flex items-center justify-center gap-2 cursor-pointer uppercase transition-all"
           >
-            <span>{isEs ? 'MÁS' : 'MORE'}</span>
+            <span className="truncate">
+              {isEs ? 'Y AHORA...¿QUÉ HAGO CON ESTO?' : 'AND NOW...WHAT DO I DO WITH THIS?'}
+            </span>
             {isMenuOpen ? (
-              <ChevronDown className="w-4 h-4 stroke-[2]" />
+              <ChevronDown className="w-4 h-4 stroke-[2] shrink-0" />
             ) : (
-              <ChevronUp className="w-4 h-4 stroke-[2]" />
+              <ChevronUp className="w-4 h-4 stroke-[2] shrink-0" />
             )}
           </motion.button>
         </div>
