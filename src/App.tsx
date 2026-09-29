@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { PhoneFrame } from './components/PhoneFrame';
 import { LanguageScreen } from './components/screens/LanguageScreen';
 import { ChooseQuestionScreen } from './components/screens/ChooseQuestionScreen';
+import { WeeklyTarotChoiceScreen } from './components/screens/WeeklyTarotChoiceScreen';
 import { ShuffleAndDrawScreen } from './components/screens/ShuffleAndDrawScreen';
 import { LoadingScreen } from './components/screens/LoadingScreen';
 import { CardRevealScreen } from './components/screens/CardRevealScreen';
@@ -23,9 +24,20 @@ export default function App() {
   };
 
   const handleQuestionChosen = (question?: QuestionOption) => {
+    const q = question || selectedQuestion;
     if (question) setSelectedQuestion(question);
     tarotAudio.playClick();
-    setCurrentStep('shuffle-draw');
+    if (q?.id === 'q-weekly' || q?.id === 'weekly') {
+      setCurrentStep('weekly-tarot-choose');
+    } else {
+      setCurrentStep('shuffle-draw');
+    }
+  };
+
+  const handleWeeklyCardChosen = (card: TarotCard) => {
+    setDrawnCard(card);
+    tarotAudio.playChime();
+    setCurrentStep('reading');
   };
 
   const handleCardsDrawn = (card: TarotCard) => {
@@ -77,7 +89,13 @@ export default function App() {
                     language={activeLanguage}
                     selectedQuestion={selectedQuestion}
                     onSelectQuestion={setSelectedQuestion}
-                    onContinue={() => handleQuestionChosen()}
+                    onContinue={(q) => handleQuestionChosen(q)}
+                  />
+                )}
+                {currentStep === 'weekly-tarot-choose' && (
+                  <WeeklyTarotChoiceScreen
+                    language={activeLanguage}
+                    onRestart={handleRestart}
                   />
                 )}
                 {currentStep === 'shuffle-draw' && (

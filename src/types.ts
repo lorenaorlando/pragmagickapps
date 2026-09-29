@@ -4,11 +4,11 @@ export type ScreenStep =
   | 'language'
   | 'home'
   | 'choose-question'
+  | 'weekly-tarot-choose'
   | 'shuffle-draw'
   | 'loading'
   | 'card-reveal'
   | 'reading'
-  // Legacy aliases to prevent any compilation issues if referenced
   | 'shuffle'
   | 'draw';
 

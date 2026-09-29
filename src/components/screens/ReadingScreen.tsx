@@ -8,6 +8,7 @@ import {
   CURRENT_MOMENT_READINGS,
   DONT_KNOW_WHAT_TO_DO_READINGS,
   THINKING_ABOUT_SOMEONE_READINGS,
+  WEEKLY_TAROT_READINGS,
 } from '../../data/tarotCards';
 import { TRANSLATIONS } from '../../data/translations';
 import { tarotAudio } from '../../utils/audio';
@@ -35,7 +36,10 @@ export const ReadingScreen: React.FC<ReadingScreenProps> = ({
 
   // Custom response based on selected question:
   let answerText = '';
-  if (question?.id === 'q1') {
+  if (question?.id === 'q-weekly' || question?.id === 'weekly') {
+    answerText = WEEKLY_TAROT_READINGS[card.id]?.[language] ||
+      (language === 'es' ? (card.spanishReadingSummary || card.readingSummary) : card.readingSummary);
+  } else if (question?.id === 'q1') {
     answerText = DONT_KNOW_WHAT_TO_DO_READINGS[card.id]?.[language] ||
       (language === 'es' ? (card.spanishReadingSummary || card.readingSummary) : card.readingSummary);
   } else if (question?.id === 'q2') {

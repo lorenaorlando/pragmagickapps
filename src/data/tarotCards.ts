@@ -25,6 +25,11 @@ export const QUESTIONS: QuestionOption[] = [
     title: 'CURRENT MOMENT',
     description: 'Understand where you are in life and how to move forward',
   },
+  {
+    id: 'q-weekly',
+    title: 'TAROT OF THE WEEK',
+    description: 'Discover the message of the arcana for your week',
+  },
 ];
 
 export const MAJOR_ARCANA: TarotCard[] = [
@@ -289,7 +294,7 @@ export const MAJOR_ARCANA: TarotCard[] = [
     number: 'XVI',
     name: 'The House of God',
     frenchName: 'LA MAISON DIEU',
-    spanishName: 'LA CASA DE DIOS',
+    spanishName: 'LA CASA DIOS',
     imageUrl: '/cards/La_casa_dios.png',
     arcana: 'major',
     archetype: 'Sudden revelation, liberation of truth',
@@ -297,7 +302,7 @@ export const MAJOR_ARCANA: TarotCard[] = [
     spanishKeywords: ['Sorpresas', 'Cambios', 'Transformaciones Internas'],
     uprightMeaning: 'Shattering brittle illusions to rebuild upon unshakeable bedrock.',
     readingSummary: 'La Maison Dieu clears away false pretenses. While sudden, this breakthrough liberates you to build authentic truth.',
-    spanishReadingSummary: 'La Casa de Dios derriba falsas certezas para liberarte. El cambio inesperado abre paso a cimientos mucho más sólidos.',
+    spanishReadingSummary: 'La Casa Dios derriba falsas certezas para liberarte. El cambio inesperado abre paso a cimientos mucho más sólidos.',
     primaryColor: '#ea580c',
   },
   {
@@ -652,6 +657,97 @@ export const THINKING_ABOUT_SOMEONE_READINGS: Record<number, { es: string; en: s
   21: {
     es: '¿Cuál es tu imagen de una relación ideal? ¿Cómo describirías a una relación que ya está realizada? Los parámetros de ello cambian persona a persona. Lo que para un@s puede ser el matrimonio para otr@s puede ser dormir en camas separadas. Busca tu propia idea de realización, todo lo demás son cuentos de hadas.',
     en: 'What is your vision of an ideal relationship? How would you describe a fulfilled relationship? The parameters shift from person to person. What for some might be marriage, for others could be sleeping in separate beds. Seek your own definition of fulfillment; everything else is just fairy tales.',
+  },
+};
+
+export const WEEKLY_TAROT_READINGS: Record<number, { es: string; en: string }> = {
+  0: {
+    es: 'Empieza de nuevo.',
+    en: 'Start over.',
+  },
+  1: {
+    es: '¿Cuál es la forma más creativa de accionar respecto a lo que deseas?',
+    en: 'What is the most creative way to take action regarding what you desire?',
+  },
+  2: {
+    es: 'Aprende mucho más sobre lo que deseas y te propones.',
+    en: 'Learn much more about what you desire and set your mind to.',
+  },
+  3: {
+    es: 'Momento de conciliar.',
+    en: 'Time to reconcile.',
+  },
+  4: {
+    es: 'Reclama tu autoridad.',
+    en: 'Reclaim your authority.',
+  },
+  5: {
+    es: 'Tú también puedes ser líder y enseñar.',
+    en: 'You too can be a leader and teach.',
+  },
+  6: {
+    es: 'Apóyate en tu círculo cercano.',
+    en: 'Lean on your close circle.',
+  },
+  7: {
+    es: '¿Estás en movimiento o sientes que lo estás pero en realidad estás en pausa?',
+    en: 'Are you in motion, or do you feel like you are while actually on pause?',
+  },
+  8: {
+    es: 'Buscas hacer justicia para los demás pero ¿cuándo te vas a hacer justicia a ti?',
+    en: 'You seek to do justice for others, but when will you do justice for yourself?',
+  },
+  9: {
+    es: 'Aléjate un poco para ver las cosas desde otra perspectiva.',
+    en: 'Step back a bit to see things from another perspective.',
+  },
+  10: {
+    es: '¿Cómo te imaginas el próximo ciclo de esta etapa? Proyéctate en ello.',
+    en: 'How do you imagine the next cycle of this stage? Project yourself into it.',
+  },
+  11: {
+    es: 'O estás reprimiéndote o estás muy impulsiv@. ¡Modera!',
+    en: 'You are either repressing yourself or being too impulsive. Moderate!',
+  },
+  12: {
+    es: 'A veces lo mejor que puedes hacer es... nada.',
+    en: 'Sometimes the best thing you can do is... nothing.',
+  },
+  13: {
+    es: 'Para que las flores crezcan, debes cortar la maleza.',
+    en: 'For flowers to grow, you must cut the weeds.',
+  },
+  14: {
+    es: 'Busca la armonía, paz y equilibrio en el proceso que estás pasando. Aunque cueste mucho, te va a servir.',
+    en: 'Seek harmony, peace, and balance in the process you are going through. Even if it is hard, it will serve you.',
+  },
+  15: {
+    es: '¿Qué te apasiona? Sigue esa llama y ese llamado.',
+    en: 'What are you passionate about? Follow that flame and that calling.',
+  },
+  16: {
+    es: 'A veces desestabilizar las cosas hace que los siguientes cimientos se construyan con más sabiduría.',
+    en: 'Sometimes destabilizing things makes the next foundations be built with more wisdom.',
+  },
+  17: {
+    es: 'Evoca y nutre al lugar al que perteneces. Ese lugar no tiene por qué ser obligatoriamente un territorio físico.',
+    en: 'Evoke and nurture the place where you belong. That place does not necessarily have to be a physical territory.',
+  },
+  18: {
+    es: 'Conecta con la mística, siempre está presente. Te va a ayudar.',
+    en: 'Connect with mysticism, it is always present. It will help you.',
+  },
+  19: {
+    es: 'Ponle mucha más fuerza vital a tu objetivo, lo necesita. Evoca todo lo positivo que hay en tu deseo y proyéctate en ello.',
+    en: 'Put much more vital force into your goal, it needs it. Evoke everything positive in your desire and project yourself into it.',
+  },
+  20: {
+    es: 'Haz un inventario de este momento de tu vida. ¿Qué falta? ¿Qué sobra?',
+    en: 'Take an inventory of this moment in your life. What is missing? What is in excess?',
+  },
+  21: {
+    es: 'Proyéctate en el éxito y la realización. Imaginar es el primer paso para hacer las cosas realidad.',
+    en: 'Project yourself into success and fulfillment. Imagining is the first step to making things real.',
   },
 };
 

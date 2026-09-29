@@ -25,6 +25,12 @@ export interface AppTranslations {
     }[];
     continueBtn: string;
   };
+  weeklyTarot: {
+    banner: string;
+    revealedBanner: string;
+    prompt: string;
+    revealBtn: string;
+  };
   shuffle: {
     banner: string;
     tapHint: string;
@@ -120,8 +126,19 @@ export const TRANSLATIONS: Record<Language, AppTranslations> = {
           title: 'CURRENT MOMENT',
           description: 'Understand where you are in life and how to move forward',
         },
+        {
+          id: 'q-weekly',
+          title: 'TAROT OF THE WEEK',
+          description: 'Understand your weekly message and guidance',
+        },
       ],
       continueBtn: 'CONTINUE',
+    },
+    weeklyTarot: {
+      banner: 'CHOOSE A CARD',
+      revealedBanner: 'THIS WEEK...',
+      prompt: 'Choose a card',
+      revealBtn: 'REVEAL YOUR READING',
     },
     shuffle: {
       banner: 'SHUFFLE CARDS',
@@ -213,8 +230,19 @@ export const TRANSLATIONS: Record<Language, AppTranslations> = {
           title: 'MOMENTO PRESENTE',
           description: 'Para entender tu presente y saber cómo afrontarlo',
         },
+        {
+          id: 'q-weekly',
+          title: 'TAROT DE LA SEMANA',
+          description: 'Para entender tu mensaje y guía durante la semana',
+        },
       ],
       continueBtn: 'CONTINUAR',
+    },
+    weeklyTarot: {
+      banner: 'ELIGE UNA CARTA',
+      revealedBanner: 'ESTA SEMANA...',
+      prompt: 'Elige una carta',
+      revealBtn: 'REVELA TU LECTURA',
     },
     shuffle: {
       banner: 'BARAJAR CARTAS',
