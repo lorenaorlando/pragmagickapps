@@ -5,6 +5,7 @@ export type ScreenStep =
   | 'home'
   | 'choose-question'
   | 'weekly-tarot-choose'
+  | 'amiga-oracle'
   | 'shuffle-draw'
   | 'loading'
   | 'card-reveal'

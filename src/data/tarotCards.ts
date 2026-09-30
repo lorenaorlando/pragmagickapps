@@ -30,6 +30,11 @@ export const QUESTIONS: QuestionOption[] = [
     title: 'TAROT OF THE WEEK',
     description: 'Discover the message of the arcana for your week',
   },
+  {
+    id: 'q-amiga',
+    title: 'AMIGAAAAAAAH',
+    description: 'Oráculo de stickers',
+  },
 ];
 
 export const MAJOR_ARCANA: TarotCard[] = [

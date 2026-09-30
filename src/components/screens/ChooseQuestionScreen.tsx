@@ -36,11 +36,13 @@ export const ChooseQuestionScreen: React.FC<ChooseQuestionScreenProps> = ({
   // - "estoy pensando en alguien": fondo celeste (#b8e2ec)
   // - "momento actual": fondo amarillo (#ffff00)
   // - "tarot de la semana": fondo celeste (#b8e2ec)
+  // - "amigaaaaaaah": fondo amarillo (#ffff00)
   const getQuestionBgColor = (id: string, index: number) => {
     if (id === 'q1') return 'bg-[#ffff00]';
     if (id === 'q2') return 'bg-[#b8e2ec]';
     if (id === 'q3') return 'bg-[#ffff00]';
     if (id === 'q-weekly' || id === 'weekly') return 'bg-[#b8e2ec]';
+    if (id === 'q-amiga' || id === 'amiga') return 'bg-[#ffff00]';
     return index % 2 === 0 ? 'bg-[#ffff00]' : 'bg-[#b8e2ec]';
   };
 
@@ -61,7 +63,7 @@ export const ChooseQuestionScreen: React.FC<ChooseQuestionScreenProps> = ({
         </a>
       </div>
 
-      {/* 4 Option Boxes filling the whole screen with requested custom colors */}
+      {/* 5 Option Boxes filling the whole screen with requested custom colors */}
       <div className="flex-1 w-full flex flex-col min-h-0">
         {questionsList.map((question, index) => {
           const isSelected = tappedId === question.id;
@@ -74,18 +76,18 @@ export const ChooseQuestionScreen: React.FC<ChooseQuestionScreenProps> = ({
               onClick={() => handleTap(question)}
               whileHover={{ filter: 'brightness(0.96)' }}
               whileTap={{ scale: 0.995 }}
-              className={`flex-1 w-full flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-150 px-4 py-2 sm:py-2.5 ${bgColorClass} ${
+              className={`flex-1 w-full flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-150 px-4 py-1.5 sm:py-2 ${bgColorClass} ${
                 !isLast ? 'border-b-[2px] border-black' : ''
               } ${isSelected ? 'ring-2 ring-inset ring-black' : ''}`}
             >
               {/* Centered Question Title - Regular font weight (no negrita) */}
-              <h3 className="font-viaoda text-[14px] sm:text-[16px] font-normal tracking-tight leading-tight uppercase whitespace-pre-line text-center text-black">
+              <h3 className="font-viaoda text-[13.5px] sm:text-[15px] font-normal tracking-tight leading-tight uppercase whitespace-pre-line text-center text-black">
                 {question.title}
               </h3>
 
               {/* Description below */}
               {question.description && (
-                <p className="font-playfair text-[10.5px] sm:text-[11.5px] leading-snug text-black/80 text-center max-w-[260px] mt-1 font-normal">
+                <p className="font-playfair text-[10px] sm:text-[11px] leading-snug text-black/80 text-center max-w-[260px] mt-0.5 font-normal">
                   {question.description}
                 </p>
               )}

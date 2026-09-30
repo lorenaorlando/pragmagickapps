@@ -4,6 +4,7 @@ import { PhoneFrame } from './components/PhoneFrame';
 import { LanguageScreen } from './components/screens/LanguageScreen';
 import { ChooseQuestionScreen } from './components/screens/ChooseQuestionScreen';
 import { WeeklyTarotChoiceScreen } from './components/screens/WeeklyTarotChoiceScreen';
+import { AmigaOracleScreen } from './components/screens/AmigaOracleScreen';
 import { ShuffleAndDrawScreen } from './components/screens/ShuffleAndDrawScreen';
 import { LoadingScreen } from './components/screens/LoadingScreen';
 import { CardRevealScreen } from './components/screens/CardRevealScreen';
@@ -29,6 +30,8 @@ export default function App() {
     tarotAudio.playClick();
     if (q?.id === 'q-weekly' || q?.id === 'weekly') {
       setCurrentStep('weekly-tarot-choose');
+    } else if (q?.id === 'q-amiga' || q?.id === 'amiga') {
+      setCurrentStep('amiga-oracle');
     } else {
       setCurrentStep('shuffle-draw');
     }
@@ -94,6 +97,12 @@ export default function App() {
                 )}
                 {currentStep === 'weekly-tarot-choose' && (
                   <WeeklyTarotChoiceScreen
+                    language={activeLanguage}
+                    onRestart={handleRestart}
+                  />
+                )}
+                {currentStep === 'amiga-oracle' && (
+                  <AmigaOracleScreen
                     language={activeLanguage}
                     onRestart={handleRestart}
                   />
