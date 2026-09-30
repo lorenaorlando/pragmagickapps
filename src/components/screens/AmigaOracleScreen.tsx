@@ -387,4 +387,4 @@ export const AmigaOracleScreen: React.FC<AmigaOracleScreenProps> = ({
       />
     </div>
   );
-};
+}; 
