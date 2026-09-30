@@ -166,8 +166,18 @@ export const AmigaOracleScreen: React.FC<AmigaOracleScreenProps> = ({
               transition={{ duration: 0.3 }}
               className="w-full flex flex-col items-center justify-center max-w-[320px] px-2"
             >
+              {/* Sticker Illustration */}
+              <div className="w-28 h-28 sm:w-32 sm:h-32 mb-3 flex items-center justify-center drop-shadow-sm">
+                <img
+                  src="https://sandboxlandia.online/wp-content/uploads/2026/09/AMIGAH.png"
+                  alt="Amigah"
+                  className="w-full h-full object-contain pointer-events-none select-none"
+                  loading="eager"
+                />
+              </div>
+
               {/* Title / Prompt */}
-              <p className="font-viaoda text-lg sm:text-xl text-black text-center uppercase tracking-tight mb-6 font-normal">
+              <p className="font-viaoda text-lg sm:text-xl text-black text-center uppercase tracking-tight mb-5 font-normal">
                 {isEs ? 'ORÁCULO DE STICKERS' : 'STICKER ORACLE'}
               </p>
 

@@ -80,6 +80,15 @@ export const ChooseQuestionScreen: React.FC<ChooseQuestionScreenProps> = ({
                 !isLast ? 'border-b-[2px] border-black' : ''
               } ${isSelected ? 'ring-2 ring-inset ring-black' : ''}`}
             >
+              {/* Sticker Oracle image thumbnail */}
+              {question.id === 'q-amiga' && (
+                <img
+                  src="https://sandboxlandia.online/wp-content/uploads/2026/09/AMIGAH.png"
+                  alt="AMIGAH"
+                  className="h-6 sm:h-7 w-auto object-contain mb-1 pointer-events-none drop-shadow-xs"
+                />
+              )}
+
               {/* Centered Question Title - Regular font weight (no negrita) */}
               <h3 className="font-viaoda text-[13.5px] sm:text-[15px] font-normal tracking-tight leading-tight uppercase whitespace-pre-line text-center text-black">
                 {question.title}
