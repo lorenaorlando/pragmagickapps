@@ -131,11 +131,6 @@ export const TRANSLATIONS: Record<Language, AppTranslations> = {
           title: 'TAROT OF THE WEEK',
           description: 'Understand your weekly message and guidance',
         },
-        {
-          id: 'q-amiga',
-          title: 'AMIGAAAAAAAH',
-          description: 'Oráculo de stickers',
-        },
       ],
       continueBtn: 'CONTINUE',
     },
