@@ -6,6 +6,7 @@ export interface StickerOracleItem {
 }
 
 export const STICKER_ORACLE_ITEMS: StickerOracleItem[] = [
+  // --- Tanda 1 (2026/09) ---
   {
     id: 'CONSECUENCIAS',
     name: 'CONSECUENCIAS',
@@ -161,5 +162,121 @@ export const STICKER_ORACLE_ITEMS: StickerOracleItem[] = [
     name: 'FRACASAR',
     imageUrl: 'https://sandboxlandia.online/wp-content/uploads/2026/09/FRACASAR.png',
     message: 'RECUERDA TOMAR TU PASTILLA PARA LA CALVICIE',
+  },
+
+  // --- Tanda 2 (2026/10) ---
+  {
+    id: 'CERATI',
+    name: 'CERATI',
+    imageUrl: 'https://sandboxlandia.online/wp-content/uploads/2026/10/CERATI.png',
+    message: 'TIENES QUE HABLAR CON ALGUIEN DE ESTO',
+  },
+  {
+    id: 'TAZA',
+    name: 'TAZA',
+    imageUrl: 'https://sandboxlandia.online/wp-content/uploads/2026/10/TAZA.png',
+    message: 'CUÉNTALO TODO, SUÉLTALO...AQUÍ ESTAMOS PARA ESCUCHARTE',
+  },
+  {
+    id: 'ARTISTA',
+    name: 'ARTISTA',
+    imageUrl: 'https://sandboxlandia.online/wp-content/uploads/2026/10/ARTISTA.png',
+    message: 'MÁS SEGURIDAD EN TI MISM@! HAY GENTE QUE NO PUEDE VER LA GENIALIDAD NI TROPEZÁNDOSE CON ELLA',
+  },
+  {
+    id: 'SORPRENDE',
+    name: 'SORPRENDE',
+    imageUrl: 'https://sandboxlandia.online/wp-content/uploads/2026/10/SORPRENDE.png',
+    message: 'DE VERDAD NO TE ESPERABAS QUE PASARA LO QUE TE ESTÁ PASANDO?',
+  },
+  {
+    id: 'MEDIANAS',
+    name: 'MEDIANAS',
+    imageUrl: 'https://sandboxlandia.online/wp-content/uploads/2026/10/MEDIANAS.png',
+    message: 'BAJA TUS EXPECTATIVAS, NO TODO TIENE QUE SER PERFECTO',
+  },
+  {
+    id: 'MEZCLA',
+    name: 'MEZCLA',
+    imageUrl: 'https://sandboxlandia.online/wp-content/uploads/2026/10/MEZCLA.png',
+    message: 'ACEPTA LAS CONTRADICCIONES DE LO QUE SIENTES',
+  },
+  {
+    id: 'FELIZNOCHE',
+    name: 'FELIZNOCHE',
+    imageUrl: 'https://sandboxlandia.online/wp-content/uploads/2026/10/FELIZNOCHE.png',
+    message: 'AY YA, DÉJALO IR, MAÑANA PIENSAS EN ESO',
+  },
+  {
+    id: 'MENTIROSO',
+    name: 'MENTIROSO',
+    imageUrl: 'https://sandboxlandia.online/wp-content/uploads/2026/10/MENTIROSO.png',
+    message: 'OJO CON LAS MENTIRAS!!! ;)',
+  },
+  {
+    id: 'FASIL',
+    name: 'FASIL',
+    imageUrl: 'https://sandboxlandia.online/wp-content/uploads/2026/10/FASIL.png',
+    message: 'QUIZÁS ES MÁS FASIL DE LO QUE PARECE ;)',
+  },
+  {
+    id: 'CADAQUIEN',
+    name: 'CADAQUIEN',
+    imageUrl: 'https://sandboxlandia.online/wp-content/uploads/2026/10/CADAQUIEN.png',
+    message: '«Las opiniones son como el culo: todos tenemos uno y a nadie le gusta el ajeno» PARDON MY FRENCH',
+  },
+  {
+    id: 'MOSCA',
+    name: 'MOSCA',
+    imageUrl: 'https://sandboxlandia.online/wp-content/uploads/2026/10/MOSCA.png',
+    message: 'MOMENTO PARA TENER UNA NOCHE ROMÁNTICA',
+  },
+  {
+    id: 'FAVORES',
+    name: 'FAVORES',
+    imageUrl: 'https://sandboxlandia.online/wp-content/uploads/2026/10/FAVORES.png',
+    message: 'UNA COSA ES SER BUENA GENTE, OTRA COSA ES SER PENDEJ@',
+  },
+  {
+    id: 'LORENA',
+    name: 'LORENA',
+    imageUrl: 'https://sandboxlandia.online/wp-content/uploads/2026/10/LORENA.png',
+    message: 'CREO QUE TÚ MISM@ SABES LA RESPUESTA...',
+  },
+  {
+    id: 'DOLA',
+    name: 'DOLA',
+    imageUrl: 'https://sandboxlandia.online/wp-content/uploads/2026/10/DOLA.png',
+    message: 'PÁGALE A LA GENTE POR LO QUE HACE...NO SEAS ASÍ',
+  },
+  {
+    id: 'WEY',
+    name: 'WEY',
+    imageUrl: 'https://sandboxlandia.online/wp-content/uploads/2026/10/WEY.png',
+    message: 'DILE A TUS AMIG@S QUE L@S QUIERES',
+  },
+  {
+    id: 'CRACK',
+    name: 'CRACK',
+    imageUrl: 'https://sandboxlandia.online/wp-content/uploads/2026/10/CRACK.png',
+    message: 'ERES UNA INCREÍBLE PERSONA, QUE NADIE DIGA LO CONTRARIO (AL MENOS QUE LO PUEDA DEMOSTRAR)',
+  },
+  {
+    id: 'ABRAZO',
+    name: 'ABRAZO',
+    imageUrl: 'https://sandboxlandia.online/wp-content/uploads/2026/10/ABRAZO.png',
+    message: 'TQM Y TE ABRAZO EN ESTE MOMENTO',
+  },
+  {
+    id: 'VOS',
+    name: 'VOS',
+    imageUrl: 'https://sandboxlandia.online/wp-content/uploads/2026/10/VOS.png',
+    message: 'SIN COMENTARIOS...',
+  },
+  {
+    id: 'SENSACAO',
+    name: 'SENSACAO',
+    imageUrl: 'https://sandboxlandia.online/wp-content/uploads/2026/10/SENSACAO.png',
+    message: 'CONECTA CON ESA SENSAÇÃO',
   },
 ];
