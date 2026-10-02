@@ -31,6 +31,14 @@ export interface AppTranslations {
     prompt: string;
     revealBtn: string;
   };
+  threeCardsSpread: {
+    banner: string;
+    breathePrompt: string;
+    tapToShufflePrompt: string;
+    shufflingPrompt: string;
+    tapToChoosePrompt: string;
+    revealReadingBtn: string;
+  };
   shuffle: {
     banner: string;
     tapHint: string;
@@ -131,6 +139,11 @@ export const TRANSLATIONS: Record<Language, AppTranslations> = {
           title: 'TAROT OF THE WEEK',
           description: 'Understand your weekly message and guidance',
         },
+        {
+          id: 'q-three-cards',
+          title: '3-CARD SPREAD',
+          description: 'Understand the complexity of a situation through keywords',
+        },
       ],
       continueBtn: 'CONTINUE',
     },
@@ -139,6 +152,14 @@ export const TRANSLATIONS: Record<Language, AppTranslations> = {
       revealedBanner: 'THIS WEEK...',
       prompt: 'Choose a card',
       revealBtn: 'REVEAL YOUR READING',
+    },
+    threeCardsSpread: {
+      banner: 'SHUFFLE & CHOOSE',
+      breathePrompt: 'Take a deep breath, think intensely about your situation',
+      tapToShufflePrompt: 'Tap below to shuffle the cards ↓',
+      shufflingPrompt: 'Shuffling the cards...',
+      tapToChoosePrompt: 'Now tap below to choose 3 cards ↓',
+      revealReadingBtn: 'REVEAL YOUR READING',
     },
     shuffle: {
       banner: 'SHUFFLE CARDS',
@@ -236,6 +257,11 @@ export const TRANSLATIONS: Record<Language, AppTranslations> = {
           description: 'Para entender tu mensaje y guía durante la semana',
         },
         {
+          id: 'q-three-cards',
+          title: 'TIRADA DE 3 CARTAS',
+          description: 'Para entender con palabras clave la complejidad de una situación',
+        },
+        {
           id: 'q-amiga',
           title: 'AMIGAAAAAAAH',
           description: 'Oráculo de stickers',
@@ -248,6 +274,14 @@ export const TRANSLATIONS: Record<Language, AppTranslations> = {
       revealedBanner: 'ESTA SEMANA...',
       prompt: 'Elige una carta',
       revealBtn: 'REVELA TU LECTURA',
+    },
+    threeCardsSpread: {
+      banner: 'BARAJEA Y ELIGE',
+      breathePrompt: 'Respira profundo, piensa en la complejidad de tu situación',
+      tapToShufflePrompt: 'Barajea las cartas ↓',
+      shufflingPrompt: 'Barajando las cartas...',
+      tapToChoosePrompt: 'Ahora elige 3 cartas ↓',
+      revealReadingBtn: 'REVELA TU LECTURA',
     },
     shuffle: {
       banner: 'BARAJAR CARTAS',

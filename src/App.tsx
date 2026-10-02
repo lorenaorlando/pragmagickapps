@@ -5,6 +5,8 @@ import { PhoneFrame } from './components/PhoneFrame';
 import { LanguageScreen } from './components/screens/LanguageScreen';
 import { ChooseQuestionScreen } from './components/screens/ChooseQuestionScreen';
 import { WeeklyTarotChoiceScreen } from './components/screens/WeeklyTarotChoiceScreen';
+import { ThreeCardsShuffleScreen } from './components/screens/ThreeCardsShuffleScreen';
+import { ThreeCardsReadingScreen } from './components/screens/ThreeCardsReadingScreen';
 import { AmigaOracleScreen } from './components/screens/AmigaOracleScreen';
 import { ShuffleAndDrawScreen } from './components/screens/ShuffleAndDrawScreen';
 import { LoadingScreen } from './components/screens/LoadingScreen';
@@ -22,6 +24,11 @@ export default function App() {
   const [currentStep, setCurrentStep] = useState<ScreenStep>('language');
   const [selectedQuestion, setSelectedQuestion] = useState<QuestionOption>(QUESTIONS[0]);
   const [drawnCard, setDrawnCard] = useState<TarotCard>(MAJOR_ARCANA[0]);
+  const [threeCards, setThreeCards] = useState<TarotCard[]>([
+    MAJOR_ARCANA[0],
+    MAJOR_ARCANA[1],
+    MAJOR_ARCANA[2],
+  ]);
 
   const handleLanguageChosen = () => {
     tarotAudio.playClick();
@@ -34,6 +41,8 @@ export default function App() {
     tarotAudio.playClick();
     if (q?.id === 'q-weekly' || q?.id === 'weekly') {
       setCurrentStep('weekly-tarot-choose');
+    } else if (q?.id === 'q-three-cards' || q?.id === 'three-cards') {
+      setCurrentStep('three-cards-shuffle');
     } else if (q?.id === 'q-amiga' || q?.id === 'amiga') {
       navigate('/amigah');
     } else {
@@ -45,6 +54,12 @@ export default function App() {
     setDrawnCard(card);
     tarotAudio.playChime();
     setCurrentStep('reading');
+  };
+
+  const handleThreeCardsDrawn = (cards: TarotCard[]) => {
+    setThreeCards(cards);
+    tarotAudio.playChime();
+    setCurrentStep('three-cards-reading');
   };
 
   const handleCardsDrawn = (card: TarotCard) => {
@@ -131,6 +146,19 @@ export default function App() {
                       {currentStep === 'weekly-tarot-choose' && (
                         <WeeklyTarotChoiceScreen
                           language={activeLanguage}
+                          onRestart={handleRestart}
+                        />
+                      )}
+                      {currentStep === 'three-cards-shuffle' && (
+                        <ThreeCardsShuffleScreen
+                          language={activeLanguage}
+                          onCardsDrawn={handleThreeCardsDrawn}
+                        />
+                      )}
+                      {currentStep === 'three-cards-reading' && (
+                        <ThreeCardsReadingScreen
+                          language={activeLanguage}
+                          cards={threeCards}
                           onRestart={handleRestart}
                         />
                       )}

@@ -36,13 +36,15 @@ export const ChooseQuestionScreen: React.FC<ChooseQuestionScreenProps> = ({
   // - "estoy pensando en alguien": fondo celeste (#b8e2ec)
   // - "momento actual": fondo amarillo (#ffff00)
   // - "tarot de la semana": fondo celeste (#b8e2ec)
-  // - "amigaaaaaaah": fondo amarillo (#ffff00)
+  // - "tirada de 3 cartas": fondo amarillo (#ffff00)
+  // - "amigaaaaaaah": fondo celeste (#b8e2ec)
   const getQuestionBgColor = (id: string, index: number) => {
     if (id === 'q1') return 'bg-[#ffff00]';
     if (id === 'q2') return 'bg-[#b8e2ec]';
     if (id === 'q3') return 'bg-[#ffff00]';
     if (id === 'q-weekly' || id === 'weekly') return 'bg-[#b8e2ec]';
-    if (id === 'q-amiga' || id === 'amiga') return 'bg-[#ffff00]';
+    if (id === 'q-three-cards' || id === 'three-cards') return 'bg-[#ffff00]';
+    if (id === 'q-amiga' || id === 'amiga') return 'bg-[#b8e2ec]';
     return index % 2 === 0 ? 'bg-[#ffff00]' : 'bg-[#b8e2ec]';
   };
 

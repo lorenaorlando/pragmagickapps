@@ -31,6 +31,11 @@ export const QUESTIONS: QuestionOption[] = [
     description: 'Discover the message of the arcana for your week',
   },
   {
+    id: 'q-three-cards',
+    title: '3-CARD SPREAD',
+    description: 'Understand the complexity of a situation through keywords',
+  },
+  {
     id: 'q-amiga',
     title: 'AMIGAAAAAAAH',
     description: 'Oráculo de stickers',
