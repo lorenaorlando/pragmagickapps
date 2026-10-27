@@ -11,7 +11,7 @@ interface ReadingActionsProps {
   onAgain: () => void;
 }
 
-const pill = 'flex items-center justify-center gap-1 rounded-full border-2 border-ink px-2.5 py-1.5 font-mono text-[11px] uppercase shadow-hard active:translate-x-px active:translate-y-px active:shadow-none';
+const pill = 'flex items-center justify-center gap-1 min-w-0 rounded-full border-2 border-ink px-1.5 py-1.5 font-mono text-[10px] uppercase whitespace-nowrap shadow-hard active:translate-x-px active:translate-y-px active:shadow-none';
 
 /** 1:1 booking card plus share / new reading bar, shown under every reading */
 export const OneOnOneCard: React.FC<{ whatsappText: string }> = ({ whatsappText }) => {
@@ -24,15 +24,15 @@ export const OneOnOneCard: React.FC<{ whatsappText: string }> = ({ whatsappText 
         {t.reading.deeperDesc}
         {READING_PRICE_USD !== null && <> · <b>{t.reading.priceFrom(READING_PRICE_USD)}</b></>}
       </p>
-      <div className="flex gap-1.5 mt-2.5 flex-wrap">
-        <a href={KOFI_BOOKING_URL} target="_blank" rel="noopener noreferrer" className={`${pill} bg-green flex-1`}>
-          <CalendarHeart className="w-3.5 h-3.5" /> {t.reading.book}
+      <div className="grid grid-cols-3 gap-1.5 mt-2.5">
+        <a href={KOFI_BOOKING_URL} target="_blank" rel="noopener noreferrer" className={`${pill} bg-green`}>
+          <CalendarHeart className="w-3.5 h-3.5 shrink-0" /> {t.reading.book}
         </a>
         <a href={whatsappUrl(whatsappText)} target="_blank" rel="noopener noreferrer" className={`${pill} bg-white`}>
-          <MessageCircle className="w-3.5 h-3.5" /> {t.reading.whatsapp}
+          <MessageCircle className="w-3.5 h-3.5 shrink-0" /> {t.reading.whatsapp}
         </a>
         <a href={INSTAGRAM_DM_URL} target="_blank" rel="noopener noreferrer" className={`${pill} bg-sky`}>
-          <Instagram className="w-3.5 h-3.5" /> {t.reading.instagram}
+          <Instagram className="w-3.5 h-3.5 shrink-0" /> {t.reading.instagram}
         </a>
       </div>
     </div>
