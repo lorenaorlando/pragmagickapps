@@ -4,6 +4,9 @@ import { motion, AnimatePresence, useTransform, useInView, MotionValue } from 'm
 import { MAJOR_ARCANA } from '../data/tarotCards';
 import { CardBack, CardFace } from '../components/cards';
 import { sigilLetters, sigilPath, sigilPoints, WHEEL_LETTERS } from './sigil';
+import { useL } from './lang';
+import { useLanguage } from '../lib/language';
+import { cardName } from '../lib/cards';
 
 export const Hint: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-graphite flex items-center gap-1.5">
@@ -37,6 +40,7 @@ export const Polaroid: React.FC<{ src: string; caption: string; placeholder: Rea
 
 /** "La Vía del Tarot": tap the cover to open the book */
 export const Book: React.FC = () => {
+  const l = useL();
   const [open, setOpen] = useState(false);
   return (
     <div className="flex flex-col items-center gap-3">
@@ -44,16 +48,16 @@ export const Book: React.FC = () => {
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-pressed={open}
-        aria-label="Abrir el libro"
+        aria-label={l('Abrir el libro', 'Open the book')}
         className="relative w-[240px] h-[320px] perspective"
       >
         {/* inside page */}
         <div className="absolute inset-0 bg-white border-2 border-ink rounded-r-[8px] shadow-hard-lg flex flex-col justify-center gap-3 px-6 text-left">
-          <p className="font-mono text-[11px] uppercase tracking-widest">Capítulo I</p>
-          <p className="font-display text-[26px] leading-[0.95] uppercase">La Vía del Tarot</p>
+          <p className="font-mono text-[11px] uppercase tracking-widest">{l('Capítulo I', 'Chapter I')}</p>
+          <p className="font-display text-[26px] leading-[0.95] uppercase">{l('La Vía del Tarot', 'The Way of Tarot')}</p>
           <p className="text-[13px] leading-snug">Alejandro Jodorowsky &amp; Marianne Costa</p>
-          <p className="italic font-semibold text-[17px] leading-snug border-l-[3px] border-ink pl-3">“mi biblia del Tarot”</p>
-          <p className="text-[12px] text-graphite">Un regalo de mi mamá.</p>
+          <p className="italic font-semibold text-[17px] leading-snug border-l-[3px] border-ink pl-3">{l('“mi biblia del Tarot”', '“my Tarot bible”')}</p>
+          <p className="text-[12px] text-graphite">{l('Un regalo de mi mamá.', 'A gift from my mom.')}</p>
         </div>
         {/* cover */}
         <motion.div
@@ -63,7 +67,7 @@ export const Book: React.FC = () => {
         >
           <div className="absolute inset-0 backface-hidden bg-yellow border-2 border-ink rounded-r-[8px] flex flex-col items-center justify-center gap-4 star-pattern-bg">
             <div className="absolute inset-[10px] border-[1.5px] border-ink rounded-[4px] star-pattern opacity-25" />
-            <span className="relative font-display text-[34px] leading-[0.9] uppercase text-center">La Vía<br />del Tarot</span>
+            <span className="relative font-display text-[34px] leading-[0.9] uppercase text-center">{l(<>La Vía<br />del Tarot</>, <>The Way<br />of Tarot</>)}</span>
             <span className="relative w-16 h-16 rounded-full bg-white border-2 border-ink flex items-center justify-center">
               <img src="/brand/logo.webp" alt="" className="w-12" />
             </span>
@@ -71,13 +75,14 @@ export const Book: React.FC = () => {
           <div className="absolute inset-0 backface-hidden bg-sky border-2 border-ink rounded-l-[8px]" style={{ transform: 'rotateY(180deg)' }} />
         </motion.div>
       </button>
-      <Hint>{open ? 'Toca para cerrarlo' : 'Toca el libro para abrirlo'}</Hint>
+      <Hint>{open ? l('Toca para cerrarlo', 'Tap to close it') : l('Toca el libro para abrirlo', 'Tap the book to open it')}</Hint>
     </div>
   );
 };
 
 /** Coffee cup seen from above: tap to read the grounds */
 export const CoffeeCup: React.FC = () => {
+  const l = useL();
   const [read, setRead] = useState(false);
   const grounds = useMemo(
     () =>
@@ -106,7 +111,7 @@ export const CoffeeCup: React.FC = () => {
   );
   return (
     <div className="flex flex-col items-center gap-3">
-      <button type="button" onClick={() => setRead((r) => !r)} aria-pressed={read} aria-label="Leer la taza de café" className="relative w-[230px] h-[230px]">
+      <button type="button" onClick={() => setRead((r) => !r)} aria-pressed={read} aria-label={l('Leer la taza de café', 'Read the coffee cup')} className="relative w-[230px] h-[230px]">
         <svg viewBox="0 0 100 100" className="w-full h-full">
           <ellipse cx="50" cy="52" rx="47" ry="45" fill="#fff" stroke="#111" strokeWidth="1.5" />
           <circle cx="50" cy="50" r="36" fill="#f3ead8" stroke="#111" strokeWidth="1.5" />
@@ -126,9 +131,9 @@ export const CoffeeCup: React.FC = () => {
       <AnimatePresence mode="wait">
         <motion.div key={String(read)} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
           {read ? (
-            <p className="bg-yellow border-2 border-ink rounded-[12px] px-3 py-1.5 font-display uppercase text-[18px] -rotate-1">una luna y una estrella</p>
+            <p className="bg-yellow border-2 border-ink rounded-[12px] px-3 py-1.5 font-display uppercase text-[18px] -rotate-1">{l('una luna y una estrella', 'a moon and a star')}</p>
           ) : (
-            <Hint>Toca la taza para leer el café</Hint>
+            <Hint>{l('Toca la taza para leer el café', 'Tap the cup to read the coffee grounds')}</Hint>
           )}
         </motion.div>
       </AnimatePresence>
@@ -138,6 +143,8 @@ export const CoffeeCup: React.FC = () => {
 
 /** 78 arcana given away one by one */
 export const SeventyEight: React.FC = () => {
+  const l = useL();
+  const { language } = useLanguage();
   const [given, setGiven] = useState<Set<number>>(new Set());
   const [kept] = useState(() => MAJOR_ARCANA[Math.floor(Math.random() * MAJOR_ARCANA.length)]);
   const left = 78 - given.size;
@@ -151,14 +158,14 @@ export const SeventyEight: React.FC = () => {
         <motion.span key={left} initial={{ scale: 1.3 }} animate={{ scale: 1 }} className="font-display text-[64px] leading-none tabular-nums">
           {left}
         </motion.span>
-        <span className="text-[15px]">{left === 1 ? 'arcano' : 'arcanos'} en el mazo</span>
+        <span className="text-[15px]">{left === 1 ? l('arcano en el mazo', 'arcanum in the deck') : l('arcanos en el mazo', 'arcana in the deck')}</span>
       </div>
       <div className="relative grid grid-cols-13 gap-1 w-full max-w-[560px]" style={{ gridTemplateColumns: 'repeat(13, minmax(0, 1fr))' }}>
         {Array.from({ length: 78 }, (_, i) => (
           <motion.button
             key={i}
             type="button"
-            aria-label={`Regalar el arcano ${i + 1}`}
+            aria-label={l(`Regalar el arcano ${i + 1}`, `Give away arcanum ${i + 1}`)}
             onClick={() => give(i)}
             disabled={given.has(i)}
             animate={
@@ -175,16 +182,18 @@ export const SeventyEight: React.FC = () => {
       </div>
       {left > 0 ? (
         <div className="flex flex-col items-center gap-2">
-          <Hint>Toca las cartas para regalarlas</Hint>
+          <Hint>{l('Toca las cartas para regalarlas', 'Tap the cards to give them away')}</Hint>
           <button type="button" onClick={giveAll} className="rounded-full border-2 border-ink bg-sky px-4 py-1.5 font-mono text-[11px] uppercase shadow-hard">
-            regalarlas todas
+            {l('regalarlas todas', 'give them all away')}
           </button>
         </div>
       ) : (
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col items-center gap-3 text-center">
-          <p className="italic font-semibold text-[19px] max-w-[30ch]">A veces me pregunto si aún conservarán esa carta que les di.</p>
-          <CardFace card={kept} alt={kept.spanishName} className="w-[110px] shadow-hard rotate-3" />
-          <p className="font-mono text-[11px] uppercase">¿y si alguien todavía guarda {kept.spanishName.toLowerCase()}?</p>
+          <p className="italic font-semibold text-[19px] max-w-[30ch]">{l('A veces me pregunto si aún conservarán esa carta que les di.', 'Sometimes I wonder if they still keep the card I gave them.')}</p>
+          <CardFace card={kept} alt={cardName(kept, language)} className="w-[110px] shadow-hard rotate-3" />
+          <p className="font-mono text-[11px] uppercase">
+            {l(`¿y si alguien todavía guarda ${kept.spanishName.toLowerCase()}?`, `what if someone still keeps ${kept.name.toLowerCase()}?`)}
+          </p>
         </motion.div>
       )}
     </div>
@@ -195,6 +204,7 @@ export const SeventyEight: React.FC = () => {
 
 /** A dull spreadsheet that cracks open into sun rays when it scrolls into view */
 export const Epiphany: React.FC = () => {
+  const l = useL();
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.6 });
   return (
@@ -213,7 +223,7 @@ export const Epiphany: React.FC = () => {
         transition={{ duration: 1.4, delay: 0.8, ease: [0.65, 0, 0.35, 1] }}
       >
         <p className="font-display uppercase text-[34px] leading-[0.95] text-center max-w-[14ch]">
-          quisiera ganarme la vida leyendo el Tarot
+          {l('quisiera ganarme la vida leyendo el Tarot', "I'd like to make a living reading Tarot")}
         </p>
       </motion.div>
     </div>
@@ -222,8 +232,9 @@ export const Epiphany: React.FC = () => {
 
 /** Word of mouth: friends recommend friends, drawn as you scroll */
 export const WordOfMouth: React.FC<{ progress: MotionValue<number> }> = ({ progress }) => {
+  const l = useL();
   const nodes = [
-    { x: 50, y: 50, r: 7, label: 'yo' },
+    { x: 50, y: 50, r: 7, label: l('yo', 'me') },
     { x: 24, y: 30, r: 4 }, { x: 78, y: 26, r: 4 }, { x: 28, y: 76, r: 4 }, { x: 74, y: 74, r: 4 },
     { x: 8, y: 14, r: 2.6 }, { x: 10, y: 48, r: 2.6 }, { x: 44, y: 8, r: 2.6 }, { x: 94, y: 46, r: 2.6 },
     { x: 92, y: 8, r: 2.6 }, { x: 8, y: 92, r: 2.6 }, { x: 52, y: 94, r: 2.6 }, { x: 94, y: 92, r: 2.6 },
@@ -279,10 +290,11 @@ export const Stamps: React.FC<{ words: string[]; colors?: string[] }> = ({ words
 /** The Hanged Man turns upright as you scroll */
 export const HangedTurn: React.FC<{ progress: MotionValue<number> }> = ({ progress }) => {
   const rotate = useTransform(progress, [0.2, 0.7], [0, 180]);
+  const l = useL();
   const card = MAJOR_ARCANA.find((c) => c.id === 12)!;
   return (
     <motion.div style={{ rotate }} className="w-[150px]">
-      <CardFace card={card} alt="El Colgado" className="w-full shadow-hard-lg" />
+      <CardFace card={card} alt={l('El Colgado', 'The Hanged Man')} className="w-full shadow-hard-lg" />
     </motion.div>
   );
 };
@@ -312,6 +324,7 @@ export interface LifeEvent {
 
 /** A stack of cards: tap the top one to move through what happened */
 export const LifeDeck: React.FC<{ events: LifeEvent[] }> = ({ events }) => {
+  const l = useL();
   const [i, setI] = useState(0);
   const done = i >= events.length;
   return (
@@ -325,7 +338,7 @@ export const LifeDeck: React.FC<{ events: LifeEvent[] }> = ({ events }) => {
               key={n}
               type="button"
               onClick={() => depth === 0 && setI(i + 1)}
-              aria-label={depth === 0 ? `${e.text}. Toca para seguir` : undefined}
+              aria-label={depth === 0 ? `${e.text}. ${l('Toca para seguir', 'Tap to continue')}` : undefined}
               tabIndex={depth === 0 ? 0 : -1}
               className={`absolute inset-0 ${e.color} border-2 border-ink rounded-[16px] shadow-hard-lg flex flex-col items-center justify-center gap-4 p-6 text-center`}
               style={{ zIndex: events.length - n }}
@@ -336,14 +349,14 @@ export const LifeDeck: React.FC<{ events: LifeEvent[] }> = ({ events }) => {
             >
               {e.art}
               <span className="font-display uppercase text-[28px] leading-[0.95]">{e.text}</span>
-              {depth === 0 && <span className="font-mono text-[11px] uppercase">{n + 1} / {events.length} · toca</span>}
+              {depth === 0 && <span className="font-mono text-[11px] uppercase">{n + 1} / {events.length} · {l('toca', 'tap')}</span>}
             </motion.button>
           );
         })}
         {done && (
           <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-center">
-            <p className="font-display uppercase text-[30px] leading-[0.95]">y finalmente sentí el llamado</p>
-            <button type="button" onClick={() => setI(0)} className="font-mono text-[11px] uppercase underline underline-offset-2">volver a empezar</button>
+            <p className="font-display uppercase text-[30px] leading-[0.95]">{l('y finalmente sentí el llamado', 'and finally I felt the call')}</p>
+            <button type="button" onClick={() => setI(0)} className="font-mono text-[11px] uppercase underline underline-offset-2">{l('volver a empezar', 'start over')}</button>
           </motion.div>
         )}
       </div>
@@ -355,10 +368,11 @@ export const LifeDeck: React.FC<{ events: LifeEvent[] }> = ({ events }) => {
 
 /** A tiny monedaire: a coin with three faces */
 export const MiniCoin: React.FC = () => {
+  const l = useL();
   const faces = [
-    { label: 'SÍ', bg: 'bg-yellow' },
+    { label: l('SÍ', 'YES'), bg: 'bg-yellow' },
     { label: 'NO', bg: 'bg-sky' },
-    { label: '?', bg: 'bg-white', note: '¿qué resultado esperabas?' },
+    { label: '?', bg: 'bg-white', note: l('¿qué resultado esperabas?', 'what result were you hoping for?') },
   ];
   const [face, setFace] = useState<number | null>(null);
   const [spins, setSpins] = useState(0);
@@ -370,7 +384,7 @@ export const MiniCoin: React.FC = () => {
   const f = face === null ? null : faces[face];
   return (
     <div className="flex flex-col items-center gap-3">
-      <button type="button" onClick={flip} aria-label="Lanzar la moneda" className="perspective">
+      <button type="button" onClick={flip} aria-label={l('Lanzar la moneda', 'Flip the coin')} className="perspective">
         <motion.span
           animate={{ rotateY: spins * 1080, y: [0, -70, 0] }}
           key={spins}
@@ -381,7 +395,7 @@ export const MiniCoin: React.FC = () => {
           {f ? f.label : '✦'}
         </motion.span>
       </button>
-      <p className="min-h-[1.5em] text-[15px] italic">{f?.note ?? (spins ? '' : 'tócala: tiene tres caras')}</p>
+      <p className="min-h-[1.5em] text-[15px] italic">{f?.note ?? (spins ? '' : l('tócala: tiene tres caras', 'tap it: it has three sides'))}</p>
     </div>
   );
 };
@@ -389,13 +403,14 @@ export const MiniCoin: React.FC = () => {
 // ── The four aces ───────────────────────────────────────────────────────────
 
 const ACES = [
-  { file: 'emocional', word: 'emocional', back: 'bg-sky' },
-  { file: 'intelectual', word: 'intelectual', back: 'bg-yellow' },
-  { file: 'material', word: 'material', back: 'bg-sky' },
-  { file: 'creativo', word: 'creativo', back: 'bg-yellow' },
+  { file: 'emocional', word: 'emocional', wordEn: 'emotional', back: 'bg-sky' },
+  { file: 'intelectual', word: 'intelectual', wordEn: 'intellectual', back: 'bg-yellow' },
+  { file: 'material', word: 'material', wordEn: 'material', back: 'bg-sky' },
+  { file: 'creativo', word: 'creativo', wordEn: 'creative', back: 'bg-yellow' },
 ];
 
 export const Aces: React.FC = () => {
+  const l = useL();
   const [open, setOpen] = useState<Set<number>>(new Set());
   return (
     <div className="flex flex-col items-center gap-3">
@@ -406,7 +421,7 @@ export const Aces: React.FC = () => {
             type="button"
             onClick={() => setOpen((o) => { const n = new Set(o); n.has(i) ? n.delete(i) : n.add(i); return n; })}
             aria-pressed={open.has(i)}
-            aria-label={a.word}
+            aria-label={l(a.word, a.wordEn)}
             className="perspective aspect-[3/4]"
           >
             <motion.span className="relative block w-full h-full preserve-3d" animate={{ rotateY: open.has(i) ? 180 : 0 }} transition={{ duration: 0.6 }}>
@@ -417,13 +432,13 @@ export const Aces: React.FC = () => {
                 className={`absolute inset-0 backface-hidden ${a.back} border-2 border-ink rounded-[10px] flex items-center justify-center shadow-hard`}
                 style={{ transform: 'rotateY(180deg)' }}
               >
-                <span className="font-display uppercase text-[15px] sm:text-[19px] -rotate-90 sm:rotate-0">{a.word}</span>
+                <span className="font-display uppercase text-[15px] sm:text-[19px] -rotate-90 sm:rotate-0">{l(a.word, a.wordEn)}</span>
               </span>
             </motion.span>
           </button>
         ))}
       </div>
-      <Hint>Toca cada as</Hint>
+      <Hint>{l('Toca cada as', 'Tap each ace')}</Hint>
     </div>
   );
 };
@@ -431,7 +446,8 @@ export const Aces: React.FC = () => {
 // ── Sigils ──────────────────────────────────────────────────────────────────
 
 export const SigilMaker: React.FC = () => {
-  const [text, setText] = useState('quiero accionar');
+  const l = useL();
+  const [text, setText] = useState(() => l('quiero accionar', 'i take action'));
   const letters = sigilLetters(text);
   const points = sigilPoints(letters);
   const d = sigilPath(points);
@@ -450,14 +466,14 @@ export const SigilMaker: React.FC = () => {
   })();
   return (
     <div className="flex flex-col items-center gap-4 w-full">
-      <label htmlFor="sigil-intent" className="font-mono text-[11px] uppercase">Escribe una intención</label>
+      <label htmlFor="sigil-intent" className="font-mono text-[11px] uppercase">{l('Escribe una intención', 'Write an intention')}</label>
       <input
         id="sigil-intent"
         value={text}
         onChange={(e) => setText(e.target.value.slice(0, 40))}
         className="w-full max-w-[340px] rounded-full border-2 border-ink bg-white px-4 py-2 text-[16px] text-center outline-none focus:bg-yellow/40"
       />
-      <svg viewBox="0 0 100 100" className="w-[280px] max-w-full" role="img" aria-label={`Sigilo hecho con las letras ${letters.join(' ')}`}>
+      <svg viewBox="0 0 100 100" className="w-[280px] max-w-full" role="img" aria-label={l(`Sigilo hecho con las letras ${letters.join(' ')}`, `Sigil made from the letters ${letters.join(' ')}`)}>
         <circle cx="50" cy="50" r="46" fill="#fff" stroke="#111" strokeWidth="0.8" />
         {WHEEL_LETTERS.map((l, i) => {
           const a = (i / WHEEL_LETTERS.length) * Math.PI * 2 - Math.PI / 2;
@@ -473,7 +489,9 @@ export const SigilMaker: React.FC = () => {
         {bar && <line {...bar} stroke="#111" strokeWidth="1.6" strokeLinecap="round" />}
       </svg>
       <p className="text-[13px] text-graphite text-center max-w-[36ch]">
-        Sin vocales ni letras repetidas: <b className="font-mono">{letters.join(' ') || '—'}</b>. Cada letra se une en la rueda del alfabeto.
+        {l('Sin vocales ni letras repetidas: ', 'No vowels or repeated letters: ')}
+        <b className="font-mono">{letters.join(' ') || '—'}</b>.{' '}
+        {l('Cada letra se une en la rueda del alfabeto.', 'Each letter is joined on the alphabet wheel.')}
       </p>
     </div>
   );
@@ -514,22 +532,24 @@ const Star: React.FC<{ s: { sx: number; sy: number; tx: number; ty: number }; pr
 // ── The last card ───────────────────────────────────────────────────────────
 
 export const NextCard: React.FC = () => {
+  const l = useL();
+  const { language } = useLanguage();
   const [card] = useState(() => MAJOR_ARCANA[Math.floor(Math.random() * MAJOR_ARCANA.length)]);
   const [flipped, setFlipped] = useState(false);
   return (
     <div className="flex flex-col items-center gap-3">
-      <button type="button" onClick={() => setFlipped(true)} aria-label="Voltear tu carta" className="perspective w-[150px] aspect-[526/810]">
+      <button type="button" onClick={() => setFlipped(true)} aria-label={l('Voltear tu carta', 'Turn your card')} className="perspective w-[150px] aspect-[526/810]">
         <motion.span className="relative block w-full h-full preserve-3d" animate={{ rotateY: flipped ? 180 : 0 }} transition={{ duration: 0.8 }}>
           <span className="absolute inset-0 backface-hidden"><CardBack className="w-full h-full shadow-hard-lg" /></span>
           <span className="absolute inset-0 backface-hidden" style={{ transform: 'rotateY(180deg)' }}>
-            <CardFace card={card} alt={card.spanishName} className="w-full h-full shadow-hard-lg" />
+            <CardFace card={card} alt={cardName(card, language)} className="w-full h-full shadow-hard-lg" />
           </span>
         </motion.span>
       </button>
       {flipped ? (
-        <p className="font-display uppercase text-[22px]">{card.spanishName}</p>
+        <p className="font-display uppercase text-[22px]">{cardName(card, language)}</p>
       ) : (
-        <Hint>Hay una carta para ti</Hint>
+        <Hint>{l('Hay una carta para ti', "There's a card for you")}</Hint>
       )}
     </div>
   );

@@ -1,9 +1,8 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Instagram, Mail, ExternalLink } from 'lucide-react';
+import { X, ExternalLink } from 'lucide-react';
 import { useLanguage } from '../lib/language';
-import { CONTACT_EMAIL, INSTAGRAM_URL, KOFI_GOAL_URL } from '../config/links';
-import { Link } from 'react-router-dom';
+import { KOFI_GOAL_URL } from '../config/links';
 import { TestimonialList } from './Testimonials';
 
 interface ModalProps {
@@ -74,44 +73,6 @@ export const GoalModal: React.FC<{ open: boolean; onClose: () => void }> = ({ op
       >
         {t.goal.fallback} <ExternalLink className="w-3.5 h-3.5" />
       </a>
-    </Modal>
-  );
-};
-
-export const AboutModal: React.FC<{ open: boolean; onClose: () => void }> = ({ open, onClose }) => {
-  const { t } = useLanguage();
-  return (
-    <Modal
-      open={open}
-      onClose={onClose}
-      title={t.about.title}
-      icon={<img src="/brand/logo-circle.webp" alt="" className="w-7 h-7 rounded-full border-2 border-ink" />}
-    >
-      <div className="p-5 flex flex-col gap-3.5 text-[14.5px] leading-relaxed">
-        {t.about.paragraphs.map((p) => (
-          <p key={p.slice(0, 20)}>{p}</p>
-        ))}
-        <Link
-          to="/story"
-          className="self-start bg-yellow border-2 border-ink rounded-full shadow-hard px-4 py-2 font-display uppercase text-[17px]"
-        >
-          {t.about.storyLink} →
-        </Link>
-        <div className="pt-4 mt-1 border-t-2 border-ink">
-          <TestimonialList />
-        </div>
-        <div className="pt-4 mt-1 border-t-2 border-ink flex items-center justify-between gap-3">
-          <span className="font-display uppercase">{t.about.contact}</span>
-          <div className="flex gap-2">
-            <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Instagram @pragmagicka" className="w-9 h-9 rounded-full border-2 border-ink bg-sky flex items-center justify-center shadow-hard">
-              <Instagram className="w-4 h-4" />
-            </a>
-            <a href={`mailto:${CONTACT_EMAIL}`} aria-label={CONTACT_EMAIL} className="w-9 h-9 rounded-full border-2 border-ink bg-yellow flex items-center justify-center shadow-hard">
-              <Mail className="w-4 h-4" />
-            </a>
-          </div>
-        </div>
-      </div>
     </Modal>
   );
 };

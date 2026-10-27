@@ -9,6 +9,7 @@ import { SpreadFlow } from './screens/tarot/SpreadFlow';
 import { AmigaOracleScreen } from './amigah/AmigaOracleScreen';
 import { MonedaireScreen } from './monedaire/MonedaireScreen';
 import { StoryPage } from './story/StoryPage';
+import { StoryNudge } from './components/StoryNudge';
 import { trackPageView } from './lib/analytics';
 
 // A fresh flow per spread, so moving between spreads never carries cards over
@@ -47,6 +48,7 @@ export default function App() {
             </Routes>
           </motion.div>
         </AnimatePresence>
+        <StoryNudge />
       </PhoneFrame>
     </div>
   );

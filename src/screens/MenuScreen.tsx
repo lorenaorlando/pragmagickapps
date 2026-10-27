@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useLanguage } from '../lib/language';
 import { ScreenHeader } from '../components/ScreenHeader';
 import { LanguageToggle } from '../components/LanguageToggle';
 import { Sticker } from '../components/Sticker';
-import { AboutModal } from '../components/modals';
 import { INSTAGRAM_URL } from '../config/links';
 import { StickerImage } from '../amigah/StickerImage';
 import { GREETING_ID as AMIGAH_STICKER } from '../amigah/stickers';
 
 export const MenuScreen: React.FC = () => {
   const { t } = useLanguage();
-  const [aboutOpen, setAboutOpen] = useState(false);
 
   const tiles: { to: string; title: string; desc: string; sticker?: string; image?: string; bg: string; rotate: number }[] = [
     { to: '/tarot', title: t.menu.tarotTitle, desc: t.menu.tarotDesc, sticker: '01-el-mago', bg: 'bg-yellow', rotate: 5 },
@@ -48,14 +46,13 @@ export const MenuScreen: React.FC = () => {
         ))}
       </div>
       <footer className="shrink-0 border-t-2 border-ink grid grid-cols-2 font-mono text-[11px] uppercase">
-        <button type="button" onClick={() => setAboutOpen(true)} className="py-3 border-r-2 border-ink hover:bg-yellow">
+        <Link to="/story" className="py-3 text-center border-r-2 border-ink hover:bg-yellow">
           {t.menu.about}
-        </button>
+        </Link>
         <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="py-3 text-center hover:bg-sky">
           @pragmagicka
         </a>
       </footer>
-      <AboutModal open={aboutOpen} onClose={() => setAboutOpen(false)} />
     </div>
   );
 };

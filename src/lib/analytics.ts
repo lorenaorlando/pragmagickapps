@@ -1,5 +1,6 @@
 // Google Analytics 4 (gtag is loaded in index.html with automatic page views turned off,
 // because this is a single-page app: each screen change is sent from App instead).
+import { noteInteraction } from './storyNudge';
 
 type Params = Record<string, string | number | boolean | undefined>;
 
@@ -28,6 +29,13 @@ export const trackPageView = (path: string) =>
  * language_selected, spread_start, three_card_mode, reading_complete,
  * booking_click (Ko-fi / WhatsApp / Instagram), testimonials_open, share,
  * sticker_drawn, kit_offer_click, generate_lead (sticker kit email), kit_download, kit_install,
- * goal_open (app-store campaign), coin_flip
+ * goal_open (app-store campaign), coin_flip,
+ * story_open, story_link, story_nudge_show, story_nudge_click
  */
-export const track = (event: string, params: Params = {}) => send('event', event, params);
+// Finished readings, stickers and coin flips also count toward the "read my story" nudge
+const INTERACTIONS = new Set(['reading_complete', 'sticker_drawn', 'coin_flip']);
+
+export const track = (event: string, params: Params = {}) => {
+  send('event', event, params);
+  if (INTERACTIONS.has(event)) noteInteraction();
+};

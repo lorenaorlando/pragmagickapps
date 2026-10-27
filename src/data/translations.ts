@@ -11,6 +11,10 @@ const es = {
     coinDesc: 'Sí, no… o la tercera cara',
     about: 'sobre pragmagicka',
   },
+  storyNudge: {
+    text: '¿quieres saber más de pragmagicka?',
+    cta: 'lee mi historia →',
+  },
   spreads: {
     banner: '¿QUÉ TE TRAE\nPOR ACÁ?',
     goalTitle: '¡Ayuda a pragmagick.app a llegar a las tiendas de apps!',
@@ -66,14 +70,6 @@ const es = {
     fallback: 'Si no se ve la campaña, ábrela en Ko-fi',
   },
   about: {
-    title: 'Sobre Pragmagicka',
-    paragraphs: [
-      'PRAGMAGICKA es la evolución directa de mi práctica espiritual, una donde lo fundamental es la fuerza de voluntad orientada a la acción a través de símbolos, rituales y herramientas esotéricas.',
-      'Creo que no hay destino predeterminado ni cartas que adivinen el futuro. Hay decisiones que tomar y conflictos que destrabar. Muchas veces la mente estrictamente racional no basta para procesar dilemas internos que no siguen una lógica lineal. Es en ese espacio donde el esoterismo actúa como una tecnología pragmática: herramientas concretas para enfocar la mente, recuperar la agencia y accionar.',
-      'Este proyecto condensa un recorrido de investigación y práctica continuada iniciado en 2008. No surge desde una torre de marfil ni desde el optimismo tóxico de la espiritualidad privilegiada. Entendemos que vivimos en un mundo cruzado por crisis económicas, desastres y precariedades. Es precisamente cuando el entorno es más hostil cuando la voluntad deja de ser un concepto abstracto y se convierte en una herramienta de supervivencia.',
-    ],
-    contact: 'Contacto',
-    storyLink: 'Lee la historia completa',
     testimonials: 'Testimonios',
   },
   close: 'Cerrar',
@@ -92,6 +88,10 @@ const en: Strings = {
     coinTitle: 'Flip a coin',
     coinDesc: 'Yes, no… or the third side',
     about: 'about pragmagicka',
+  },
+  storyNudge: {
+    text: 'want to know more about pragmagicka?',
+    cta: 'read my story →',
   },
   spreads: {
     banner: 'WHAT BRINGS YOU\nHERE TODAY?',
@@ -148,14 +148,6 @@ const en: Strings = {
     fallback: "If the campaign doesn't load, open it on Ko-fi",
   },
   about: {
-    title: 'About Pragmagicka',
-    paragraphs: [
-      'PRAGMAGICKA is the direct evolution of my spiritual practice, where the foundation is willpower oriented toward action through symbols, rituals, and esoteric tools.',
-      'I believe there is no predetermined destiny and no cards that predict the future. There are decisions to be made and conflicts to be unblocked. Often, the strictly rational mind is insufficient to process inner dilemmas that follow a non-linear logic. It is in that space where esotericism acts as a pragmatic technology: concrete tools to focus the mind, reclaim agency, and take action.',
-      'This project condenses a continuous path of research and practice begun in 2008. It does not emerge from an ivory tower or the toxic optimism of privileged spirituality. We understand that we live in a world crossed by economic crises, disasters, and precarity. It is precisely when the environment is most hostile that willpower ceases to be an abstract concept and becomes a survival tool.',
-    ],
-    contact: 'Contact',
-    storyLink: 'Read the full story (in Spanish)',
     testimonials: 'Testimonials',
   },
   close: 'Close',
