@@ -1,40 +1,85 @@
 @import "tailwindcss";
 
+@theme {
+  --color-yellow: #ffff00;
+  --color-sky: #b8e2ec;
+  --color-green: #33b43c;
+  --color-ink: #111111;
+  --font-display: 'Viaoda Libre', 'Bodoni Moda', Georgia, serif;
+  --font-body: 'Playfair Display', Georgia, serif;
+  --font-mono: 'DM Mono', ui-monospace, Menlo, monospace;
+}
+
 @layer base {
   body {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: var(--font-body);
+    background: #ffffff;
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: var(--color-yellow);
+    color: var(--color-ink);
+  }
+  button {
+    cursor: pointer;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-green);
+    outline-offset: 2px;
   }
 }
 
-.font-viaoda {
-  font-family: 'Viaoda Libre', 'Bodoni Moda', Georgia, serif;
+/* Hard offset shadow: makes blocks read as physical, tappable objects */
+.shadow-hard {
+  box-shadow: 3px 3px 0 var(--color-ink);
+}
+.shadow-hard-lg {
+  box-shadow: 5px 5px 0 var(--color-ink);
 }
 
-.font-playfair {
-  font-family: 'Playfair Display', Georgia, serif;
+/* Riso-style halftone dots */
+.dots {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.14) 1px, transparent 1.3px);
+  background-size: 6px 6px;
+}
+.dots-soft {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1.2px);
+  background-size: 8px 8px;
 }
 
-.font-serif-display {
-  font-family: 'Viaoda Libre', 'Bodoni Moda', Georgia, serif;
+/* Sun rays behind a revealed card */
+.rays {
+  background-color: var(--color-yellow);
+  background-image: repeating-conic-gradient(from 0deg at 50% 115%, rgba(255, 255, 255, 0.6) 0 6deg, transparent 6deg 14deg);
 }
 
-.font-serif-body {
-  font-family: 'Playfair Display', Georgia, serif;
+/* Four-pointed stars from the logo, repeated as a card-back pattern */
+.star-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M12 5c.5 4 2.5 6 7 7-4.5 1-6.5 3-7 7-.5-4-2.5-6-7-7 4.5-1 6.5-3 7-7z' fill='%23111'/%3E%3C/svg%3E");
+  background-size: 16px 16px;
 }
 
-/* Custom pattern for Tarot card back */
-.card-back-pattern {
-  background-color: #d1d5db;
-  background-image: 
-    repeating-linear-gradient(45deg, rgba(75, 85, 99, 0.45) 0, rgba(75, 85, 99, 0.45) 1.5px, transparent 0, transparent 10px),
-    repeating-linear-gradient(-45deg, rgba(75, 85, 99, 0.45) 0, rgba(75, 85, 99, 0.45) 1.5px, transparent 0, transparent 10px);
-  background-size: 14px 14px;
+/* Sticker cut-outs sit on colour without a halo */
+.drop-sticker {
+  filter: drop-shadow(3px 4px 0 rgba(0, 0, 0, 0.85));
 }
 
-.card-back-pattern-fine {
-  background-color: #cbd5e1;
-  background-image: 
-    repeating-linear-gradient(45deg, rgba(71, 85, 105, 0.5) 0, rgba(71, 85, 105, 0.5) 1px, transparent 0, transparent 7px),
-    repeating-linear-gradient(-45deg, rgba(71, 85, 105, 0.5) 0, rgba(71, 85, 105, 0.5) 1px, transparent 0, transparent 7px);
-  background-size: 10px 10px;
+.perspective {
+  perspective: 1000px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
