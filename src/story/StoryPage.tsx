@@ -479,6 +479,7 @@ const LifeChapter: React.FC = () => {
                   src="/story/maggie.webp"
                   caption="Maggie"
                   tilt={-3}
+                  width={160}
                   placeholder={
                     <svg viewBox="0 0 100 100" className="w-2/3" aria-hidden="true">
                       <path d="M28 40 L30 18 L44 32 Q50 30 56 32 L70 18 L72 40 Q80 52 72 66 Q62 80 50 80 Q38 80 28 66 Q20 52 28 40 Z" fill="#fff" stroke="#111" strokeWidth="2.5" />

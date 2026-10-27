@@ -12,17 +12,18 @@ export const Hint: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 );
 
 /** A photo slot that shows a drawn placeholder until the real file exists */
-export const Polaroid: React.FC<{ src: string; caption: string; placeholder: React.ReactNode; tilt?: number }> = ({
+export const Polaroid: React.FC<{ src: string; caption: string; placeholder: React.ReactNode; tilt?: number; width?: number }> = ({
   src,
   caption,
   placeholder,
   tilt = -4,
+  width = 220,
 }) => {
   const [missing, setMissing] = useState(false);
   return (
     <figure
-      className="bg-white border-2 border-ink p-2.5 pb-3 shadow-hard-lg w-[220px] max-w-full"
-      style={{ transform: `rotate(${tilt}deg)` }}
+      className="bg-white border-2 border-ink p-2.5 pb-3 shadow-hard-lg max-w-full"
+      style={{ width, transform: `rotate(${tilt}deg)` }}
     >
       <div className="aspect-square bg-sky/50 border-[1.5px] border-ink overflow-hidden flex items-center justify-center">
         {missing ? placeholder : <img src={src} alt={caption} className="w-full h-full object-cover" onError={() => setMissing(true)} />}
