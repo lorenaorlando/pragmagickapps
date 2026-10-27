@@ -1,7 +1,7 @@
 // Share image of a tarot reading, drawn like a screenshot of the reading screen.
 import {
   W, INK, YELLOW, SKY, F, CONTENT_TOP, CONTENT_BOTTOM,
-  loadImage, loadFonts, wrapLines, createCanvas, closeFrame, fillRays, hLine, drawHeader, drawFooter, pill, shareCanvas,
+  loadImage, loadFonts, fitText, wrapLines, createCanvas, closeFrame, fillRays, hLine, drawHeader, drawFooter, pill, shareCanvas,
 } from './storyCanvas';
 
 interface StoryInput {
@@ -10,7 +10,28 @@ interface StoryInput {
   cardUrls: string[];
   title: string;
   message: string;
+  /** Position names shown above each card (three-card spread) */
+  positions?: string[];
 }
+
+/** White box with the position name above a card, wrapped to two lines if needed */
+const positionLabel = (ctx: CanvasRenderingContext2D, text: string, cx: number, top: number) => {
+  const w = 250;
+  ctx.font = '34px "Viaoda Libre"';
+  const lines = wrapLines(ctx, text.toUpperCase(), w - 30).slice(0, 2);
+  const h = lines.length * 34 + 24;
+  ctx.fillStyle = '#ffffff';
+  ctx.strokeStyle = INK;
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.roundRect(cx - w / 2, top, w, h, 14);
+  ctx.fill();
+  ctx.stroke();
+  ctx.fillStyle = INK;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  lines.forEach((l, i) => ctx.fillText(l, cx, top + 14 + i * 34));
+};
 
 const drawCard = (ctx: CanvasRenderingContext2D, img: HTMLImageElement, cx: number, cy: number, w: number, angle: number) => {
   const h = (w * img.height) / img.width;
@@ -26,22 +47,38 @@ const drawCard = (ctx: CanvasRenderingContext2D, img: HTMLImageElement, cx: numb
   ctx.restore();
 };
 
-export const renderStory = async ({ header, label, cardUrls, title, message }: StoryInput) => {
+export const renderStory = async ({ header, label, cardUrls, title, message, positions }: StoryInput) => {
   await loadFonts();
   const cards = await Promise.all(cardUrls.map(loadImage));
   const { canvas, ctx } = createCanvas();
 
   drawHeader(ctx, header, 'pragmagick.app', SKY);
 
+  // Long answers get more room: the rays band (and the cards) shrink until the whole text fits
+  const fitAnswer = (raysH: number, minSize: number) =>
+    fitText(ctx, message, {
+      maxWidth: F.w - 200,
+      maxHeight: CONTENT_BOTTOM - 30 - (CONTENT_TOP + raysH + 235),
+      font: (px) => `italic 600 ${px}px "Playfair Display"`,
+      maxSize: 44,
+      minSize,
+    });
+  const raysH = [560, 480, 400].find((h) => fitAnswer(h, 34).lines.join(' ') === message.replace(/\s+/g, ' ').trim()) ?? 400;
+  const scale = raysH / 560;
+
   // Cards on sun rays
-  const raysBottom = CONTENT_TOP + 560;
-  fillRays(ctx, F.x, CONTENT_TOP, F.w, raysBottom - CONTENT_TOP);
+  const raysBottom = CONTENT_TOP + raysH;
+  fillRays(ctx, F.x, CONTENT_TOP, F.w, raysH);
   hLine(ctx, raysBottom);
-  const mid = CONTENT_TOP + (raysBottom - CONTENT_TOP) / 2;
+  const mid = CONTENT_TOP + raysH / 2;
   if (cards.length === 1) {
-    drawCard(ctx, cards[0], W / 2, mid, 300, -3);
+    drawCard(ctx, cards[0], W / 2, mid, 300 * scale, -3);
   } else {
-    [-6, 0, 6].forEach((angle, i) => drawCard(ctx, cards[i], W / 2 + (i - 1) * 270, mid + (i === 1 ? -10 : 10), 230, angle));
+    const cardMid = positions ? mid + 40 * scale : mid;
+    [-6, 0, 6].forEach((angle, i) =>
+      drawCard(ctx, cards[i], W / 2 + (i - 1) * 270, cardMid + (i === 1 ? -10 : 10), 230 * scale, angle),
+    );
+    positions?.forEach((p, i) => positionLabel(ctx, p, W / 2 + (i - 1) * 270, CONTENT_TOP + 24));
   }
 
   pill(ctx, label.toUpperCase(), W / 2, raysBottom + 70, YELLOW);
@@ -57,14 +94,10 @@ export const renderStory = async ({ header, label, cardUrls, title, message }: S
   ctx.textBaseline = 'middle';
   ctx.fillText(title.toUpperCase(), W / 2, raysBottom + 165);
 
-  // Answer with the same left rule as the reading screen
-  ctx.font = 'italic 600 44px "Playfair Display"';
-  const lines = wrapLines(ctx, message, F.w - 200);
-  const lineH = 58;
+  // Answer with the same left rule as the reading screen; never cut mid-sentence
   const top = raysBottom + 235;
-  const maxLines = Math.max(1, Math.floor((CONTENT_BOTTOM - 30 - top) / lineH));
-  const shown = lines.slice(0, maxLines);
-  if (lines.length > maxLines) shown[maxLines - 1] += '…';
+  const { lines: shown, lineH } = fitAnswer(raysH, 30);
+  ctx.fillStyle = INK;
   ctx.fillRect(F.x + 70, top, 7, shown.length * lineH);
   ctx.textAlign = 'left';
   ctx.textBaseline = 'top';

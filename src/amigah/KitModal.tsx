@@ -3,6 +3,7 @@ import { Download, Send } from 'lucide-react';
 import { Modal } from '../components/modals';
 import { LEADS_ENDPOINT, STICKER_KIT_URL, TELEGRAM_STICKERS_URL, WHATSAPP_STICKERS_URL } from '../config/links';
 import { DRAWABLE } from './collection';
+import { track } from '../lib/analytics';
 
 const UNLOCKED_KEY = 'amigah_kit_unlocked_v1';
 
@@ -43,6 +44,7 @@ export const KitModal: React.FC<{ open: boolean; onClose: () => void }> = ({ ope
       } catch {
         // ignore
       }
+      track('generate_lead', { source: 'sticker_kit' });
       setUnlocked(true);
       setStatus('idle');
     } catch {
@@ -91,16 +93,16 @@ export const KitModal: React.FC<{ open: boolean; onClose: () => void }> = ({ ope
           <div className="flex flex-col gap-3">
             <p className="text-[14.5px] leading-snug">¡Listo, son tuyos! Elige dónde los quieres:</p>
             {TELEGRAM_STICKERS_URL && (
-              <a href={TELEGRAM_STICKERS_URL} target="_blank" rel="noopener noreferrer" className={`${button} bg-sky`}>
+              <a href={TELEGRAM_STICKERS_URL} target="_blank" rel="noopener noreferrer" onClick={() => track('kit_install', { app: 'telegram' })} className={`${button} bg-sky`}>
                 Agregar a Telegram
               </a>
             )}
             {WHATSAPP_STICKERS_URL && (
-              <a href={WHATSAPP_STICKERS_URL} target="_blank" rel="noopener noreferrer" className={`${button} bg-sky`}>
+              <a href={WHATSAPP_STICKERS_URL} target="_blank" rel="noopener noreferrer" onClick={() => track('kit_install', { app: 'whatsapp' })} className={`${button} bg-sky`}>
                 Agregar a WhatsApp
               </a>
             )}
-            <a href={STICKER_KIT_URL} download className={`${button} bg-yellow`}>
+            <a href={STICKER_KIT_URL} download onClick={() => track('kit_download')} className={`${button} bg-yellow`}>
               <Download className="w-4 h-4" /> Descargar el kit (.zip)
             </a>
             <div className="bg-sky border-[1.5px] border-ink rounded-[12px] px-4 py-3 text-[13px] leading-snug flex flex-col gap-2">

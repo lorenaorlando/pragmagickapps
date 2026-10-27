@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Navigate, Route, Routes, useLocation, useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { PhoneFrame } from './components/PhoneFrame';
@@ -8,12 +8,17 @@ import { SpreadsScreen } from './screens/tarot/SpreadsScreen';
 import { SpreadFlow } from './screens/tarot/SpreadFlow';
 import { AmigaOracleScreen } from './amigah/AmigaOracleScreen';
 import { MonedaireScreen } from './monedaire/MonedaireScreen';
+import { trackPageView } from './lib/analytics';
 
 // A fresh flow per spread, so moving between spreads never carries cards over
 const KeyedSpreadFlow = () => <SpreadFlow key={useParams().spreadId} />;
 
 export default function App() {
   const location = useLocation();
+
+  useEffect(() => {
+    trackPageView(location.pathname);
+  }, [location.pathname]);
 
   return (
     <div className="min-h-[100dvh] w-full flex items-center justify-center p-3 overflow-x-hidden dots-soft">

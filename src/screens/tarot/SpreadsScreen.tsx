@@ -7,6 +7,7 @@ import { SpreadId } from '../../types';
 import { ScreenHeader } from '../../components/ScreenHeader';
 import { Sticker } from '../../components/Sticker';
 import { GoalModal } from '../../components/modals';
+import { track } from '../../lib/analytics';
 
 // Ink line icons, one per question
 const ICONS: Record<SpreadId, React.ReactNode> = {
@@ -82,7 +83,10 @@ export const SpreadsScreen: React.FC = () => {
 
         <button
           type="button"
-          onClick={() => setGoalOpen(true)}
+          onClick={() => {
+            track('goal_open');
+            setGoalOpen(true);
+          }}
           className="relative shrink-0 mt-1.5 text-left rounded-[8px] border-2 border-ink bg-sky pl-3 pr-[78px] py-2.5 shadow-hard active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-[transform,box-shadow]"
         >
           <span className="block font-display text-[16px] leading-[1.05] uppercase">{t.spreads.goalTitle}</span>

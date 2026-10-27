@@ -10,6 +10,7 @@ import { shareChat } from './shareChat';
 import { ASK_AGAIN_LABEL, ASK_LABEL, GREETING_QUESTION, KIT_OFFER, KIT_OFFER_BUTTON } from './copy';
 import { ScreenHeader } from '../components/ScreenHeader';
 import { whatsappUrl } from '../config/links';
+import { track } from '../lib/analytics';
 
 type NewMessage =
   | { from: 'her'; text: string }
@@ -119,6 +120,7 @@ export const AmigaOracleScreen: React.FC = () => {
     setBusy(true);
     push({ from: 'me', text: last ? ASK_AGAIN_LABEL : ASK_LABEL });
     const sticker = draw();
+    track('sticker_drawn', { sticker: sticker.id });
     await herTurn(TYPING_MS.long, { from: 'her', stickerId: sticker.id });
     await herTurn(TYPING_MS.short, { from: 'her', text: sticker.message });
     // After the third sticker she offers the whole set for WhatsApp and Telegram
@@ -134,6 +136,7 @@ export const AmigaOracleScreen: React.FC = () => {
     if (!last) return;
     setSharing(true);
     try {
+      track('share', { method: 'story', content_type: 'amigah' });
       await shareChat(last);
     } finally {
       setSharing(false);
@@ -165,7 +168,10 @@ export const AmigaOracleScreen: React.FC = () => {
             <motion.button
               key={m.id}
               type="button"
-              onClick={() => setKitOpen(true)}
+              onClick={() => {
+                track('kit_offer_click');
+                setKitOpen(true);
+              }}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               className="self-start flex items-center gap-2 bg-yellow border-2 border-ink rounded-[16px] rounded-bl-[4px] pl-1.5 pr-3.5 py-1.5 font-display text-[16px] uppercase shadow-hard"
@@ -236,6 +242,7 @@ export const AmigaOracleScreen: React.FC = () => {
             href={whatsappUrl(`¡Hola! La señora de los stickers de pragmagick.app me dijo "${last.message}" y quiero hablarlo contigo 🌙`)}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => track('booking_click', { channel: 'whatsapp', source: 'amigah' })}
             className="bg-white px-1 py-3 flex items-center justify-center gap-1.5 text-center"
           >
             <MessageCircle className="w-3.5 h-3.5 shrink-0" /> Hablar con Lorena

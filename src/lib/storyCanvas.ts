@@ -53,6 +53,44 @@ export const wrapLines = (ctx: CanvasRenderingContext2D, text: string, maxWidth:
 };
 
 /** Paper canvas, clipped to the frame until `closeFrame` is called */
+interface FitOptions {
+  maxWidth: number;
+  maxHeight: number;
+  /** Canvas font for a given size, e.g. (px) => `italic 600 ${px}px "Playfair Display"` */
+  font: (px: number) => string;
+  maxSize: number;
+  minSize: number;
+  lineHeight?: number;
+}
+
+const SENTENCE_END = /(?<=[.!?…»”)])\s+/;
+
+/**
+ * Fit text in a box without leaving a message half-written: shrink the font first,
+ * and only if it still doesn't fit, keep the whole sentences that do.
+ */
+export const fitText = (ctx: CanvasRenderingContext2D, text: string, o: FitOptions) => {
+  const lineHeight = o.lineHeight ?? 1.3;
+  const layout = (t: string, px: number) => {
+    ctx.font = o.font(px);
+    const lines = wrapLines(ctx, t, o.maxWidth);
+    return { lines, size: px, lineH: Math.round(px * lineHeight), fits: lines.length * px * lineHeight <= o.maxHeight };
+  };
+  for (let px = o.maxSize; px >= o.minSize; px -= 2) {
+    const l = layout(text, px);
+    if (l.fits) return l;
+  }
+  // Still too long at the smallest size: keep as many complete sentences as fit
+  const sentences = text.split(SENTENCE_END);
+  let kept = sentences[0];
+  for (let i = 1; i < sentences.length; i++) {
+    const next = `${kept} ${sentences[i]}`;
+    if (!layout(next, o.minSize).fits) break;
+    kept = next;
+  }
+  return layout(kept, o.minSize);
+};
+
 export const createCanvas = () => {
   const canvas = document.createElement('canvas');
   canvas.width = W;
@@ -174,8 +212,12 @@ export const drawFooter = async (ctx: CanvasRenderingContext2D, url: string) => 
   ctx.fillText(url, startX + logoSize + 28, top + FOOTER_H / 2 + 2);
 };
 
-export const pill = (ctx: CanvasRenderingContext2D, text: string, cx: number, cy: number, bg = '#ffffff') => {
-  ctx.font = '500 32px "DM Mono"';
+export const pill = (ctx: CanvasRenderingContext2D, text: string, cx: number, cy: number, bg = '#ffffff', maxWidth = F.w - 80) => {
+  let px = 32;
+  do {
+    ctx.font = `500 ${px}px "DM Mono"`;
+    px -= 2;
+  } while (ctx.measureText(text).width + 64 > maxWidth && px > 16);
   const w = ctx.measureText(text).width + 64;
   ctx.fillStyle = bg;
   ctx.strokeStyle = INK;

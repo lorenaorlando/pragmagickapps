@@ -8,6 +8,7 @@ import { LogList, LogEntry } from './LogList';
 import { ReflectionTimer } from './ReflectionTimer';
 import { MONEDAIRE_TEXT } from './i18n';
 import { playCoinFlipSound, playCoinLandSound } from './audio';
+import { track } from '../lib/analytics';
 
 const STORAGE_KEY = 'moneda_app_logs_v1';
 const OUTCOMES: LogEntry['result'][] = ['up', 'down', 'question'];
@@ -55,6 +56,7 @@ export const MonedaireScreen: React.FC = () => {
         setResult(final);
         setFlipping(false);
         playCoinLandSound();
+        track('coin_flip', { result: final });
         setLogs((prev) => [{ id: Date.now().toString(), result: final, topic: '', timestamp: Date.now() }, ...prev].slice(0, MAX_LOGS));
       }, 1350),
     );

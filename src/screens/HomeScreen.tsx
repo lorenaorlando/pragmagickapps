@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../lib/language';
 import { Language } from '../types';
 import { Sticker } from '../components/Sticker';
+import { track } from '../lib/analytics';
 
 const LANGS: { value: Language; label: string; start: string }[] = [
   { value: 'en', label: 'ENGLISH', start: 'START' },
@@ -18,6 +19,7 @@ export const HomeScreen: React.FC = () => {
   const choose = (lang: Language) => {
     setChosen(lang);
     setLanguage(lang);
+    track('language_selected', { language: lang });
   };
 
   return (
