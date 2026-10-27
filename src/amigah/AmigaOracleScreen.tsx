@@ -1,168 +1,267 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Send, RotateCcw, MessageCircle, Instagram, Rocket, ChevronUp, ChevronDown } from 'lucide-react';
-import { STICKER_ORACLE_ITEMS, StickerOracleItem } from './stickers';
+import { MessageCircle, Share2 } from 'lucide-react';
+import { GREETING_ID, StickerOracleItem } from './stickers';
+import { DRAWABLE, useCollection } from './collection';
+import { StickerImage } from './StickerImage';
+import { CollectionModal } from './CollectionModal';
+import { KitModal } from './KitModal';
+import { shareChat } from './shareChat';
+import { ASK_AGAIN_LABEL, ASK_LABEL, GREETING_QUESTION, KIT_OFFER, KIT_OFFER_BUTTON } from './copy';
 import { ScreenHeader } from '../components/ScreenHeader';
-import { GoalModal } from '../components/modals';
-import { INSTAGRAM_URL, whatsappUrl } from '../config/links';
+import { whatsappUrl } from '../config/links';
 
-// The sticker oracle only speaks Spanish, so its copy is not translated.
-const DEFAULT_PROMPT = 'señora de los stickers, me puede ayudar?';
-const AMIGAH_IMAGE = 'https://sandboxlandia.online/wp-content/uploads/2026/09/AMIGAH.png';
+type NewMessage =
+  | { from: 'her'; text: string }
+  | { from: 'her'; stickerId: string }
+  | { from: 'her'; kitOffer: true }
+  | { from: 'me'; text: string };
+type Message = NewMessage & { id: number };
+
+const TYPING_MS = { short: 700, long: 1500 };
+const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+const Avatar = () => (
+  <div className="flex items-center gap-1.5 font-mono text-[9.5px] uppercase">
+    <span className="w-6 h-6 rounded-full border-2 border-ink bg-yellow flex items-center justify-center font-display text-[13px] normal-case">A</span>
+    señora de los stickers
+  </div>
+);
+
+const Typing = () => (
+  <motion.div
+    initial={{ opacity: 0, y: 6 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0 }}
+    className="self-start bg-white border-2 border-ink rounded-[16px] rounded-bl-[4px] px-3.5 py-2.5 flex gap-1"
+    aria-label="escribiendo…"
+  >
+    {[0, 1, 2].map((i) => (
+      <motion.span
+        key={i}
+        className="w-1.5 h-1.5 rounded-full bg-ink"
+        animate={{ opacity: [0.25, 1, 0.25] }}
+        transition={{ repeat: Infinity, duration: 1.1, delay: i * 0.18 }}
+      />
+    ))}
+  </motion.div>
+);
+
+/** A sticker that looks like one: white die-cut tile, hard shadow and a peeled corner */
+const StickerTile: React.FC<{ id: string; tilt: number; caption?: React.ReactNode }> = ({ id, tilt, caption }) => (
+  <div className="self-start flex flex-col gap-1.5">
+    <motion.div
+      initial={{ scale: 1.25, opacity: 0, rotate: tilt * 3 }}
+      animate={{ scale: 1, opacity: 1, rotate: tilt }}
+      transition={{ type: 'spring', stiffness: 260, damping: 16 }}
+      className="relative w-[150px] h-[150px] bg-white border-2 border-ink rounded-[24px] shadow-[4px_5px_0_#111] flex items-center justify-center p-3"
+    >
+      <StickerImage id={id} alt={id} className="w-full h-full rounded-[12px]" />
+      <span
+        aria-hidden="true"
+        className="absolute -right-[2px] -top-[2px] w-7 h-7 border-l-2 border-b-2 border-ink rounded-bl-[8px] rounded-tr-[22px]"
+        style={{ background: 'linear-gradient(225deg, #f6f8ee 50%, #dcdcdc 50%)' }}
+      />
+    </motion.div>
+    {caption}
+  </div>
+);
 
 export const AmigaOracleScreen: React.FC = () => {
-  const navigate = useNavigate();
-  const [inputText, setInputText] = useState(DEFAULT_PROMPT);
-  const [sticker, setSticker] = useState<StickerOracleItem | null>(null);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [goalOpen, setGoalOpen] = useState(false);
+  const { collected, draw, total, newInLatest } = useCollection();
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [typing, setTyping] = useState(false);
+  const [busy, setBusy] = useState(true);
+  const [last, setLast] = useState<StickerOracleItem | null>(null);
+  const [collectionOpen, setCollectionOpen] = useState(false);
+  const [sharing, setSharing] = useState(false);
+  const [kitOpen, setKitOpen] = useState(false);
+  const draws = useRef(0);
+  const scroller = useRef<HTMLDivElement>(null);
+  const nextId = useRef(0);
+  const alive = useRef(true);
 
-  const ask = () => {
-    setSticker(STICKER_ORACLE_ITEMS[Math.floor(Math.random() * STICKER_ORACLE_ITEMS.length)]);
+  const push = (m: NewMessage) => {
+    if (alive.current) setMessages((prev) => [...prev, { ...m, id: nextId.current++ }]);
   };
 
-  const again = () => {
-    setMenuOpen(false);
-    setSticker(null);
-    setInputText(DEFAULT_PROMPT);
+  const herTurn = async (ms: number, m: NewMessage) => {
+    setTyping(true);
+    await wait(ms);
+    setTyping(false);
+    push(m);
   };
 
-  const menu = [
-    { label: 'Pedir otro sticker', sub: 'Volver a consultar al oráculo', icon: RotateCcw, bg: 'bg-yellow', onClick: again },
-    {
-      label: 'Hablar con Lorena',
-      sub: 'Escríbeme por WhatsApp',
-      icon: MessageCircle,
-      bg: 'bg-green',
-      href: whatsappUrl(`¡Hola! El oráculo de stickers de pragmagick.app me dijo "${sticker?.message ?? ''}" y quiero hablarlo 🌙`),
-    },
-    { label: '¿Compartiendo tu sticker?', sub: 'Etiqueta a @pragmagicka en Instagram', icon: Instagram, bg: 'bg-sky', href: INSTAGRAM_URL },
-    { label: 'Pragmagick a las tiendas', sub: 'Ayuda a que la app llegue a las tiendas', icon: Rocket, bg: 'bg-white', onClick: () => { setMenuOpen(false); setGoalOpen(true); } },
-  ];
+  // She greets with her own sticker and asks what happened (once, even if React mounts twice)
+  const greeted = useRef(false);
+  useEffect(() => {
+    alive.current = true;
+    if (!greeted.current) {
+      greeted.current = true;
+      (async () => {
+        await herTurn(TYPING_MS.short, { from: 'her', stickerId: GREETING_ID });
+        await herTurn(TYPING_MS.short, { from: 'her', text: GREETING_QUESTION });
+        setBusy(false);
+      })();
+    }
+    return () => {
+      alive.current = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    scroller.current?.scrollTo({ top: scroller.current.scrollHeight, behavior: 'smooth' });
+  }, [messages, typing]);
+
+  const ask = async () => {
+    if (busy) return;
+    setBusy(true);
+    push({ from: 'me', text: last ? ASK_AGAIN_LABEL : ASK_LABEL });
+    const sticker = draw();
+    await herTurn(TYPING_MS.long, { from: 'her', stickerId: sticker.id });
+    await herTurn(TYPING_MS.short, { from: 'her', text: sticker.message });
+    // After the third sticker she offers the whole set for WhatsApp and Telegram
+    if (++draws.current === 3) {
+      await herTurn(TYPING_MS.long, { from: 'her', text: KIT_OFFER });
+      push({ from: 'her', kitOffer: true });
+    }
+    setLast(sticker);
+    setBusy(false);
+  };
+
+  const share = async () => {
+    if (!last) return;
+    setSharing(true);
+    try {
+      await shareChat(last);
+    } finally {
+      setSharing(false);
+    }
+  };
+
+  const stickerNumber = (id: string) => DRAWABLE.findIndex((s) => s.id === id) + 1;
 
   return (
     <div className="relative h-full flex flex-col">
-      <ScreenHeader title="AMIGAAAAAAAH" back="/menu" bg="green" />
+      <ScreenHeader
+        title="AMIGAAAAAAAH"
+        back="/menu"
+        right={<span className="shrink-0 font-display text-[15px] lowercase">en línea ●</span>}
+      />
 
-      <div className="flex-1 min-h-0 flex flex-col items-center justify-center px-5 dots-soft">
-        <AnimatePresence mode="wait">
-          {!sticker ? (
-            <motion.div
-              key="ask"
-              initial={{ opacity: 0, y: 15 }}
+      <div
+        ref={scroller}
+        className="flex-1 min-h-0 overflow-y-auto px-3.5 py-4 flex flex-col gap-2.5 bg-[#f6f8ee]"
+        style={{
+          backgroundImage:
+            'linear-gradient(rgba(0,0,0,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,.06) 1px, transparent 1px)',
+          backgroundSize: '16px 16px',
+        }}
+      >
+        <Avatar />
+        {messages.map((m, i) =>
+          'kitOffer' in m ? (
+            <motion.button
+              key={m.id}
+              type="button"
+              onClick={() => setKitOpen(true)}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full flex flex-col items-center"
+              className="self-start flex items-center gap-2 bg-yellow border-2 border-ink rounded-[16px] rounded-bl-[4px] pl-1.5 pr-3.5 py-1.5 font-display text-[16px] uppercase shadow-hard"
             >
-              <img src={AMIGAH_IMAGE} alt="Amigah" className="w-32 h-32 object-contain mb-3 drop-sticker" />
-              <p className="font-display text-xl uppercase mb-5">Oráculo de stickers</p>
-              <div className="w-full bg-white rounded-full border-2 border-ink shadow-hard py-1.5 pl-4 pr-1.5 flex items-center gap-2">
-                <input
-                  id="amigah-question"
-                  type="text"
-                  value={inputText}
-                  onChange={(e) => setInputText(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && ask()}
-                  className="flex-1 min-w-0 bg-transparent text-[15px] outline-none"
-                  placeholder={DEFAULT_PROMPT}
-                  aria-label="Tu pregunta"
-                />
-                <motion.button
-                  type="button"
-                  onClick={ask}
-                  animate={{ scale: [1, 1.08, 1] }}
-                  transition={{ repeat: Infinity, duration: 1.8 }}
-                  aria-label="Enviar"
-                  className="w-10 h-10 rounded-full bg-green border-2 border-ink flex items-center justify-center shrink-0"
-                >
-                  <Send className="w-4 h-4 translate-x-px" />
-                </motion.button>
-              </div>
-            </motion.div>
+              <img src="/suits/emocional.webp" alt="" className="w-8 h-10 object-cover rounded-[6px] border-2 border-white" />
+              {KIT_OFFER_BUTTON}
+            </motion.button>
+          ) : 'stickerId' in m ? (
+            <StickerTile
+              key={m.id}
+              id={m.stickerId}
+              tilt={i % 4 === 0 ? -5 : 4}
+              caption={
+                m.stickerId !== GREETING_ID && (
+                  <span className="font-mono text-[9.5px] uppercase pl-1">sticker #{stickerNumber(m.stickerId)}</span>
+                )
+              }
+            />
           ) : (
-            <motion.div
-              key={sticker.id}
-              initial={{ opacity: 0, scale: 0.85, rotate: -8 }}
-              animate={{ opacity: 1, scale: 1, rotate: -3 }}
-              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              className="flex flex-col items-center text-center"
+            <motion.p
+              key={m.id}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`max-w-[82%] border-2 border-ink rounded-[16px] px-3.5 py-2 text-[14.5px] leading-snug whitespace-pre-line shadow-[2px_2px_0_#111] ${
+                m.from === 'me' ? 'self-end bg-sky rounded-br-[4px]' : 'self-start bg-white rounded-bl-[4px]'
+              }`}
             >
-              <img src={sticker.imageUrl} alt={sticker.name} className="max-w-[220px] max-h-[220px] object-contain mb-5 drop-sticker" />
-              <p className="max-w-[290px] bg-yellow border-2 border-ink shadow-hard px-3 py-2 font-display text-[17px] leading-snug uppercase whitespace-pre-line">
-                {sticker.message}
-              </p>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              {m.text}
+            </motion.p>
+          ),
+        )}
+        <AnimatePresence>{typing && <Typing />}</AnimatePresence>
       </div>
 
-      <div className="relative shrink-0 z-30">
-        {sticker ? (
-          <>
-            <AnimatePresence>
-              {menuOpen && (
-                <>
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    onClick={() => setMenuOpen(false)}
-                    className="fixed inset-0 z-30 bg-black/20"
-                  />
-                  <motion.div
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 15 }}
-                    transition={{ duration: 0.18 }}
-                    className="absolute bottom-full left-0 right-0 z-40 border-t-2 border-ink flex flex-col divide-y-2 divide-ink"
-                  >
-                    {menu.map((item) => {
-                      const content = (
-                        <>
-                          <span className="flex flex-col text-left">
-                            <span className="font-display text-[17px] uppercase leading-tight">{item.label}</span>
-                            <span className="text-[12px] mt-0.5">{item.sub}</span>
-                          </span>
-                          <item.icon className="w-5 h-5 shrink-0" />
-                        </>
-                      );
-                      const cls = `${item.bg} w-full px-4 py-3 flex items-center justify-between gap-2`;
-                      return item.href ? (
-                        <a key={item.label} href={item.href} target="_blank" rel="noopener noreferrer" className={cls} onClick={() => setMenuOpen(false)}>
-                          {content}
-                        </a>
-                      ) : (
-                        <button key={item.label} type="button" onClick={item.onClick} className={cls}>
-                          {content}
-                        </button>
-                      );
-                    })}
-                  </motion.div>
-                </>
-              )}
-            </AnimatePresence>
-            <button
-              type="button"
-              onClick={() => setMenuOpen((o) => !o)}
-              className="w-full border-t-2 border-ink bg-yellow py-3.5 font-display text-[18px] uppercase flex items-center justify-center gap-2"
-            >
-              Y ahora… ¿qué hago con esto?
-              {menuOpen ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}
-            </button>
-          </>
-        ) : (
+      <button
+        type="button"
+        onClick={() => setCollectionOpen(true)}
+        className="shrink-0 border-t-2 border-ink bg-white px-3.5 py-2 flex items-center gap-2.5 font-mono text-[10px] uppercase"
+        aria-label={`Colección: ${collected.length} de ${total}`}
+      >
+        colección
+        <span className="flex-1 h-2.5 rounded-full border-2 border-ink overflow-hidden">
+          <motion.span
+            className="block h-full bg-ink"
+            animate={{ width: `${(collected.length / total) * 100}%` }}
+          />
+        </span>
+        <span className="tabular-nums">{collected.length}/{total}</span>
+        {newInLatest > 0 && (
+          <span className="bg-yellow border-[1.5px] border-ink rounded-full px-1.5">+{newInLatest} nuevos</span>
+        )}
+      </button>
+
+      {last ? (
+        <div className="shrink-0 grid grid-cols-3 border-t-2 border-ink font-display text-[14px] uppercase leading-[1.05]">
+          <button type="button" onClick={ask} disabled={busy} className="bg-yellow px-1 py-3 disabled:opacity-60">
+            {ASK_AGAIN_LABEL}
+          </button>
           <button
             type="button"
-            onClick={() => navigate('/menu')}
-            className="w-full border-t-2 border-ink bg-white py-3 font-mono text-[11px] uppercase"
+            onClick={share}
+            disabled={busy || sharing}
+            className="bg-sky px-1 py-3 border-x-2 border-ink flex items-center justify-center gap-1.5 disabled:opacity-60"
           >
-            @pragmagicka · pragmagick.app
+            <Share2 className="w-3.5 h-3.5 shrink-0" /> Compartir
           </button>
-        )}
-      </div>
+          <a
+            href={whatsappUrl(`¡Hola! La señora de los stickers de pragmagick.app me dijo "${last.message}" y quiero hablarlo contigo 🌙`)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-white px-1 py-3 flex items-center justify-center gap-1.5 text-center"
+          >
+            <MessageCircle className="w-3.5 h-3.5 shrink-0" /> Hablar con Lorena
+          </a>
+        </div>
+      ) : (
+        <button
+          type="button"
+          onClick={ask}
+          disabled={busy}
+          className="shrink-0 border-t-2 border-ink bg-yellow py-3.5 font-display text-[19px] uppercase disabled:opacity-60 transition-opacity"
+        >
+          {ASK_LABEL}
+        </button>
+      )}
 
-      <GoalModal open={goalOpen} onClose={() => setGoalOpen(false)} />
+      <CollectionModal
+        open={collectionOpen}
+        onClose={() => setCollectionOpen(false)}
+        collected={collected}
+        onOpenKit={() => {
+          setCollectionOpen(false);
+          setKitOpen(true);
+        }}
+      />
+      <KitModal open={kitOpen} onClose={() => setKitOpen(false)} />
     </div>
   );
 };

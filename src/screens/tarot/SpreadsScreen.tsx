@@ -3,17 +3,46 @@ import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useLanguage } from '../../lib/language';
 import { SPREADS } from '../../data/spreads';
+import { SpreadId } from '../../types';
 import { ScreenHeader } from '../../components/ScreenHeader';
 import { Sticker } from '../../components/Sticker';
 import { GoalModal } from '../../components/modals';
 
-const ThreeCardsIcon = () => (
-  <svg viewBox="0 0 40 40" fill="#ffff00" stroke="#111" strokeWidth="2" className="w-8 h-8" aria-hidden="true">
-    <rect x="3" y="10" width="11" height="19" rx="1.5" transform="rotate(-12 8 19)" />
-    <rect x="25" y="10" width="11" height="19" rx="1.5" transform="rotate(12 31 19)" />
-    <rect x="14.5" y="8" width="11" height="19" rx="1.5" />
-  </svg>
-);
+// Ink line icons, one per question
+const ICONS: Record<SpreadId, React.ReactNode> = {
+  'no-se-que-hacer': (
+    <>
+      <path d="M20 34V18M20 18l-9-9M20 18l9-9" />
+      <path d="M7 13V7h6M33 13V7h-6" />
+    </>
+  ),
+  'pienso-en-alguien': (
+    <>
+      <circle cx="15" cy="20" r="9" />
+      <circle cx="25" cy="20" r="9" />
+    </>
+  ),
+  'momento-presente': (
+    <>
+      <circle cx="20" cy="20" r="7" />
+      <path d="M20 4v6M20 30v6M4 20h6M30 20h6M9 9l4 4M27 27l4 4M31 9l-4 4M13 27l-4 4" />
+    </>
+  ),
+  semana: (
+    <>
+      <rect x="6" y="9" width="28" height="25" rx="2" />
+      <path d="M6 16h28M13 5v7M27 5v7" />
+      <path d="M20 20c.4 2.6 1.4 3.6 4 4-2.6.4-3.6 1.4-4 4-.4-2.6-1.4-3.6-4-4 2.6-.4 3.6-1.4 4-4z" fill="#111" stroke="none" />
+    </>
+  ),
+  'tres-cartas': (
+    <>
+      <rect x="3" y="11" width="10" height="18" rx="1.5" transform="rotate(-10 8 20)" />
+      <rect x="15" y="9" width="10" height="18" rx="1.5" />
+      <rect x="27" y="11" width="10" height="18" rx="1.5" transform="rotate(10 32 20)" />
+    </>
+  ),
+};
 
 export const SpreadsScreen: React.FC = () => {
   const { t, language } = useLanguage();
@@ -36,11 +65,9 @@ export const SpreadsScreen: React.FC = () => {
               className={`${spread.color === 'yellow' ? 'bg-yellow' : 'bg-sky'} h-full grid grid-cols-[48px_1fr_auto] items-center gap-2.5 rounded-[8px] border-2 border-ink shadow-hard px-2.5 py-2 active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-[transform,box-shadow]`}
             >
               <span className="w-12 h-12 rounded-full border-2 border-ink bg-white overflow-hidden flex items-center justify-center">
-                {spread.suit ? (
-                  <img src={`/suits/${spread.suit}.webp`} alt="" className="w-[88%] h-[88%] object-contain" />
-                ) : (
-                  <ThreeCardsIcon />
-                )}
+                <svg viewBox="0 0 40 40" fill="none" stroke="#111" strokeWidth="2" strokeLinecap="round" className="w-7 h-7" aria-hidden="true">
+                  {ICONS[spread.id]}
+                </svg>
               </span>
               <span className="min-w-0">
                 <span className="block font-display text-[16px] uppercase leading-[1.02]">{spread.title[language]}</span>
@@ -56,11 +83,11 @@ export const SpreadsScreen: React.FC = () => {
         <button
           type="button"
           onClick={() => setGoalOpen(true)}
-          className="relative shrink-0 mt-1.5 text-left rounded-[8px] border-2 border-ink bg-ink text-white pl-3 pr-[78px] py-2.5 shadow-hard active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-[transform,box-shadow]"
+          className="relative shrink-0 mt-1.5 text-left rounded-[8px] border-2 border-ink bg-sky pl-3 pr-[78px] py-2.5 shadow-hard active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-[transform,box-shadow]"
         >
-          <span className="block font-display text-[16px] leading-[1.05] text-yellow">{t.spreads.goalTitle}</span>
-          <span className="block font-mono text-[10px] uppercase mt-1 text-white/80">{t.spreads.goalDesc} →</span>
-          <Sticker slug="07-el-carro" rotate={10} className="absolute right-1 -top-4 w-[70px]" />
+          <span className="block font-display text-[16px] leading-[1.05] uppercase">{t.spreads.goalTitle}</span>
+          <span className="block font-mono text-[10px] uppercase mt-1">{t.spreads.goalDesc} →</span>
+          <Sticker slug="07-el-carro" rotate={6} className="absolute right-1 -top-4 w-[70px]" />
         </button>
       </div>
       <GoalModal open={goalOpen} onClose={() => setGoalOpen(false)} />

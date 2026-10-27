@@ -14,21 +14,16 @@ export interface Spread {
   description: Text;
   /** Short format label shown as a pill */
   format: Text;
-  /** Suit image from public/suits; three-card spread draws its own icon */
-  suit?: 'intelectual' | 'emocional' | 'material' | 'creativo';
   color: 'yellow' | 'sky';
   readings?: Record<number, Text>;
 }
 
-// Each suit stands for the area of life the question lives in:
-// swords = mind and decisions, cups = feelings, coins = the here and now, wands = energy to act.
 export const SPREADS: Spread[] = [
   {
     id: 'no-se-que-hacer',
     title: { es: 'No sé qué hacer respecto a…', en: "I don't know what to do about…" },
     description: { es: 'Para decidir y entender cómo actuar', en: 'Understand the best way to take action' },
     format: { es: '1 carta', en: '1 card' },
-    suit: 'intelectual',
     color: 'yellow',
     readings: DONT_KNOW_WHAT_TO_DO_READINGS,
   },
@@ -37,7 +32,6 @@ export const SPREADS: Spread[] = [
     title: { es: 'Estoy pensando en alguien', en: "I'm thinking about someone" },
     description: { es: 'El estado actual de ese vínculo', en: 'The current state of that bond' },
     format: { es: '1 carta', en: '1 card' },
-    suit: 'emocional',
     color: 'sky',
     readings: THINKING_ABOUT_SOMEONE_READINGS,
   },
@@ -46,7 +40,6 @@ export const SPREADS: Spread[] = [
     title: { es: 'Momento presente', en: 'Current moment' },
     description: { es: 'Dónde estás y cómo afrontarlo', en: 'Where you are and how to move forward' },
     format: { es: '1 carta', en: '1 card' },
-    suit: 'material',
     color: 'yellow',
     readings: CURRENT_MOMENT_READINGS,
   },
@@ -55,7 +48,6 @@ export const SPREADS: Spread[] = [
     title: { es: 'Tarot de la semana', en: 'Tarot of the week' },
     description: { es: 'Tu mensaje y guía para estos 7 días', en: 'Your message for the next 7 days' },
     format: { es: 'semanal', en: 'weekly' },
-    suit: 'creativo',
     color: 'sky',
     readings: WEEKLY_TAROT_READINGS,
   },

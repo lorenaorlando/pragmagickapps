@@ -8,7 +8,7 @@ import { ScreenHeader } from '../../components/ScreenHeader';
 import { CardFace } from '../../components/cards';
 import { ReadingActions } from '../../components/ReadingActions';
 
-const CHIP_COLORS = ['bg-sky', 'bg-white', 'bg-green'];
+const CHIP_COLORS = ['bg-sky', 'bg-white', 'bg-yellow'];
 
 interface ReadingScreenProps {
   spread: Spread;
@@ -56,7 +56,7 @@ export const ReadingScreen: React.FC<ReadingScreenProps> = ({ spread, card, onAg
       </div>
       <ReadingActions
         whatsappText={t.reading.whatsappText(name, topic)}
-        story={{ label: `${t.reading.shareLabel} · ${topic}`, cardUrls: [cardImage(card)], title: name, message: answer }}
+        story={{ header: t.reading.banner, label: topic, cardUrls: [cardImage(card)], title: name, message: answer }}
         onAgain={onAgain}
       />
     </div>

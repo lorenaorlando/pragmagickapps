@@ -25,7 +25,7 @@ export const WeeklyChoose: React.FC<{ onDone: (card: TarotCard) => void }> = ({ 
       <ScreenHeader title={t.weekly.banner} back="/tarot" />
       <div className="flex-1 min-h-0 flex flex-col items-center justify-center gap-8 px-4 dots-soft">
         <div className="relative">
-          <Sticker slug="17-la-estrella" rotate={-8} className="w-[92px]" />
+          <Sticker slug="17-la-estrella" rotate={-5} className="w-[92px]" />
         </div>
         <p className="text-[17px] font-medium text-center">{t.weekly.prompt}</p>
         <div className="grid grid-cols-3 gap-3 w-full max-w-[300px]">
