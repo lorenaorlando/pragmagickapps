@@ -27,7 +27,7 @@ export const ThreeCardsReading: React.FC<ThreeCardsReadingProps> = ({ cards, mod
       <div className="flex-1 min-h-0 overflow-y-auto">
         <div className="rays border-b-2 border-ink px-4 pt-3 pb-5 flex flex-col gap-2.5">
           <p className="text-center">
-            <span className="font-mono text-[9.5px] uppercase border-[1.5px] border-ink rounded-full bg-white px-2 py-0.5">
+            <span className="font-mono text-[11px] uppercase border-[1.5px] border-ink rounded-full bg-white px-2 py-0.5">
               {mode.title[language]}
             </span>
           </p>
