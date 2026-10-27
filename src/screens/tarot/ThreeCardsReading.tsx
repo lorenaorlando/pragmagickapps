@@ -46,7 +46,8 @@ export const ThreeCardsReading: React.FC<{ cards: TarotCard[]; onAgain: () => vo
       <ReadingActions
         whatsappText={t.reading.whatsappTextThree(names.join(', '))}
         story={{
-          label: `${t.reading.shareLabel} · 3`,
+          header: t.reading.banner,
+          label: t.reading.threeLabel,
           cardUrls: cards.map(cardImage),
           title: names.join(' · '),
           message: cards.map((c) => cardKeywords(c, language)[0]).join(' · '),

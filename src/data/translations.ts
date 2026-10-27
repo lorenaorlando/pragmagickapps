@@ -5,9 +5,8 @@ const es = {
     banner: '¿QUÉ NECESITAS\nHOY?',
     tarotTitle: 'Tiradas de tarot',
     tarotDesc: 'Una pregunta, una carta, una respuesta',
-    stickersTitle: 'Oráculo de stickers',
+    stickersTitle: 'Oráculo de stickers: AMIGAAAAH',
     stickersDesc: 'La señora de los stickers te aconseja',
-    stickersOnlyEs: '',
     coinTitle: 'Lanzar una moneda',
     coinDesc: 'Sí, no… o la tercera cara',
     about: 'sobre pragmagicka',
@@ -50,7 +49,8 @@ const es = {
       `¡Hola! En pragmagick.app me salió ${card} en "${topic}" y quiero profundizar mi lectura 🌙`,
     whatsappTextThree: (cards: string) =>
       `¡Hola! En pragmagick.app hice una tirada de 3 cartas (${cards}) y quiero profundizar mi lectura 🌙`,
-    shareLabel: 'mi carta',
+    threeLabel: 'tirada de 3 cartas',
+    stickerGift: 'incluye un sticker de regalo',
   },
   goal: {
     title: 'Pragmagick a las tiendas',
@@ -77,8 +77,7 @@ const en: Strings = {
     tarotTitle: 'Tarot spreads',
     tarotDesc: 'One question, one card, one answer',
     stickersTitle: 'Sticker oracle',
-    stickersDesc: 'The sticker lady gives advice',
-    stickersOnlyEs: 'Spanish only',
+    stickersDesc: 'only in español miamor',
     coinTitle: 'Flip a coin',
     coinDesc: 'Yes, no… or the third side',
     about: 'about pragmagicka',
@@ -121,7 +120,8 @@ const en: Strings = {
       `Hi! I got ${card} on "${topic}" at pragmagick.app and I'd like to go deeper 🌙`,
     whatsappTextThree: (cards: string) =>
       `Hi! I did a 3-card spread at pragmagick.app (${cards}) and I'd like to go deeper 🌙`,
-    shareLabel: 'my card',
+    threeLabel: '3-card spread',
+    stickerGift: 'includes a gift sticker',
   },
   goal: {
     title: 'Pragmagick to the stores',

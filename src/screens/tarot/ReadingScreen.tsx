@@ -56,7 +56,7 @@ export const ReadingScreen: React.FC<ReadingScreenProps> = ({ spread, card, onAg
       </div>
       <ReadingActions
         whatsappText={t.reading.whatsappText(name, topic)}
-        story={{ label: `${t.reading.shareLabel} · ${topic}`, cardUrls: [cardImage(card)], title: name, message: answer }}
+        story={{ header: t.reading.banner, label: topic, cardUrls: [cardImage(card)], title: name, message: answer }}
         onAgain={onAgain}
       />
     </div>

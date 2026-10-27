@@ -7,14 +7,16 @@ import { LanguageToggle } from '../components/LanguageToggle';
 import { Sticker } from '../components/Sticker';
 import { AboutModal } from '../components/modals';
 import { INSTAGRAM_URL } from '../config/links';
+import { StickerImage } from '../amigah/StickerImage';
+import { GREETING_ID as AMIGAH_STICKER } from '../amigah/stickers';
 
 export const MenuScreen: React.FC = () => {
   const { t } = useLanguage();
   const [aboutOpen, setAboutOpen] = useState(false);
 
-  const tiles = [
+  const tiles: { to: string; title: string; desc: string; sticker?: string; image?: string; bg: string; rotate: number }[] = [
     { to: '/tarot', title: t.menu.tarotTitle, desc: t.menu.tarotDesc, sticker: '02-la-papisa', bg: 'bg-yellow', rotate: 8 },
-    { to: '/amigah', title: t.menu.stickersTitle, desc: t.menu.stickersDesc, sticker: '14-la-templanza', bg: 'bg-green', rotate: -7, note: t.menu.stickersOnlyEs },
+    { to: '/amigah', title: t.menu.stickersTitle, desc: t.menu.stickersDesc, image: AMIGAH_STICKER, bg: 'bg-green', rotate: -7 },
     { to: '/monedaire', title: t.menu.coinTitle, desc: t.menu.coinDesc, sticker: '10-la-rueda-de-la-fortuna', bg: 'bg-sky', rotate: 6 },
   ];
 
@@ -36,12 +38,11 @@ export const MenuScreen: React.FC = () => {
             >
               <span className="font-display text-[23px] uppercase leading-[0.95]">{tile.title}</span>
               <span className="text-[12.5px] leading-tight">{tile.desc}</span>
-              {tile.note && (
-                <span className="self-start mt-1 font-mono text-[10px] uppercase border-[1.5px] border-ink rounded-full bg-white px-2 py-0.5">
-                  {tile.note}
-                </span>
+              {tile.image ? (
+                <StickerImage id={tile.image} rotate={tile.rotate} className="absolute right-2 top-1/2 -translate-y-1/2 w-[92px] drop-sticker" />
+              ) : (
+                <Sticker slug={tile.sticker!} rotate={tile.rotate} className="absolute right-2 top-1/2 -translate-y-1/2 w-[86px]" />
               )}
-              <Sticker slug={tile.sticker} rotate={tile.rotate} className="absolute right-2 top-1/2 -translate-y-1/2 w-[86px]" />
             </Link>
           </motion.div>
         ))}

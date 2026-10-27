@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { CalendarHeart, Instagram, MessageCircle, Share2, RotateCcw } from 'lucide-react';
 import { useLanguage } from '../lib/language';
 import { shareStory } from '../lib/shareImage';
-import { INSTAGRAM_DM_URL, KOFI_BOOKING_URL, READING_PRICE_USD, whatsappUrl } from '../config/links';
+import { INSTAGRAM_DM_URL, KOFI_BOOKING_URL, READING_INCLUDES_STICKER, READING_PRICE_USD, whatsappUrl } from '../config/links';
 import { Sticker } from './Sticker';
 
 interface ReadingActionsProps {
@@ -23,6 +23,7 @@ export const OneOnOneCard: React.FC<{ whatsappText: string }> = ({ whatsappText 
       <p className="text-[12px] mt-1 leading-tight pr-12">
         {t.reading.deeperDesc}
         {READING_PRICE_USD !== null && <> · <b>{t.reading.priceFrom(READING_PRICE_USD)}</b></>}
+        {READING_INCLUDES_STICKER && <> · {t.reading.stickerGift} ✦</>}
       </p>
       <div className="grid grid-cols-3 gap-1.5 mt-2.5">
         <a href={KOFI_BOOKING_URL} target="_blank" rel="noopener noreferrer" className={`${pill} bg-green`}>
