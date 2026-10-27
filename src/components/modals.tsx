@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { X, Instagram, Mail, ExternalLink } from 'lucide-react';
 import { useLanguage } from '../lib/language';
 import { CONTACT_EMAIL, INSTAGRAM_URL, KOFI_GOAL_URL } from '../config/links';
+import { TestimonialList } from './Testimonials';
 
 interface ModalProps {
   open: boolean;
@@ -89,6 +90,9 @@ export const AboutModal: React.FC<{ open: boolean; onClose: () => void }> = ({ o
         {t.about.paragraphs.map((p) => (
           <p key={p.slice(0, 20)}>{p}</p>
         ))}
+        <div className="pt-4 mt-1 border-t-2 border-ink">
+          <TestimonialList />
+        </div>
         <div className="pt-4 mt-1 border-t-2 border-ink flex items-center justify-between gap-3">
           <span className="font-display uppercase">{t.about.contact}</span>
           <div className="flex gap-2">
@@ -101,6 +105,22 @@ export const AboutModal: React.FC<{ open: boolean; onClose: () => void }> = ({ o
           </div>
         </div>
       </div>
+    </Modal>
+  );
+};
+
+export const TestimonialsModal: React.FC<{ open: boolean; onClose: () => void; footer?: React.ReactNode }> = ({
+  open,
+  onClose,
+  footer,
+}) => {
+  const { t } = useLanguage();
+  return (
+    <Modal open={open} onClose={onClose} title={t.about.testimonials}>
+      <div className="p-4">
+        <TestimonialList />
+      </div>
+      {footer}
     </Modal>
   );
 };

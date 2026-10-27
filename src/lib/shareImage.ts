@@ -1,40 +1,36 @@
-// Builds a 1080×1920 story image of a reading and hands it to the phone's share sheet.
-
-const W = 1080;
-const H = 1920;
-const INK = '#111111';
-const YELLOW = '#ffff00';
-const SKY = '#b8e2ec';
+// Share image of a tarot reading, drawn like a screenshot of the reading screen.
+import {
+  W, INK, YELLOW, SKY, F, CONTENT_TOP, CONTENT_BOTTOM,
+  loadImage, loadFonts, fitText, wrapLines, createCanvas, closeFrame, fillRays, hLine, drawHeader, drawFooter, pill, shareCanvas,
+} from './storyCanvas';
 
 interface StoryInput {
+  header: string;
   label: string;
   cardUrls: string[];
   title: string;
   message: string;
+  /** Position names shown above each card (three-card spread) */
+  positions?: string[];
 }
 
-const loadImage = (src: string) =>
-  new Promise<HTMLImageElement>((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = reject;
-    img.src = src;
-  });
-
-const wrapLines = (ctx: CanvasRenderingContext2D, text: string, maxWidth: number) => {
-  const lines: string[] = [];
-  let line = '';
-  for (const word of text.split(/\s+/)) {
-    const next = line ? `${line} ${word}` : word;
-    if (ctx.measureText(next).width > maxWidth && line) {
-      lines.push(line);
-      line = word;
-    } else {
-      line = next;
-    }
-  }
-  if (line) lines.push(line);
-  return lines;
+/** White box with the position name above a card, wrapped to two lines if needed */
+const positionLabel = (ctx: CanvasRenderingContext2D, text: string, cx: number, top: number) => {
+  const w = 250;
+  ctx.font = '34px "Viaoda Libre"';
+  const lines = wrapLines(ctx, text.toUpperCase(), w - 30).slice(0, 2);
+  const h = lines.length * 34 + 24;
+  ctx.fillStyle = '#ffffff';
+  ctx.strokeStyle = INK;
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.roundRect(cx - w / 2, top, w, h, 14);
+  ctx.fill();
+  ctx.stroke();
+  ctx.fillStyle = INK;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  lines.forEach((l, i) => ctx.fillText(l, cx, top + 14 + i * 34));
 };
 
 const drawCard = (ctx: CanvasRenderingContext2D, img: HTMLImageElement, cx: number, cy: number, w: number, angle: number) => {
@@ -43,129 +39,73 @@ const drawCard = (ctx: CanvasRenderingContext2D, img: HTMLImageElement, cx: numb
   ctx.translate(cx, cy);
   ctx.rotate((angle * Math.PI) / 180);
   ctx.fillStyle = INK;
-  ctx.fillRect(-w / 2 + 16, -h / 2 + 16, w, h);
+  ctx.fillRect(-w / 2 + 14, -h / 2 + 14, w, h);
   ctx.drawImage(img, -w / 2, -h / 2, w, h);
-  ctx.lineWidth = 8;
+  ctx.lineWidth = 7;
   ctx.strokeStyle = INK;
   ctx.strokeRect(-w / 2, -h / 2, w, h);
   ctx.restore();
-  return h;
 };
 
-export const renderStory = async ({ label, cardUrls, title, message }: StoryInput): Promise<Blob> => {
-  await Promise.all([
-    document.fonts.load('64px "Viaoda Libre"'),
-    document.fonts.load('italic 600 48px "Playfair Display"'),
-    document.fonts.load('32px "DM Mono"'),
-  ]);
-  const [cards, logo] = await Promise.all([
-    Promise.all(cardUrls.map(loadImage)),
-    loadImage('/brand/logo-circle.webp'),
-  ]);
+export const renderStory = async ({ header, label, cardUrls, title, message, positions }: StoryInput) => {
+  await loadFonts();
+  const cards = await Promise.all(cardUrls.map(loadImage));
+  const { canvas, ctx } = createCanvas();
 
-  const canvas = document.createElement('canvas');
-  canvas.width = W;
-  canvas.height = H;
-  const ctx = canvas.getContext('2d')!;
+  drawHeader(ctx, header, 'pragmagick.app', SKY);
 
-  // Halftone background
-  ctx.fillStyle = SKY;
-  ctx.fillRect(0, 0, W, H);
-  ctx.fillStyle = 'rgba(0,0,0,0.13)';
-  for (let y = 9; y < H; y += 18) {
-    for (let x = 9; x < W; x += 18) {
-      ctx.beginPath();
-      ctx.arc(x, y, 2.6, 0, Math.PI * 2);
-      ctx.fill();
-    }
+  // Long answers get more room: the rays band (and the cards) shrink until the whole text fits
+  const fitAnswer = (raysH: number, minSize: number) =>
+    fitText(ctx, message, {
+      maxWidth: F.w - 200,
+      maxHeight: CONTENT_BOTTOM - 30 - (CONTENT_TOP + raysH + 235),
+      font: (px) => `italic 600 ${px}px "Playfair Display"`,
+      maxSize: 44,
+      minSize,
+    });
+  const raysH = [560, 480, 400].find((h) => fitAnswer(h, 34).lines.join(' ') === message.replace(/\s+/g, ' ').trim()) ?? 400;
+  const scale = raysH / 560;
+
+  // Cards on sun rays
+  const raysBottom = CONTENT_TOP + raysH;
+  fillRays(ctx, F.x, CONTENT_TOP, F.w, raysH);
+  hLine(ctx, raysBottom);
+  const mid = CONTENT_TOP + raysH / 2;
+  if (cards.length === 1) {
+    drawCard(ctx, cards[0], W / 2, mid, 300 * scale, -3);
+  } else {
+    const cardMid = positions ? mid + 40 * scale : mid;
+    [-6, 0, 6].forEach((angle, i) =>
+      drawCard(ctx, cards[i], W / 2 + (i - 1) * 270, cardMid + (i === 1 ? -10 : 10), 230 * scale, angle),
+    );
+    positions?.forEach((p, i) => positionLabel(ctx, p, W / 2 + (i - 1) * 270, CONTENT_TOP + 24));
   }
 
-  // Label pill
-  ctx.font = '500 34px "DM Mono"';
-  const pillText = label.toUpperCase();
-  const pillW = ctx.measureText(pillText).width + 72;
-  ctx.fillStyle = '#ffffff';
-  ctx.strokeStyle = INK;
-  ctx.lineWidth = 5;
-  ctx.beginPath();
-  ctx.roundRect((W - pillW) / 2, 150, pillW, 76, 38);
-  ctx.fill();
-  ctx.stroke();
+  pill(ctx, label.toUpperCase(), W / 2, raysBottom + 70, YELLOW);
+
+  // Title, shrunk until it fits
+  let size = 88;
+  do {
+    ctx.font = `${size}px "Viaoda Libre"`;
+    size -= 4;
+  } while (ctx.measureText(title.toUpperCase()).width > F.w - 100 && size > 24);
   ctx.fillStyle = INK;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText(pillText, W / 2, 190);
+  ctx.fillText(title.toUpperCase(), W / 2, raysBottom + 165);
 
-  // Cards
-  let cardsBottom: number;
-  if (cards.length === 1) {
-    const h = drawCard(ctx, cards[0], W / 2, 720, 480, 3);
-    cardsBottom = 720 + h / 2;
-  } else {
-    const angles = [-6, 0, 6];
-    const xs = [W / 2 - 300, W / 2, W / 2 + 300];
-    let maxH = 0;
-    cards.forEach((img, i) => {
-      maxH = Math.max(maxH, drawCard(ctx, img, xs[i], 660 + (i === 1 ? -20 : 20), 290, angles[i]));
-    });
-    cardsBottom = 680 + maxH / 2;
-  }
-
-  // Title
-  // Shrink long titles (three card names) until they fit the width
-  let titleSize = 84;
-  do {
-    ctx.font = `${titleSize}px "Viaoda Libre"`;
-    titleSize -= 4;
-  } while (ctx.measureText(title.toUpperCase()).width > W - 120 && titleSize > 40);
+  // Answer with the same left rule as the reading screen; never cut mid-sentence
+  const top = raysBottom + 235;
+  const { lines: shown, lineH } = fitAnswer(raysH, 30);
   ctx.fillStyle = INK;
-  ctx.fillText(title.toUpperCase(), W / 2, cardsBottom + 120);
-
-  // Message on a tilted yellow tag
-  ctx.font = 'italic 600 52px "Playfair Display"';
-  const lines = wrapLines(ctx, message, 780).slice(0, 5);
-  const lineH = 70;
-  const boxH = lines.length * lineH + 70;
-  const boxTop = cardsBottom + 200;
-  ctx.save();
-  ctx.translate(W / 2, boxTop + boxH / 2);
-  ctx.rotate((-1.5 * Math.PI) / 180);
-  ctx.fillStyle = INK;
-  ctx.fillRect(-430 + 14, -boxH / 2 + 14, 860, boxH);
-  ctx.fillStyle = YELLOW;
-  ctx.fillRect(-430, -boxH / 2, 860, boxH);
-  ctx.lineWidth = 6;
-  ctx.strokeRect(-430, -boxH / 2, 860, boxH);
-  ctx.fillStyle = INK;
-  lines.forEach((l, i) => ctx.fillText(l, 0, -boxH / 2 + 35 + lineH / 2 + i * lineH));
-  ctx.restore();
-
-  // Footer: logo + URL
-  ctx.drawImage(logo, W / 2 - 230, H - 210, 110, 110);
-  ctx.font = '64px "Viaoda Libre"';
+  ctx.fillRect(F.x + 70, top, 7, shown.length * lineH);
   ctx.textAlign = 'left';
-  ctx.fillText('pragmagick.app', W / 2 - 100, H - 155);
+  ctx.textBaseline = 'top';
+  shown.forEach((l, i) => ctx.fillText(l, F.x + 105, top + i * lineH + 4));
 
-  return new Promise((resolve, reject) =>
-    canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('toBlob failed'))), 'image/png'),
-  );
+  await drawFooter(ctx, 'pragmagick.app');
+  closeFrame(ctx);
+  return canvas;
 };
 
-export const shareStory = async (input: StoryInput) => {
-  const blob = await renderStory(input);
-  const file = new File([blob], 'pragmagick.png', { type: 'image/png' });
-  if (navigator.canShare?.({ files: [file] })) {
-    try {
-      await navigator.share({ files: [file], text: 'pragmagick.app' });
-    } catch {
-      // user closed the share sheet
-    }
-    return;
-  }
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'pragmagick.png';
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-};
+export const shareStory = async (input: StoryInput) => shareCanvas(await renderStory(input), 'pragmagick.app');

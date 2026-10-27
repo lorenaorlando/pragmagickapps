@@ -5,9 +5,8 @@ const es = {
     banner: '¿QUÉ NECESITAS\nHOY?',
     tarotTitle: 'Tiradas de tarot',
     tarotDesc: 'Una pregunta, una carta, una respuesta',
-    stickersTitle: 'Oráculo de stickers',
+    stickersTitle: 'Oráculo de stickers: AMIGAAAAH',
     stickersDesc: 'La señora de los stickers te aconseja',
-    stickersOnlyEs: '',
     coinTitle: 'Lanzar una moneda',
     coinDesc: 'Sí, no… o la tercera cara',
     about: 'sobre pragmagicka',
@@ -29,6 +28,10 @@ const es = {
     readyThree: '3 cartas elegidas',
     reveal: 'REVELA TU LECTURA',
   },
+  threeModes: {
+    banner: 'TIRADA DE\n3 CARTAS',
+    prompt: 'Elige qué va a significar cada carta. Las cartas describen; el lugar donde caen les da sentido.',
+  },
   weekly: {
     banner: 'TU SEMANA',
     prompt: 'Elige la carta de tu semana',
@@ -39,7 +42,7 @@ const es = {
   reading: {
     banner: 'TU LECTURA',
     deeperTitle: '¿Lo vemos en detalle?',
-    deeperDesc: 'Lectura 1:1 conmigo',
+    deeperDesc: 'Lectura 1:1 por nota de voz',
     priceFrom: (usd: number) => `desde US$${usd}`,
     book: 'Agendar',
     whatsapp: 'WhatsApp',
@@ -48,9 +51,15 @@ const es = {
     again: 'Otra lectura',
     whatsappText: (card: string, topic: string) =>
       `¡Hola! En pragmagick.app me salió ${card} en "${topic}" y quiero profundizar mi lectura 🌙`,
-    whatsappTextThree: (cards: string) =>
-      `¡Hola! En pragmagick.app hice una tirada de 3 cartas (${cards}) y quiero profundizar mi lectura 🌙`,
-    shareLabel: 'mi carta',
+    whatsappTextThree: (mode: string, cards: string) =>
+      `¡Hola! En pragmagick.app hice una tirada de 3 cartas "${mode}" (${cards}) y quiero profundizar mi lectura 🌙`,
+    threeLabel: 'tirada de 3 cartas',
+    testimonialsLink: 'lo que dicen ★',
+  },
+  testimonials: {
+    whisper: 'lo que dicen de las',
+    shout: 'LECTURAS 1:1',
+    note: '',
   },
   goal: {
     title: 'Pragmagick a las tiendas',
@@ -64,6 +73,7 @@ const es = {
       'Este proyecto condensa un recorrido de investigación y práctica continuada iniciado en 2008. No surge desde una torre de marfil ni desde el optimismo tóxico de la espiritualidad privilegiada. Entendemos que vivimos en un mundo cruzado por crisis económicas, desastres y precariedades. Es precisamente cuando el entorno es más hostil cuando la voluntad deja de ser un concepto abstracto y se convierte en una herramienta de supervivencia.',
     ],
     contact: 'Contacto',
+    testimonials: 'Testimonios',
   },
   close: 'Cerrar',
   back: 'Volver',
@@ -77,8 +87,7 @@ const en: Strings = {
     tarotTitle: 'Tarot spreads',
     tarotDesc: 'One question, one card, one answer',
     stickersTitle: 'Sticker oracle',
-    stickersDesc: 'The sticker lady gives advice',
-    stickersOnlyEs: 'Spanish only',
+    stickersDesc: 'only in español miamor',
     coinTitle: 'Flip a coin',
     coinDesc: 'Yes, no… or the third side',
     about: 'about pragmagicka',
@@ -100,6 +109,10 @@ const en: Strings = {
     readyThree: '3 cards chosen',
     reveal: 'REVEAL YOUR READING',
   },
+  threeModes: {
+    banner: '3-CARD\nSPREAD',
+    prompt: 'Choose what each card will stand for. The cards describe; where they land gives them meaning.',
+  },
   weekly: {
     banner: 'YOUR WEEK',
     prompt: 'Choose the card for your week',
@@ -110,7 +123,7 @@ const en: Strings = {
   reading: {
     banner: 'YOUR READING',
     deeperTitle: 'Shall we look closer?',
-    deeperDesc: '1:1 reading with me',
+    deeperDesc: '1:1 reading by voice note',
     priceFrom: (usd: number) => `from US$${usd}`,
     book: 'Book',
     whatsapp: 'WhatsApp',
@@ -119,9 +132,15 @@ const en: Strings = {
     again: 'New reading',
     whatsappText: (card: string, topic: string) =>
       `Hi! I got ${card} on "${topic}" at pragmagick.app and I'd like to go deeper 🌙`,
-    whatsappTextThree: (cards: string) =>
-      `Hi! I did a 3-card spread at pragmagick.app (${cards}) and I'd like to go deeper 🌙`,
-    shareLabel: 'my card',
+    whatsappTextThree: (mode: string, cards: string) =>
+      `Hi! I did a "${mode}" 3-card spread at pragmagick.app (${cards}) and I'd like to go deeper 🌙`,
+    threeLabel: '3-card spread',
+    testimonialsLink: 'what people say ★',
+  },
+  testimonials: {
+    whisper: 'what people say about',
+    shout: '1:1 READINGS',
+    note: 'Testimonials kept in Spanish, as they were written.',
   },
   goal: {
     title: 'Pragmagick to the stores',
@@ -135,6 +154,7 @@ const en: Strings = {
       'This project condenses a continuous path of research and practice begun in 2008. It does not emerge from an ivory tower or the toxic optimism of privileged spirituality. We understand that we live in a world crossed by economic crises, disasters, and precarity. It is precisely when the environment is most hostile that willpower ceases to be an abstract concept and becomes a survival tool.',
     ],
     contact: 'Contact',
+    testimonials: 'Testimonials',
   },
   close: 'Close',
   back: 'Back',

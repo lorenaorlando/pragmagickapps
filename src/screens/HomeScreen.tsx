@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../lib/language';
 import { Language } from '../types';
 import { Sticker } from '../components/Sticker';
+import { track } from '../lib/analytics';
 
 const LANGS: { value: Language; label: string; start: string }[] = [
   { value: 'en', label: 'ENGLISH', start: 'START' },
@@ -18,6 +19,7 @@ export const HomeScreen: React.FC = () => {
   const choose = (lang: Language) => {
     setChosen(lang);
     setLanguage(lang);
+    track('language_selected', { language: lang });
   };
 
   return (
@@ -31,11 +33,11 @@ export const HomeScreen: React.FC = () => {
         <img
           src="/brand/logo-circle.webp"
           alt="Pragmagicka"
-          className="w-full h-full rounded-full border-2 border-ink shadow-hard-lg"
+          className="w-full h-full rounded-full border-2 border-ink"
         />
         <motion.div
           initial={{ x: 30, opacity: 0, rotate: 30 }}
-          animate={{ x: 0, opacity: 1, rotate: 12 }}
+          animate={{ x: 0, opacity: 1, rotate: 6 }}
           transition={{ delay: 0.25, type: 'spring', stiffness: 180, damping: 14 }}
           className="absolute -right-[74px] -bottom-3 w-[86px]"
         >
@@ -87,7 +89,7 @@ export const HomeScreen: React.FC = () => {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                className="w-full h-full rounded-full border-2 border-ink bg-ink text-yellow font-display text-[24px] tracking-tight shadow-hard"
+                className="w-full h-full rounded-full border-2 border-ink bg-yellow font-display text-[24px] tracking-tight shadow-hard"
               >
                 {LANGS.find((l) => l.value === chosen)!.start} ✦
               </motion.button>

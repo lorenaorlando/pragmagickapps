@@ -1,10 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-  --color-yellow: #ffff00;
-  --color-sky: #b8e2ec;
-  --color-green: #33b43c;
+  /* Brand manual v2 palette */
+  --color-yellow: #ffff0f;
+  --color-sky: #baeaee;
   --color-ink: #111111;
+  --color-graphite: #434343;
   --font-display: 'Viaoda Libre', 'Bodoni Moda', Georgia, serif;
   --font-body: 'Playfair Display', Georgia, serif;
   --font-mono: 'DM Mono', ui-monospace, Menlo, monospace;
@@ -25,7 +26,7 @@
     cursor: pointer;
   }
   :focus-visible {
-    outline: 3px solid var(--color-green);
+    outline: 3px solid var(--color-ink);
     outline-offset: 2px;
   }
 }
