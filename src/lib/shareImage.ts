@@ -88,7 +88,7 @@ export const renderStory = async ({ header, label, cardUrls, title, message, pos
   do {
     ctx.font = `${size}px "Viaoda Libre"`;
     size -= 4;
-  } while (ctx.measureText(title.toUpperCase()).width > F.w - 120 && size > 40);
+  } while (ctx.measureText(title.toUpperCase()).width > F.w - 100 && size > 24);
   ctx.fillStyle = INK;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
