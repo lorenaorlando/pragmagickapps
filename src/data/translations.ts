@@ -38,7 +38,7 @@ const es = {
   reading: {
     banner: 'TU LECTURA',
     deeperTitle: '¿Lo vemos en detalle?',
-    deeperDesc: 'Lectura 1:1 conmigo',
+    deeperDesc: 'Lectura 1:1 por nota de voz',
     priceFrom: (usd: number) => `desde US$${usd}`,
     book: 'Agendar',
     whatsapp: 'WhatsApp',
@@ -50,7 +50,12 @@ const es = {
     whatsappTextThree: (cards: string) =>
       `¡Hola! En pragmagick.app hice una tirada de 3 cartas (${cards}) y quiero profundizar mi lectura 🌙`,
     threeLabel: 'tirada de 3 cartas',
-    stickerGift: 'incluye un sticker de regalo',
+    testimonialsLink: 'lo que dicen ★',
+  },
+  testimonials: {
+    whisper: 'lo que dicen de las',
+    shout: 'LECTURAS 1:1',
+    note: '',
   },
   goal: {
     title: 'Pragmagick a las tiendas',
@@ -64,6 +69,7 @@ const es = {
       'Este proyecto condensa un recorrido de investigación y práctica continuada iniciado en 2008. No surge desde una torre de marfil ni desde el optimismo tóxico de la espiritualidad privilegiada. Entendemos que vivimos en un mundo cruzado por crisis económicas, desastres y precariedades. Es precisamente cuando el entorno es más hostil cuando la voluntad deja de ser un concepto abstracto y se convierte en una herramienta de supervivencia.',
     ],
     contact: 'Contacto',
+    testimonials: 'Testimonios',
   },
   close: 'Cerrar',
   back: 'Volver',
@@ -109,7 +115,7 @@ const en: Strings = {
   reading: {
     banner: 'YOUR READING',
     deeperTitle: 'Shall we look closer?',
-    deeperDesc: '1:1 reading with me',
+    deeperDesc: '1:1 reading by voice note',
     priceFrom: (usd: number) => `from US$${usd}`,
     book: 'Book',
     whatsapp: 'WhatsApp',
@@ -121,7 +127,12 @@ const en: Strings = {
     whatsappTextThree: (cards: string) =>
       `Hi! I did a 3-card spread at pragmagick.app (${cards}) and I'd like to go deeper 🌙`,
     threeLabel: '3-card spread',
-    stickerGift: 'includes a gift sticker',
+    testimonialsLink: 'what people say ★',
+  },
+  testimonials: {
+    whisper: 'what people say about',
+    shout: '1:1 READINGS',
+    note: 'Testimonials kept in Spanish, as they were written.',
   },
   goal: {
     title: 'Pragmagick to the stores',
@@ -135,6 +146,7 @@ const en: Strings = {
       'This project condenses a continuous path of research and practice begun in 2008. It does not emerge from an ivory tower or the toxic optimism of privileged spirituality. We understand that we live in a world crossed by economic crises, disasters, and precarity. It is precisely when the environment is most hostile that willpower ceases to be an abstract concept and becomes a survival tool.',
     ],
     contact: 'Contact',
+    testimonials: 'Testimonials',
   },
   close: 'Close',
   back: 'Back',

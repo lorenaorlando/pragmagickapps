@@ -5,12 +5,17 @@ import { GREETING_ID, StickerOracleItem } from './stickers';
 import { DRAWABLE, useCollection } from './collection';
 import { StickerImage } from './StickerImage';
 import { CollectionModal } from './CollectionModal';
+import { KitModal } from './KitModal';
 import { shareChat } from './shareChat';
-import { ASK_AGAIN_LABEL, ASK_LABEL, GREETING_QUESTION } from './copy';
+import { ASK_AGAIN_LABEL, ASK_LABEL, GREETING_QUESTION, KIT_OFFER, KIT_OFFER_BUTTON } from './copy';
 import { ScreenHeader } from '../components/ScreenHeader';
-import { STICKER_SHOP_URL, whatsappUrl } from '../config/links';
+import { whatsappUrl } from '../config/links';
 
-type NewMessage = { from: 'her'; text: string } | { from: 'her'; stickerId: string } | { from: 'me'; text: string };
+type NewMessage =
+  | { from: 'her'; text: string }
+  | { from: 'her'; stickerId: string }
+  | { from: 'her'; kitOffer: true }
+  | { from: 'me'; text: string };
 type Message = NewMessage & { id: number };
 
 const TYPING_MS = { short: 700, long: 1500 };
@@ -51,7 +56,7 @@ const StickerTile: React.FC<{ id: string; tilt: number; caption?: React.ReactNod
       transition={{ type: 'spring', stiffness: 260, damping: 16 }}
       className="relative w-[150px] h-[150px] bg-white border-2 border-ink rounded-[24px] shadow-[4px_5px_0_#111] flex items-center justify-center p-3"
     >
-      <StickerImage id={id} alt={id} className="w-full h-full" />
+      <StickerImage id={id} alt={id} className="w-full h-full rounded-[12px]" />
       <span
         aria-hidden="true"
         className="absolute -right-[2px] -top-[2px] w-7 h-7 border-l-2 border-b-2 border-ink rounded-bl-[8px] rounded-tr-[22px]"
@@ -70,6 +75,8 @@ export const AmigaOracleScreen: React.FC = () => {
   const [last, setLast] = useState<StickerOracleItem | null>(null);
   const [collectionOpen, setCollectionOpen] = useState(false);
   const [sharing, setSharing] = useState(false);
+  const [kitOpen, setKitOpen] = useState(false);
+  const draws = useRef(0);
   const scroller = useRef<HTMLDivElement>(null);
   const nextId = useRef(0);
   const alive = useRef(true);
@@ -114,6 +121,11 @@ export const AmigaOracleScreen: React.FC = () => {
     const sticker = draw();
     await herTurn(TYPING_MS.long, { from: 'her', stickerId: sticker.id });
     await herTurn(TYPING_MS.short, { from: 'her', text: sticker.message });
+    // After the third sticker she offers the whole set for WhatsApp and Telegram
+    if (++draws.current === 3) {
+      await herTurn(TYPING_MS.long, { from: 'her', text: KIT_OFFER });
+      push({ from: 'her', kitOffer: true });
+    }
     setLast(sticker);
     setBusy(false);
   };
@@ -135,7 +147,6 @@ export const AmigaOracleScreen: React.FC = () => {
       <ScreenHeader
         title="AMIGAAAAAAAH"
         back="/menu"
-        bg="green"
         right={<span className="shrink-0 font-display text-[15px] lowercase">en línea ●</span>}
       />
 
@@ -150,19 +161,26 @@ export const AmigaOracleScreen: React.FC = () => {
       >
         <Avatar />
         {messages.map((m, i) =>
-          'stickerId' in m ? (
+          'kitOffer' in m ? (
+            <motion.button
+              key={m.id}
+              type="button"
+              onClick={() => setKitOpen(true)}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="self-start flex items-center gap-2 bg-yellow border-2 border-ink rounded-[16px] rounded-bl-[4px] pl-1.5 pr-3.5 py-1.5 font-display text-[16px] uppercase shadow-hard"
+            >
+              <img src="/suits/emocional.webp" alt="" className="w-8 h-10 object-cover rounded-[6px] border-2 border-white" />
+              {KIT_OFFER_BUTTON}
+            </motion.button>
+          ) : 'stickerId' in m ? (
             <StickerTile
               key={m.id}
               id={m.stickerId}
               tilt={i % 4 === 0 ? -5 : 4}
               caption={
                 m.stickerId !== GREETING_ID && (
-                  <span className="font-mono text-[9.5px] uppercase pl-1">
-                    sticker #{stickerNumber(m.stickerId)} ·{' '}
-                    <a href={STICKER_SHOP_URL} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">
-                      consigue este sticker →
-                    </a>
-                  </span>
+                  <span className="font-mono text-[9.5px] uppercase pl-1">sticker #{stickerNumber(m.stickerId)}</span>
                 )
               }
             />
@@ -172,7 +190,7 @@ export const AmigaOracleScreen: React.FC = () => {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               className={`max-w-[82%] border-2 border-ink rounded-[16px] px-3.5 py-2 text-[14.5px] leading-snug whitespace-pre-line shadow-[2px_2px_0_#111] ${
-                m.from === 'me' ? 'self-end bg-[#3ee04e] rounded-br-[4px]' : 'self-start bg-white rounded-bl-[4px]'
+                m.from === 'me' ? 'self-end bg-sky rounded-br-[4px]' : 'self-start bg-white rounded-bl-[4px]'
               }`}
             >
               {m.text}
@@ -191,7 +209,7 @@ export const AmigaOracleScreen: React.FC = () => {
         colección
         <span className="flex-1 h-2.5 rounded-full border-2 border-ink overflow-hidden">
           <motion.span
-            className="block h-full bg-green"
+            className="block h-full bg-ink"
             animate={{ width: `${(collected.length / total) * 100}%` }}
           />
         </span>
@@ -234,7 +252,16 @@ export const AmigaOracleScreen: React.FC = () => {
         </button>
       )}
 
-      <CollectionModal open={collectionOpen} onClose={() => setCollectionOpen(false)} collected={collected} />
+      <CollectionModal
+        open={collectionOpen}
+        onClose={() => setCollectionOpen(false)}
+        collected={collected}
+        onOpenKit={() => {
+          setCollectionOpen(false);
+          setKitOpen(true);
+        }}
+      />
+      <KitModal open={kitOpen} onClose={() => setKitOpen(false)} />
     </div>
   );
 };

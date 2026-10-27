@@ -7,11 +7,11 @@ interface ScreenHeaderProps {
   title: string;
   /** Where the back arrow goes; omit to hide it */
   back?: string;
-  bg?: 'sky' | 'yellow' | 'green';
+  bg?: 'sky' | 'yellow';
   right?: React.ReactNode;
 }
 
-const BG = { sky: 'bg-sky', yellow: 'bg-yellow', green: 'bg-green' };
+const BG = { sky: 'bg-sky', yellow: 'bg-yellow' };
 
 export const ScreenHeader: React.FC<ScreenHeaderProps> = ({ title, back, bg = 'sky', right }) => {
   const navigate = useNavigate();

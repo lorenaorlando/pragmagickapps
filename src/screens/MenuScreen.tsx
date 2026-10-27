@@ -15,9 +15,9 @@ export const MenuScreen: React.FC = () => {
   const [aboutOpen, setAboutOpen] = useState(false);
 
   const tiles: { to: string; title: string; desc: string; sticker?: string; image?: string; bg: string; rotate: number }[] = [
-    { to: '/tarot', title: t.menu.tarotTitle, desc: t.menu.tarotDesc, sticker: '02-la-papisa', bg: 'bg-yellow', rotate: 8 },
-    { to: '/amigah', title: t.menu.stickersTitle, desc: t.menu.stickersDesc, image: AMIGAH_STICKER, bg: 'bg-green', rotate: -7 },
-    { to: '/monedaire', title: t.menu.coinTitle, desc: t.menu.coinDesc, sticker: '10-la-rueda-de-la-fortuna', bg: 'bg-sky', rotate: 6 },
+    { to: '/tarot', title: t.menu.tarotTitle, desc: t.menu.tarotDesc, sticker: '01-el-mago', bg: 'bg-yellow', rotate: 5 },
+    { to: '/amigah', title: t.menu.stickersTitle, desc: t.menu.stickersDesc, image: AMIGAH_STICKER, bg: 'bg-sky', rotate: -5 },
+    { to: '/monedaire', title: t.menu.coinTitle, desc: t.menu.coinDesc, sticker: '10-la-rueda-de-la-fortuna', bg: 'bg-white', rotate: 4 },
   ];
 
   return (
@@ -39,7 +39,7 @@ export const MenuScreen: React.FC = () => {
               <span className="font-display text-[23px] uppercase leading-[0.95]">{tile.title}</span>
               <span className="text-[12.5px] leading-tight">{tile.desc}</span>
               {tile.image ? (
-                <StickerImage id={tile.image} rotate={tile.rotate} className="absolute right-2 top-1/2 -translate-y-1/2 w-[92px] drop-sticker" />
+                <StickerImage id={tile.image} rotate={tile.rotate} className="absolute right-2 top-1/2 -translate-y-1/2 w-[92px] rounded-[10px] border-[3px] border-white drop-sticker" />
               ) : (
                 <Sticker slug={tile.sticker!} rotate={tile.rotate} className="absolute right-2 top-1/2 -translate-y-1/2 w-[86px]" />
               )}

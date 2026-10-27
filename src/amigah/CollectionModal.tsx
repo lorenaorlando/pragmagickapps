@@ -1,7 +1,6 @@
 import React from 'react';
-import { ExternalLink } from 'lucide-react';
+import { Download } from 'lucide-react';
 import { Modal } from '../components/modals';
-import { STICKER_SHOP_URL } from '../config/links';
 import { DRAWABLE, LATEST_BATCH } from './collection';
 import { StickerImage } from './StickerImage';
 
@@ -9,9 +8,10 @@ interface CollectionModalProps {
   open: boolean;
   onClose: () => void;
   collected: string[];
+  onOpenKit: () => void;
 }
 
-export const CollectionModal: React.FC<CollectionModalProps> = ({ open, onClose, collected }) => (
+export const CollectionModal: React.FC<CollectionModalProps> = ({ open, onClose, collected, onOpenKit }) => (
   <Modal open={open} onClose={onClose} title="Tu colección">
     <div className="p-4 flex flex-col gap-3">
       <p className="text-[14px]">
@@ -46,13 +46,12 @@ export const CollectionModal: React.FC<CollectionModalProps> = ({ open, onClose,
         })}
       </div>
     </div>
-    <a
-      href={STICKER_SHOP_URL}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex items-center justify-center gap-1.5 border-t-2 border-ink bg-yellow py-2.5 font-mono text-[11px] uppercase"
+    <button
+      type="button"
+      onClick={onOpenKit}
+      className="w-full flex items-center justify-center gap-1.5 border-t-2 border-ink bg-yellow py-2.5 font-mono text-[11px] uppercase"
     >
-      Consigue los stickers en Ko-fi <ExternalLink className="w-3.5 h-3.5" />
-    </a>
+      <Download className="w-3.5 h-3.5" /> Descarga los stickers para WhatsApp y Telegram
+    </button>
   </Modal>
 );

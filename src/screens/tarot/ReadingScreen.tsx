@@ -8,7 +8,7 @@ import { ScreenHeader } from '../../components/ScreenHeader';
 import { CardFace } from '../../components/cards';
 import { ReadingActions } from '../../components/ReadingActions';
 
-const CHIP_COLORS = ['bg-sky', 'bg-white', 'bg-green'];
+const CHIP_COLORS = ['bg-sky', 'bg-white', 'bg-yellow'];
 
 interface ReadingScreenProps {
   spread: Spread;

@@ -1,14 +1,22 @@
-// Shared drawing helpers for the 1080×1920 share images. Each image is drawn
-// like a screenshot of the app: a header band, the content, and a footer with the URL.
+// Shared drawing helpers for the 1080×1920 share images. Each image is drawn like a
+// screenshot of the app inside the brand frame (rounded ink line), leaving 250 px free at
+// the top and bottom for the Instagram story interface, with @pragmagicka signed below.
 
 export const W = 1080;
 export const H = 1920;
 export const INK = '#111111';
-export const YELLOW = '#ffff00';
-export const SKY = '#b8e2ec';
-export const GREEN = '#33b43c';
-export const HEADER_H = 170;
-export const FOOTER_H = 170;
+export const YELLOW = '#ffff0f';
+export const SKY = '#baeaee';
+export const GRAPHITE = '#434343';
+
+/** The framed "screen" */
+export const F = { x: 48, y: 250, w: W - 96, h: 1330, r: 56 };
+export const F_BOTTOM = F.y + F.h;
+export const HEADER_H = 150;
+export const FOOTER_H = 140;
+/** Content area between the header and footer bands */
+export const CONTENT_TOP = F.y + HEADER_H;
+export const CONTENT_BOTTOM = F_BOTTOM - FOOTER_H;
 
 export const loadImage = (src: string) =>
   new Promise<HTMLImageElement>((resolve, reject) => {
@@ -44,11 +52,34 @@ export const wrapLines = (ctx: CanvasRenderingContext2D, text: string, maxWidth:
   return lines;
 };
 
+/** Paper canvas, clipped to the frame until `closeFrame` is called */
 export const createCanvas = () => {
   const canvas = document.createElement('canvas');
   canvas.width = W;
   canvas.height = H;
-  return { canvas, ctx: canvas.getContext('2d')! };
+  const ctx = canvas.getContext('2d')!;
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, W, H);
+  ctx.save();
+  ctx.beginPath();
+  ctx.roundRect(F.x, F.y, F.w, F.h, F.r);
+  ctx.clip();
+  return { canvas, ctx };
+};
+
+/** Draw the frame line and the signature under it */
+export const closeFrame = (ctx: CanvasRenderingContext2D) => {
+  ctx.restore();
+  ctx.strokeStyle = INK;
+  ctx.lineWidth = 6;
+  ctx.beginPath();
+  ctx.roundRect(F.x, F.y, F.w, F.h, F.r);
+  ctx.stroke();
+  ctx.fillStyle = INK;
+  ctx.font = '40px "Playfair Display"';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('@pragmagicka', W / 2, F_BOTTOM + 70);
 };
 
 export const fillDots = (ctx: CanvasRenderingContext2D, color: string, x: number, y: number, w: number, h: number, alpha = 0.13) => {
@@ -107,33 +138,34 @@ export const fillRays = (ctx: CanvasRenderingContext2D, x: number, y: number, w:
 
 export const hLine = (ctx: CanvasRenderingContext2D, y: number) => {
   ctx.fillStyle = INK;
-  ctx.fillRect(0, y - 3, W, 6);
+  ctx.fillRect(F.x, y - 3, F.w, 6);
 };
 
 /** App-style header band: title on the left, a right-hand label */
 export const drawHeader = (ctx: CanvasRenderingContext2D, title: string, right: string, bg: string) => {
-  fillDots(ctx, bg, 0, 0, W, HEADER_H);
-  hLine(ctx, HEADER_H);
+  fillDots(ctx, bg, F.x, F.y, F.w, HEADER_H);
+  hLine(ctx, CONTENT_TOP);
+  const mid = F.y + HEADER_H / 2 + 4;
   ctx.fillStyle = INK;
   ctx.textBaseline = 'middle';
   ctx.textAlign = 'left';
-  ctx.font = '70px "Viaoda Libre"';
-  ctx.fillText(title.toUpperCase(), 60, HEADER_H / 2 + 4);
+  ctx.font = '66px "Viaoda Libre"';
+  ctx.fillText(title.toUpperCase(), F.x + 50, mid);
   ctx.textAlign = 'right';
-  ctx.font = '40px "Viaoda Libre"';
-  ctx.fillText(right, W - 60, HEADER_H / 2 + 4);
+  ctx.font = '38px "Viaoda Libre"';
+  ctx.fillText(right, F.x + F.w - 50, mid);
 };
 
 /** Yellow footer band with the logo and the URL people can visit */
 export const drawFooter = async (ctx: CanvasRenderingContext2D, url: string) => {
   const logo = await loadImage('/brand/logo-circle.webp');
-  const top = H - FOOTER_H;
+  const top = CONTENT_BOTTOM;
   ctx.fillStyle = YELLOW;
-  ctx.fillRect(0, top, W, FOOTER_H);
+  ctx.fillRect(F.x, top, F.w, FOOTER_H);
   hLine(ctx, top);
-  ctx.font = '64px "Viaoda Libre"';
+  ctx.font = '60px "Viaoda Libre"';
   const textW = ctx.measureText(url).width;
-  const logoSize = 100;
+  const logoSize = 90;
   const startX = (W - (logoSize + 28 + textW)) / 2;
   ctx.drawImage(logo, startX, top + (FOOTER_H - logoSize) / 2, logoSize, logoSize);
   ctx.fillStyle = INK;
