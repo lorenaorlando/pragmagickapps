@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-M6QHFYPQWH"></script>
@@ -7,50 +7,29 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-M6QHFYPQWH');
     </script>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#ffff00" />
     <title>PRAGMAGICK.APP</title>
-    <meta name="description" content="Tarot Reading App Prototype" />
+    <meta name="description" content="Herramientas esotéricas para nuestro presente digital: tiradas de tarot, oráculo de stickers y una moneda con tres caras." />
     <meta property="og:title" content="PRAGMAGICK.APP" />
-    <meta property="og:description" content="Tarot Reading App Prototype" />
+    <meta property="og:description" content="Herramientas esotéricas para nuestro presente digital. Tiradas de tarot escritas por una humana." />
     <meta property="og:type" content="website" />
-    <link rel="icon" id="favicon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="alternate icon" type="image/png" href="/favicon.png" />
-    <link rel="apple-touch-icon" href="/favicon.png" />
-    <script>
-      (function() {
-        var img = new Image();
-        img.onload = function() {
-          var canvas = document.createElement('canvas');
-          canvas.width = 64;
-          canvas.height = 64;
-          var ctx = canvas.getContext('2d');
-          if (ctx) {
-            ctx.beginPath();
-            ctx.arc(32, 32, 32, 0, Math.PI * 2);
-            ctx.closePath();
-            ctx.clip();
-            ctx.drawImage(img, 0, 0, 64, 64);
-            var faviconLink = document.getElementById('favicon');
-            if (faviconLink) {
-              faviconLink.type = 'image/png';
-              faviconLink.href = canvas.toDataURL('image/png');
-            }
-          }
-        };
-        img.src = '/favicon.png';
-      })();
-    </script>
+    <meta property="og:url" content="https://pragmagick.app/" />
+    <meta property="og:image" content="https://pragmagick.app/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Viaoda+Libre&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400..800;1,400..700&family=Viaoda+Libre&display=swap" rel="stylesheet">
   </head>
-  <body class="bg-stone-900 text-stone-900 antialiased selection:bg-amber-200">
+  <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-
