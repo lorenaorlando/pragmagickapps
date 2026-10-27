@@ -63,6 +63,12 @@ const PAGES = [
     image: 'amigah',
   },
   {
+    path: '/story',
+    title: 'La historia de Pragmagicka',
+    description: 'Una librería de pueblo, 78 arcanos regalados, dos terremotos y una gata: la historia de Lorena y de Pragmagicka, contada como el viaje del Loco.',
+    image: 'story',
+  },
+  {
     path: '/monedaire',
     title: 'Monedaire · Lanza una moneda · PRAGMAGICK.APP',
     description: 'Sí, no… o la tercera cara: la que de verdad te responde.',

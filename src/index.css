@@ -61,6 +61,20 @@
   background-size: 16px 16px;
 }
 
+/* Yellow card back with the logo's stars, used on small card backs */
+.star-pattern-bg {
+  background-color: var(--color-yellow);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M12 5c.5 4 2.5 6 7 7-4.5 1-6.5 3-7 7-.5-4-2.5-6-7-7 4.5-1 6.5-3 7-7z' fill='%23111' fill-opacity='.35'/%3E%3C/svg%3E");
+  background-size: 9px 9px;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Sticker cut-outs sit on colour without a halo */
 .drop-sticker {
   filter: drop-shadow(3px 4px 0 rgba(0, 0, 0, 0.85));

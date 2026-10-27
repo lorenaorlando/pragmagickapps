@@ -8,6 +8,7 @@ import { SpreadsScreen } from './screens/tarot/SpreadsScreen';
 import { SpreadFlow } from './screens/tarot/SpreadFlow';
 import { AmigaOracleScreen } from './amigah/AmigaOracleScreen';
 import { MonedaireScreen } from './monedaire/MonedaireScreen';
+import { StoryPage } from './story/StoryPage';
 import { trackPageView } from './lib/analytics';
 
 // A fresh flow per spread, so moving between spreads never carries cards over
@@ -19,6 +20,9 @@ export default function App() {
   useEffect(() => {
     trackPageView(location.pathname);
   }, [location.pathname]);
+
+  // The story is a full-width scrolling page, outside the phone frame
+  if (location.pathname.replace(/\/$/, '') === '/story') return <StoryPage />;
 
   return (
     <div className="min-h-[100dvh] w-full flex items-center justify-center p-3 overflow-x-hidden dots-soft">

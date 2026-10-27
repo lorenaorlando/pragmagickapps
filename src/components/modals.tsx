@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { X, Instagram, Mail, ExternalLink } from 'lucide-react';
 import { useLanguage } from '../lib/language';
 import { CONTACT_EMAIL, INSTAGRAM_URL, KOFI_GOAL_URL } from '../config/links';
+import { Link } from 'react-router-dom';
 import { TestimonialList } from './Testimonials';
 
 interface ModalProps {
@@ -90,6 +91,12 @@ export const AboutModal: React.FC<{ open: boolean; onClose: () => void }> = ({ o
         {t.about.paragraphs.map((p) => (
           <p key={p.slice(0, 20)}>{p}</p>
         ))}
+        <Link
+          to="/story"
+          className="self-start bg-yellow border-2 border-ink rounded-full shadow-hard px-4 py-2 font-display uppercase text-[17px]"
+        >
+          {t.about.storyLink} →
+        </Link>
         <div className="pt-4 mt-1 border-t-2 border-ink">
           <TestimonialList />
         </div>
