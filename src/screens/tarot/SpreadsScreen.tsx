@@ -56,7 +56,7 @@ export const SpreadsScreen: React.FC = () => {
         {SPREADS.map((spread, i) => (
           <motion.div
             key={spread.id}
-            className="flex-1 min-h-[68px]"
+            className="flex-[1_0_auto] min-h-[68px]"
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: i * 0.05 }}
@@ -74,7 +74,7 @@ export const SpreadsScreen: React.FC = () => {
                 <span className="block font-display text-[16px] uppercase leading-[1.02]">{spread.title[language]}</span>
                 <span className="block text-[11.5px] leading-tight mt-0.5 text-black/80">{spread.description[language]}</span>
               </span>
-              <span className="font-mono text-[9.5px] uppercase border-[1.5px] border-ink rounded-full bg-white px-1.5 py-0.5 whitespace-nowrap">
+              <span className="font-mono text-[11px] uppercase border-[1.5px] border-ink rounded-full bg-white px-1.5 py-0.5 whitespace-nowrap">
                 {spread.format[language]}
               </span>
             </Link>
@@ -90,7 +90,7 @@ export const SpreadsScreen: React.FC = () => {
           className="relative shrink-0 mt-1.5 text-left rounded-[8px] border-2 border-ink bg-sky pl-3 pr-[78px] py-2.5 shadow-hard active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-[transform,box-shadow]"
         >
           <span className="block font-display text-[16px] leading-[1.05] uppercase">{t.spreads.goalTitle}</span>
-          <span className="block font-mono text-[10px] uppercase mt-1">{t.spreads.goalDesc} →</span>
+          <span className="block font-mono text-[11px] uppercase mt-1">{t.spreads.goalDesc} →</span>
           <Sticker slug="07-el-carro" rotate={6} className="absolute right-1 -top-4 w-[70px]" />
         </button>
       </div>

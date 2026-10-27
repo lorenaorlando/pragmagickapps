@@ -34,12 +34,12 @@ export const ReadingScreen: React.FC<ReadingScreenProps> = ({ spread, card, onAg
         </div>
 
         <p className="text-center pt-3">
-          <span className="font-mono text-[9.5px] uppercase border-[1.5px] border-ink rounded-full bg-yellow px-2 py-0.5">{topic}</span>
+          <span className="font-mono text-[11px] uppercase border-[1.5px] border-ink rounded-full bg-yellow px-2 py-0.5">{topic}</span>
         </p>
         <h2 className="font-display text-[28px] uppercase text-center leading-none pt-2">{name}</h2>
         <div className="flex flex-wrap justify-center gap-1.5 px-4 pt-2">
           {cardKeywords(card, language).map((kw, i) => (
-            <span key={kw} className={`${CHIP_COLORS[i % 3]} font-mono text-[10px] uppercase border-[1.5px] border-ink rounded-full px-2 py-0.5`}>
+            <span key={kw} className={`${CHIP_COLORS[i % 3]} font-mono text-[11px] uppercase border-[1.5px] border-ink rounded-full px-2 py-0.5`}>
               {kw}
             </span>
           ))}

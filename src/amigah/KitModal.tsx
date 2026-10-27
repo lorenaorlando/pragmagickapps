@@ -66,7 +66,7 @@ export const KitModal: React.FC<{ open: boolean; onClose: () => void }> = ({ ope
               Son tuyos, gratis, para WhatsApp y Telegram. Solo déjame tu correo y te aviso apenas salga la próxima tanda
               (la señora de los stickers no hace spam, palabra).
             </p>
-            <label htmlFor="kit-email" className="font-mono text-[10px] uppercase">
+            <label htmlFor="kit-email" className="font-mono text-[11px] uppercase">
               Tu correo
             </label>
             <input
