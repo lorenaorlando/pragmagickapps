@@ -1,339 +1,143 @@
 import { Language } from '../types';
 
-export interface AppTranslations {
-  languageName: string;
-  home: {
-    title: string;
-    introBanner: string;
-    startBtn: string;
-    appsTitle: string;
-    monedaireTitle: string;
-    monedaireSubtitle: string;
-    monedaireDesc: string;
-    oneCardTitle: string;
-    oneCardSubtitle: string;
-    oneCardDesc: string;
-    infoTitle: string;
-    infoSubtitle: string;
-  };
-  chooseQuestion: {
-    banner: string;
-    questions: {
-      id: string;
-      title: string;
-      description: string;
-    }[];
-    continueBtn: string;
-  };
-  weeklyTarot: {
-    banner: string;
-    revealedBanner: string;
-    prompt: string;
-    revealBtn: string;
-  };
-  threeCardsSpread: {
-    banner: string;
-    breathePrompt: string;
-    tapToShufflePrompt: string;
-    shufflingPrompt: string;
-    tapToChoosePrompt: string;
-    revealReadingBtn: string;
-  };
+const es = {
+  menu: {
+    banner: '¿QUÉ NECESITAS\nHOY?',
+    tarotTitle: 'Tiradas de tarot',
+    tarotDesc: 'Una pregunta, una carta, una respuesta',
+    stickersTitle: 'Oráculo de stickers',
+    stickersDesc: 'La señora de los stickers te aconseja',
+    stickersOnlyEs: '',
+    coinTitle: 'Lanzar una moneda',
+    coinDesc: 'Sí, no… o la tercera cara',
+    about: 'sobre pragmagicka',
+  },
+  spreads: {
+    banner: '¿QUÉ TE TRAE\nPOR ACÁ?',
+    goalTitle: '¡Ayuda a pragmagick.app a llegar a las tiendas de apps!',
+    goalDesc: 'Toca para ver la campaña',
+  },
   shuffle: {
-    banner: string;
-    tapHint: string;
-    shufflingHint: string;
-    continueBtn: string;
-  };
-  shuffleAndDraw: {
-    banner: string;
-    breathePrompt: string;
-    tapToShufflePrompt: string;
-    shufflingPrompt: string;
-    tapToChoosePrompt: string;
-    shuffleBtn: string;
-    shufflingBtn: string;
-    chooseCardBottom: string;
-    revealReadingBtn: string;
-  };
-  draw: {
-    banner: string;
-    slotPlaceholder: string;
-    tapHint: string;
-    drawnHint: string;
-    continueBtn: string;
-  };
-  loading: {
-    banner: string;
-    loadingTitle: string;
-    tipTitle: string;
-    tipText: string;
-    bottomBanner: string;
-  };
-  cardReveal: {
-    banner: string;
-    readAnswerBtn: string;
-  };
+    banner: 'BARAJEA Y ELIGE',
+    breatheOne: 'Respira profundo, piensa en tu pregunta intensamente',
+    breatheThree: 'Respira profundo, piensa en la complejidad de tu situación',
+    tapToShuffle: 'Toca las cartas para barajar ↓',
+    shuffling: 'Barajando las cartas…',
+    chooseOne: 'Ahora elige una carta ↓',
+    chooseThree: (n: number) => `Elige 3 cartas (${n}/3) ↓`,
+    readyOne: 'Carta elegida',
+    readyThree: '3 cartas elegidas',
+    reveal: 'REVELA TU LECTURA',
+  },
+  weekly: {
+    banner: 'TU SEMANA',
+    prompt: 'Elige la carta de tu semana',
+  },
+  reveal: {
+    readAnswer: 'LEE TU RESPUESTA',
+  },
   reading: {
-    banner: string;
-    cardName: string;
-    keywords: string[];
-    answerBanner: string;
-    answerText: string;
-    logReadingBtn: string;
-    newReadingBtn: string;
-    captureBtn: string;
-    specializedTitle: string;
-    specializedSubtitle: string;
-    feedbackBtn: string;
-    feedbackSubtitle: string;
-    tagBannerPre: string;
-    tagBannerAccount: string;
-    tagBannerPost: string;
-  };
-  languageScreen: {
-    continueBtn: string;
-  };
-}
-
-export const TRANSLATIONS: Record<Language, AppTranslations> = {
-  en: {
-    languageName: 'English',
-    languageScreen: {
-      continueBtn: 'START',
-    },
-    home: {
-      title: 'PRAGMAGICK\nAPP',
-      introBanner: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley.",
-      startBtn: 'START',
-      appsTitle: 'APPS',
-      monedaireTitle: 'monedaire:',
-      monedaireSubtitle: 'flip a coin',
-      monedaireDesc: 'yes or no answers',
-      oneCardTitle: 'one card:',
-      oneCardSubtitle: 'for specific topics',
-      oneCardDesc: 'one Arcana, one question, one answer',
-      infoTitle: 'about pragmagicka',
-      infoSubtitle: 'learn more about this project',
-    },
-    chooseQuestion: {
-      banner: "WHAT BRINGS YOU\nHERE TODAY?",
-      questions: [
-        {
-          id: 'q1',
-          title: "I DON'T KNOW WHAT\nTO DO ABOUT...",
-          description: 'Understand the best way to take action',
-        },
-        {
-          id: 'q2',
-          title: "I'M THINKING\nABOUT SOMEONE",
-          description: 'Understand the current state of your relationship with that person',
-        },
-        {
-          id: 'q3',
-          title: 'CURRENT MOMENT',
-          description: 'Understand where you are in life and how to move forward',
-        },
-        {
-          id: 'q-weekly',
-          title: 'TAROT OF THE WEEK',
-          description: 'Understand your weekly message and guidance',
-        },
-        {
-          id: 'q-three-cards',
-          title: '3-CARD SPREAD',
-          description: 'Understand the complexity of a situation through keywords',
-        },
-      ],
-      continueBtn: 'CONTINUE',
-    },
-    weeklyTarot: {
-      banner: 'CHOOSE A CARD',
-      revealedBanner: 'THIS WEEK...',
-      prompt: 'Choose a card',
-      revealBtn: 'REVEAL YOUR READING',
-    },
-    threeCardsSpread: {
-      banner: 'SHUFFLE & CHOOSE',
-      breathePrompt: 'Take a deep breath, think intensely about your situation',
-      tapToShufflePrompt: 'Tap below to shuffle the cards ↓',
-      shufflingPrompt: 'Shuffling the cards...',
-      tapToChoosePrompt: 'Now tap below to choose 3 cards ↓',
-      revealReadingBtn: 'REVEAL YOUR READING',
-    },
-    shuffle: {
-      banner: 'SHUFFLE CARDS',
-      tapHint: 'Tap cards to shuffle the deck',
-      shufflingHint: 'Shuffling the deck...',
-      continueBtn: 'CONTINUE',
-    },
-    shuffleAndDraw: {
-      banner: 'SHUFFLE & CHOOSE',
-      breathePrompt: 'Take a deep breath, think intensely about your question',
-      tapToShufflePrompt: 'Tap below to shuffle the cards ↓',
-      shufflingPrompt: 'Shuffling the cards...',
-      tapToChoosePrompt: 'Now tap below to choose a card ↓',
-      shuffleBtn: 'SHUFFLE',
-      shufflingBtn: 'SHUFFLING...',
-      chooseCardBottom: 'CHOOSE A CARD',
-      revealReadingBtn: 'REVEAL YOUR READING',
-    },
-    draw: {
-      banner: 'DRAW YOUR CARD',
-      slotPlaceholder: 'PLACE CARD',
-      tapHint: 'Tap a card to draw from the deck',
-      drawnHint: 'Card drawn! Tap Continue to reveal your reading.',
-      continueBtn: 'CONTINUE',
-    },
-    loading: {
-      banner: 'CONSULTING THE CARDS',
-      loadingTitle: 'LOADING...',
-      tipTitle: 'TIP',
-      tipText: 'Take a deep breath and clear your mind as the arcana reveal their guidance.',
-      bottomBanner: 'PREPARING YOUR ANSWER...',
-    },
-    cardReveal: {
-      banner: 'YOUR CARD',
-      readAnswerBtn: 'READ YOUR ANSWER',
-    },
-    reading: {
-      banner: 'YOUR READING',
-      cardName: 'LE CHARIOT',
-      keywords: ['VICTORY', 'WILLPOWER', 'DIRECTION'],
-      answerBanner: 'YOUR ANSWER',
-      answerText: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley.",
-      logReadingBtn: 'LOG READING',
-      newReadingBtn: 'NEW READING',
-      captureBtn: 'CAPTURE YOUR ANSWER',
-      specializedTitle: 'Need a specialized answer?',
-      specializedSubtitle: 'Schedule a reading with me.',
-      feedbackBtn: 'Did this app help you?',
-      feedbackSubtitle: 'support this project',
-      tagBannerPre: 'Tag ',
-      tagBannerAccount: '@pragmagicka',
-      tagBannerPost: ' in your post!',
-    },
+    banner: 'TU LECTURA',
+    deeperTitle: '¿Lo vemos en detalle?',
+    deeperDesc: 'Lectura 1:1 conmigo',
+    priceFrom: (usd: number) => `desde US$${usd}`,
+    book: 'Agendar',
+    whatsapp: 'WhatsApp',
+    instagram: 'Instagram',
+    share: 'Compartir',
+    again: 'Otra lectura',
+    whatsappText: (card: string, topic: string) =>
+      `¡Hola! En pragmagick.app me salió ${card} en "${topic}" y quiero profundizar mi lectura 🌙`,
+    whatsappTextThree: (cards: string) =>
+      `¡Hola! En pragmagick.app hice una tirada de 3 cartas (${cards}) y quiero profundizar mi lectura 🌙`,
+    shareLabel: 'mi carta',
   },
-  es: {
-    languageName: 'Español',
-    languageScreen: {
-      continueBtn: 'COMENZAR',
-    },
-    home: {
-      title: 'PRAGMAGICK\nAPP',
-      introBanner: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since 1966, when designers at Letraset and James Mosley.',
-      startBtn: 'COMENZAR',
-      appsTitle: 'APPS',
-      monedaireTitle: 'monedaire:',
-      monedaireSubtitle: 'lanza una moneda',
-      monedaireDesc: 'respuestas de sí o no',
-      oneCardTitle: 'una carta:',
-      oneCardSubtitle: 'para temas específicos',
-      oneCardDesc: 'un Arcano, una pregunta, una respuesta',
-      infoTitle: 'info sobre pragmagicka',
-      infoSubtitle: 'conoce más de esta propuesta',
-    },
-    chooseQuestion: {
-      banner: '¿QUÉ TE TRAE\nPOR ACÁ?',
-      questions: [
-        {
-          id: 'q1',
-          title: 'NO SÉ QUÉ HACER\nRESPECTO A...',
-          description: 'Para tomar decisiones y entender la mejor forma de actuar',
-        },
-        {
-          id: 'q2',
-          title: 'ESTOY PENSANDO\nEN ALGUIEN',
-          description: 'Para entender el estado actual de tu relación con esa persona',
-        },
-        {
-          id: 'q3',
-          title: 'MOMENTO PRESENTE',
-          description: 'Para entender tu presente y saber cómo afrontarlo',
-        },
-        {
-          id: 'q-weekly',
-          title: 'TAROT DE LA SEMANA',
-          description: 'Para entender tu mensaje y guía durante la semana',
-        },
-        {
-          id: 'q-three-cards',
-          title: 'TIRADA DE 3 CARTAS',
-          description: 'Para entender con palabras clave la complejidad de una situación',
-        },
-        {
-          id: 'q-amiga',
-          title: 'AMIGAAAAAAAH',
-          description: 'Oráculo de stickers',
-        },
-      ],
-      continueBtn: 'CONTINUAR',
-    },
-    weeklyTarot: {
-      banner: 'ELIGE UNA CARTA',
-      revealedBanner: 'ESTA SEMANA...',
-      prompt: 'Elige una carta',
-      revealBtn: 'REVELA TU LECTURA',
-    },
-    threeCardsSpread: {
-      banner: 'BARAJEA Y ELIGE',
-      breathePrompt: 'Respira profundo, piensa en la complejidad de tu situación',
-      tapToShufflePrompt: 'Barajea las cartas ↓',
-      shufflingPrompt: 'Barajando las cartas...',
-      tapToChoosePrompt: 'Ahora elige 3 cartas ↓',
-      revealReadingBtn: 'REVELA TU LECTURA',
-    },
-    shuffle: {
-      banner: 'BARAJAR CARTAS',
-      tapHint: 'Toca las cartas para barajar el mazo',
-      shufflingHint: 'Barajando el mazo...',
-      continueBtn: 'CONTINUAR',
-    },
-    shuffleAndDraw: {
-      banner: 'BARAJEA Y ELIGE',
-      breathePrompt: 'Respira profundo, piensa en tu pregunta intensamente',
-      tapToShufflePrompt: 'Barajea las cartas ↓',
-      shufflingPrompt: 'Barajando las cartas...',
-      tapToChoosePrompt: 'Ahora elige una carta ↓',
-      shuffleBtn: 'BARAJEAR',
-      shufflingBtn: 'BARAJANDO...',
-      chooseCardBottom: 'ELIGE UNA CARTA',
-      revealReadingBtn: 'REVELA TU LECTURA',
-    },
-    draw: {
-      banner: 'ELIGE TU CARTA',
-      slotPlaceholder: 'COLOCAR CARTA',
-      tapHint: 'Toca una carta para sacarla del mazo',
-      drawnHint: '¡Carta elegida! Toca Continuar para ver tu lectura.',
-      continueBtn: 'CONTINUAR',
-    },
-    loading: {
-      banner: 'CONSULTANDO LAS CARTAS',
-      loadingTitle: 'CARGANDO...',
-      tipTitle: 'CONSEJO',
-      tipText: 'Respira hondo y despeja tu mente mientras los arcanos revelan su guía.',
-      bottomBanner: 'PREPARANDO TU RESPUESTA...',
-    },
-    cardReveal: {
-      banner: 'TU CARTA',
-      readAnswerBtn: 'LEE TU RESPUESTA',
-    },
-    reading: {
-      banner: 'TU LECTURA',
-      cardName: 'LE CHARIOT',
-      keywords: ['VICTORIA', 'VOLUNTAD', 'DIRECCIÓN'],
-      answerBanner: 'TU RESPUESTA',
-      answerText: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since 1966, when designers at Letraset and James Mosley.',
-      logReadingBtn: 'REGISTRAR LECTURA',
-      newReadingBtn: 'NUEVA LECTURA',
-      captureBtn: 'CAPTURA TU RESPUESTA',
-      specializedTitle: '¿Necesitas una respuesta especializada?',
-      specializedSubtitle: 'Agenda una lectura conmigo.',
-      feedbackBtn: '¿Te ayudó esta app?',
-      feedbackSubtitle: 'apoya este proyecto',
-      tagBannerPre: '¡Etiqueta a ',
-      tagBannerAccount: '@pragmagicka',
-      tagBannerPost: ' en tu post!',
-    },
+  goal: {
+    title: 'Pragmagick a las tiendas',
+    fallback: 'Si no se ve la campaña, ábrela en Ko-fi',
   },
+  about: {
+    title: 'Sobre Pragmagicka',
+    paragraphs: [
+      'PRAGMAGICKA es la evolución directa de mi práctica espiritual, una donde lo fundamental es la fuerza de voluntad orientada a la acción a través de símbolos, rituales y herramientas esotéricas.',
+      'Creo que no hay destino predeterminado ni cartas que adivinen el futuro. Hay decisiones que tomar y conflictos que destrabar. Muchas veces la mente estrictamente racional no basta para procesar dilemas internos que no siguen una lógica lineal. Es en ese espacio donde el esoterismo actúa como una tecnología pragmática: herramientas concretas para enfocar la mente, recuperar la agencia y accionar.',
+      'Este proyecto condensa un recorrido de investigación y práctica continuada iniciado en 2008. No surge desde una torre de marfil ni desde el optimismo tóxico de la espiritualidad privilegiada. Entendemos que vivimos en un mundo cruzado por crisis económicas, desastres y precariedades. Es precisamente cuando el entorno es más hostil cuando la voluntad deja de ser un concepto abstracto y se convierte en una herramienta de supervivencia.',
+    ],
+    contact: 'Contacto',
+  },
+  close: 'Cerrar',
+  back: 'Volver',
 };
+
+type Strings = typeof es;
+
+const en: Strings = {
+  menu: {
+    banner: 'WHAT DO YOU\nNEED TODAY?',
+    tarotTitle: 'Tarot spreads',
+    tarotDesc: 'One question, one card, one answer',
+    stickersTitle: 'Sticker oracle',
+    stickersDesc: 'The sticker lady gives advice',
+    stickersOnlyEs: 'Spanish only',
+    coinTitle: 'Flip a coin',
+    coinDesc: 'Yes, no… or the third side',
+    about: 'about pragmagicka',
+  },
+  spreads: {
+    banner: 'WHAT BRINGS YOU\nHERE TODAY?',
+    goalTitle: 'Help pragmagick.app reach the app stores!',
+    goalDesc: 'Tap to see the campaign',
+  },
+  shuffle: {
+    banner: 'SHUFFLE & CHOOSE',
+    breatheOne: 'Take a deep breath, think intensely about your question',
+    breatheThree: 'Take a deep breath, think about the complexity of your situation',
+    tapToShuffle: 'Tap the cards to shuffle ↓',
+    shuffling: 'Shuffling the cards…',
+    chooseOne: 'Now choose a card ↓',
+    chooseThree: (n: number) => `Choose 3 cards (${n}/3) ↓`,
+    readyOne: 'Card chosen',
+    readyThree: '3 cards chosen',
+    reveal: 'REVEAL YOUR READING',
+  },
+  weekly: {
+    banner: 'YOUR WEEK',
+    prompt: 'Choose the card for your week',
+  },
+  reveal: {
+    readAnswer: 'READ YOUR ANSWER',
+  },
+  reading: {
+    banner: 'YOUR READING',
+    deeperTitle: 'Shall we look closer?',
+    deeperDesc: '1:1 reading with me',
+    priceFrom: (usd: number) => `from US$${usd}`,
+    book: 'Book',
+    whatsapp: 'WhatsApp',
+    instagram: 'Instagram',
+    share: 'Share',
+    again: 'New reading',
+    whatsappText: (card: string, topic: string) =>
+      `Hi! I got ${card} on "${topic}" at pragmagick.app and I'd like to go deeper 🌙`,
+    whatsappTextThree: (cards: string) =>
+      `Hi! I did a 3-card spread at pragmagick.app (${cards}) and I'd like to go deeper 🌙`,
+    shareLabel: 'my card',
+  },
+  goal: {
+    title: 'Pragmagick to the stores',
+    fallback: "If the campaign doesn't load, open it on Ko-fi",
+  },
+  about: {
+    title: 'About Pragmagicka',
+    paragraphs: [
+      'PRAGMAGICKA is the direct evolution of my spiritual practice, where the foundation is willpower oriented toward action through symbols, rituals, and esoteric tools.',
+      'I believe there is no predetermined destiny and no cards that predict the future. There are decisions to be made and conflicts to be unblocked. Often, the strictly rational mind is insufficient to process inner dilemmas that follow a non-linear logic. It is in that space where esotericism acts as a pragmatic technology: concrete tools to focus the mind, reclaim agency, and take action.',
+      'This project condenses a continuous path of research and practice begun in 2008. It does not emerge from an ivory tower or the toxic optimism of privileged spirituality. We understand that we live in a world crossed by economic crises, disasters, and precarity. It is precisely when the environment is most hostile that willpower ceases to be an abstract concept and becomes a survival tool.',
+    ],
+    contact: 'Contact',
+  },
+  close: 'Close',
+  back: 'Back',
+};
+
+export const TRANSLATIONS: Record<Language, Strings> = { es, en };
