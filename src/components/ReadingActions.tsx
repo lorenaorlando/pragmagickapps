@@ -4,6 +4,7 @@ import { useLanguage } from '../lib/language';
 import { shareStory } from '../lib/shareImage';
 import { INSTAGRAM_DM_URL, KOFI_BOOKING_URL, READING_PRICE_USD, whatsappUrl } from '../config/links';
 import { TestimonialsModal } from './modals';
+import { track } from '../lib/analytics';
 
 interface ReadingActionsProps {
   whatsappText: string;
@@ -17,13 +18,13 @@ const BookingButtons: React.FC<{ whatsappText: string }> = ({ whatsappText }) =>
   const { t } = useLanguage();
   return (
     <div className="grid grid-cols-3 gap-1.5">
-      <a href={KOFI_BOOKING_URL} target="_blank" rel="noopener noreferrer" className={`${pill} bg-yellow`}>
+      <a href={KOFI_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => track('booking_click', { channel: 'kofi' })} className={`${pill} bg-yellow`}>
         <CalendarHeart className="w-3.5 h-3.5 shrink-0" /> {t.reading.book}
       </a>
-      <a href={whatsappUrl(whatsappText)} target="_blank" rel="noopener noreferrer" className={`${pill} bg-white`}>
+      <a href={whatsappUrl(whatsappText)} target="_blank" rel="noopener noreferrer" onClick={() => track('booking_click', { channel: 'whatsapp' })} className={`${pill} bg-white`}>
         <MessageCircle className="w-3.5 h-3.5 shrink-0" /> {t.reading.whatsapp}
       </a>
-      <a href={INSTAGRAM_DM_URL} target="_blank" rel="noopener noreferrer" className={`${pill} bg-sky`}>
+      <a href={INSTAGRAM_DM_URL} target="_blank" rel="noopener noreferrer" onClick={() => track('booking_click', { channel: 'instagram' })} className={`${pill} bg-sky`}>
         <Instagram className="w-3.5 h-3.5 shrink-0" /> {t.reading.instagram}
       </a>
     </div>
@@ -47,7 +48,10 @@ export const OneOnOneCard: React.FC<{ whatsappText: string }> = ({ whatsappText 
         {t.reading.deeperDesc}
         {READING_PRICE_USD !== null && <> · <b>{t.reading.priceFrom(READING_PRICE_USD)}</b></>}
         {' · '}
-        <button type="button" onClick={() => setTestimonialsOpen(true)} className="underline underline-offset-2">
+        <button type="button" onClick={() => {
+            track('testimonials_open');
+            setTestimonialsOpen(true);
+          }} className="underline underline-offset-2">
           {t.reading.testimonialsLink}
         </button>
       </p>
@@ -73,6 +77,7 @@ export const ReadingActions: React.FC<ReadingActionsProps> = ({ whatsappText, st
 
   const handleShare = async () => {
     setSharing(true);
+    track('share', { method: 'story', content_type: 'tarot' });
     try {
       await shareStory(story);
     } finally {

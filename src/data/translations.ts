@@ -28,6 +28,10 @@ const es = {
     readyThree: '3 cartas elegidas',
     reveal: 'REVELA TU LECTURA',
   },
+  threeModes: {
+    banner: 'TIRADA DE\n3 CARTAS',
+    prompt: 'Elige qué va a significar cada carta. Las cartas describen; el lugar donde caen les da sentido.',
+  },
   weekly: {
     banner: 'TU SEMANA',
     prompt: 'Elige la carta de tu semana',
@@ -47,8 +51,8 @@ const es = {
     again: 'Otra lectura',
     whatsappText: (card: string, topic: string) =>
       `¡Hola! En pragmagick.app me salió ${card} en "${topic}" y quiero profundizar mi lectura 🌙`,
-    whatsappTextThree: (cards: string) =>
-      `¡Hola! En pragmagick.app hice una tirada de 3 cartas (${cards}) y quiero profundizar mi lectura 🌙`,
+    whatsappTextThree: (mode: string, cards: string) =>
+      `¡Hola! En pragmagick.app hice una tirada de 3 cartas "${mode}" (${cards}) y quiero profundizar mi lectura 🌙`,
     threeLabel: 'tirada de 3 cartas',
     testimonialsLink: 'lo que dicen ★',
   },
@@ -105,6 +109,10 @@ const en: Strings = {
     readyThree: '3 cards chosen',
     reveal: 'REVEAL YOUR READING',
   },
+  threeModes: {
+    banner: '3-CARD\nSPREAD',
+    prompt: 'Choose what each card will stand for. The cards describe; where they land gives them meaning.',
+  },
   weekly: {
     banner: 'YOUR WEEK',
     prompt: 'Choose the card for your week',
@@ -124,8 +132,8 @@ const en: Strings = {
     again: 'New reading',
     whatsappText: (card: string, topic: string) =>
       `Hi! I got ${card} on "${topic}" at pragmagick.app and I'd like to go deeper 🌙`,
-    whatsappTextThree: (cards: string) =>
-      `Hi! I did a 3-card spread at pragmagick.app (${cards}) and I'd like to go deeper 🌙`,
+    whatsappTextThree: (mode: string, cards: string) =>
+      `Hi! I did a "${mode}" 3-card spread at pragmagick.app (${cards}) and I'd like to go deeper 🌙`,
     threeLabel: '3-card spread',
     testimonialsLink: 'what people say ★',
   },
