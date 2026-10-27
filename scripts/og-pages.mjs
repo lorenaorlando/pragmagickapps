@@ -64,8 +64,8 @@ const PAGES = [
   },
   {
     path: '/story',
-    title: 'La historia de Pragmagicka',
-    description: 'Una librería de pueblo, 78 arcanos regalados, dos terremotos y una gata: la historia de Lorena y de Pragmagicka, contada como el viaje del Loco.',
+    title: 'Pragmagicka: una historia interactiva',
+    description: 'La montaña rusa de mi recorrido en el tarot: una librería de pueblo, 78 arcanos regalados, dos terremotos y una gata, contada como el viaje del Loco.',
     image: 'story',
   },
   {
