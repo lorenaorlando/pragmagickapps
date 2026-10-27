@@ -12,20 +12,20 @@ interface ReadingActionsProps {
   onAgain: () => void;
 }
 
-const pill = 'flex items-center justify-center gap-1 min-w-0 rounded-full border-2 border-ink px-1.5 py-1.5 font-mono text-[10px] uppercase whitespace-nowrap shadow-hard active:translate-x-px active:translate-y-px active:shadow-none';
+const pill = 'flex items-center justify-center gap-1 min-w-0 rounded-full border-2 border-ink px-1.5 py-1.5 font-mono text-[11px] uppercase whitespace-nowrap shadow-hard active:translate-x-px active:translate-y-px active:shadow-none';
 
 const BookingButtons: React.FC<{ whatsappText: string }> = ({ whatsappText }) => {
   const { t } = useLanguage();
   return (
     <div className="grid grid-cols-3 gap-1.5">
       <a href={KOFI_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => track('booking_click', { channel: 'kofi' })} className={`${pill} bg-yellow`}>
-        <CalendarHeart className="w-3.5 h-3.5 shrink-0" /> {t.reading.book}
+        <CalendarHeart className="w-3.5 h-3.5 shrink-0 max-[359px]:hidden" /> {t.reading.book}
       </a>
       <a href={whatsappUrl(whatsappText)} target="_blank" rel="noopener noreferrer" onClick={() => track('booking_click', { channel: 'whatsapp' })} className={`${pill} bg-white`}>
-        <MessageCircle className="w-3.5 h-3.5 shrink-0" /> {t.reading.whatsapp}
+        <MessageCircle className="w-3.5 h-3.5 shrink-0 max-[359px]:hidden" /> {t.reading.whatsapp}
       </a>
       <a href={INSTAGRAM_DM_URL} target="_blank" rel="noopener noreferrer" onClick={() => track('booking_click', { channel: 'instagram' })} className={`${pill} bg-sky`}>
-        <Instagram className="w-3.5 h-3.5 shrink-0" /> {t.reading.instagram}
+        <Instagram className="w-3.5 h-3.5 shrink-0 max-[359px]:hidden" /> {t.reading.instagram}
       </a>
     </div>
   );

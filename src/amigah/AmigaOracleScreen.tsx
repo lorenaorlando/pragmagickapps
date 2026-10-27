@@ -23,7 +23,7 @@ const TYPING_MS = { short: 700, long: 1500 };
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 const Avatar = () => (
-  <div className="flex items-center gap-1.5 font-mono text-[9.5px] uppercase">
+  <div className="flex items-center gap-1.5 font-mono text-[11px] uppercase">
     <span className="w-6 h-6 rounded-full border-2 border-ink bg-yellow flex items-center justify-center font-display text-[13px] normal-case">A</span>
     señora de los stickers
   </div>
@@ -186,7 +186,7 @@ export const AmigaOracleScreen: React.FC = () => {
               tilt={i % 4 === 0 ? -5 : 4}
               caption={
                 m.stickerId !== GREETING_ID && (
-                  <span className="font-mono text-[9.5px] uppercase pl-1">sticker #{stickerNumber(m.stickerId)}</span>
+                  <span className="font-mono text-[11px] uppercase pl-1">sticker #{stickerNumber(m.stickerId)}</span>
                 )
               }
             />
@@ -209,7 +209,7 @@ export const AmigaOracleScreen: React.FC = () => {
       <button
         type="button"
         onClick={() => setCollectionOpen(true)}
-        className="shrink-0 border-t-2 border-ink bg-white px-3.5 py-2 flex items-center gap-2.5 font-mono text-[10px] uppercase"
+        className="shrink-0 border-t-2 border-ink bg-white px-3.5 py-2 flex items-center gap-2.5 font-mono text-[11px] uppercase"
         aria-label={`Colección: ${collected.length} de ${total}`}
       >
         colección
