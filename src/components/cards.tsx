@@ -28,30 +28,6 @@ export const CardFace: React.FC<{ card: TarotCard; className?: string; alt?: str
   />
 );
 
-/** A card that turns from its back to its face */
-export const FlipCard: React.FC<{ card: TarotCard; flipped: boolean; className?: string; alt?: string }> = ({
-  card,
-  flipped,
-  className = '',
-  alt,
-}) => (
-  <div className={`perspective ${className}`} style={{ aspectRatio: CARD_RATIO }}>
-    <motion.div
-      className="relative w-full h-full preserve-3d"
-      initial={false}
-      animate={{ rotateY: flipped ? 180 : 0 }}
-      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-    >
-      <div className="absolute inset-0 backface-hidden">
-        <CardBack className="w-full h-full" />
-      </div>
-      <div className="absolute inset-0 backface-hidden" style={{ transform: 'rotateY(180deg)' }}>
-        <CardFace card={card} alt={alt} className="w-full h-full" />
-      </div>
-    </motion.div>
-  </div>
-);
-
 interface CardFanProps {
   count?: number;
   shuffling?: boolean;
