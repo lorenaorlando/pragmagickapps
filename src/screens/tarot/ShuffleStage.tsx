@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../../lib/language';
 import { drawCards } from '../../lib/cards';
-import { playShuffle } from '../../lib/audio';
 import { TarotCard } from '../../types';
 import { ScreenHeader } from '../../components/ScreenHeader';
 import { CardBack, CardFan, CARD_RATIO } from '../../components/cards';
@@ -28,7 +27,6 @@ export const ShuffleStage: React.FC<ShuffleStageProps> = ({ count, onDone }) => 
   const shuffle = () => {
     if (phase !== 'idle') return;
     setPhase('shuffling');
-    playShuffle();
     setTimeout(() => setPhase('choose'), 1300);
   };
 

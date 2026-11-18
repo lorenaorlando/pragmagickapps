@@ -7,7 +7,6 @@ import { Coin, CoinResult } from './Coin';
 import { LogList, LogEntry } from './LogList';
 import { ReflectionTimer } from './ReflectionTimer';
 import { MONEDAIRE_TEXT } from './i18n';
-import { playCoinFlipSound, playCoinLandSound } from './audio';
 import { track } from '../lib/analytics';
 
 const STORAGE_KEY = 'moneda_app_logs_v1';
@@ -44,7 +43,6 @@ export const MonedaireScreen: React.FC = () => {
   const flip = () => {
     if (flipping) return;
     setFlipping(true);
-    playCoinFlipSound();
     const final = OUTCOMES[Math.floor(Math.random() * OUTCOMES.length)];
 
     // Flicker through faces mid-air, then land
@@ -55,7 +53,6 @@ export const MonedaireScreen: React.FC = () => {
       window.setTimeout(() => {
         setResult(final);
         setFlipping(false);
-        playCoinLandSound();
         track('coin_flip', { result: final });
         setLogs((prev) => [{ id: Date.now().toString(), result: final, topic: '', timestamp: Date.now() }, ...prev].slice(0, MAX_LOGS));
       }, 1350),
